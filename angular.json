@@ -145,6 +145,31 @@
           }
         }
       }
+    },
+    "route-tags": {
+      "projectType": "library",
+      "root": "libs/route-tags",
+      "sourceRoot": "libs/route-tags/src",
+      "prefix": "this-dot",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/route-tags/src/**/*.ts",
+              "libs/route-tags/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/route-tags"],
+          "options": {
+            "jestConfig": "libs/route-tags/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }
