@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { RouteTagModule } from './route-tag/route-tag.module';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [RouteTagModule],
+  exports: [RouteTagModule],
 })
 export class RouteTagsModule {}
