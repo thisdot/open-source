@@ -17,7 +17,7 @@
     "affected:e2e": "nx affected:e2e",
     "affected:test": "nx affected:test",
     "affected:lint": "nx affected:lint",
-    "affected:lint:fix": "nx affected:lint --fix --base=origin/",
+    "affected:lint:fix": "nx affected:lint --fix",
     "affected:dep-graph": "nx affected:dep-graph",
     "affected": "nx affected",
     "format": "nx format:write",
