@@ -35,7 +35,7 @@ export class RouteTagDirective implements OnInit, OnDestroy {
     this.elseTemplate$.next(elseTemplate);
   }
 
-  constructor(private routeTagService: RouteConfigService, private template: TemplateRef<any>, private entry: ViewContainerRef) {}
+  constructor(private routeTagService: RouteConfigService<any>, private template: TemplateRef<any>, private entry: ViewContainerRef) {}
 
   ngOnInit(): void {
     this.createView$.pipe(takeUntil(this.destroy$)).subscribe();

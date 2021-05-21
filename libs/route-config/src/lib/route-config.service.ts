@@ -4,7 +4,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 
 export type RouteData<CONFIG_PARAMS extends string> = {
-  [key in CONFIG_PARAMS]: never;
+  [key in CONFIG_PARAMS]: unknown;
 };
 
 @Injectable()

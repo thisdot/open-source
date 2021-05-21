@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@this-dot/route-tags": ["libs/route-tags/src/index.ts"]
+      "@this-dot/route-config": ["libs/route-config/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
