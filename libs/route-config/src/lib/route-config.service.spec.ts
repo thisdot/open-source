@@ -10,10 +10,10 @@ const provideMock = <T>(type: Type<T>, mock: Partial<T>): Provider => ({
   useValue: mock,
 });
 
-type TestRouteTypes = 'cmRouteTags' | 'cmRouteColor' | 'cmRouteProgressState';
+type TestRouteTypes = 'tdRouteTags' | 'tdRouteColor' | 'tdRouteProgressState';
 
 describe('RouteConfigService', () => {
-  let service: RouteConfigService<TestRouteTypes>;
+  let service: RouteConfigService;
   let events: Subject<Event>;
   let testScheduler: TestScheduler;
 
@@ -56,11 +56,11 @@ describe('RouteConfigService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       withRouteData([
         {
-          cmRouteTags: routeTags,
+          tdRouteTags: routeTags,
         },
       ]);
       getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
-      expectObservable(service.getLeafConfig('cmRouteTags', [])).toBe('t---t', { t: routeTags });
+      expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags });
     });
   });
 
@@ -70,15 +70,15 @@ describe('RouteConfigService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       withRouteData([
         {
-          cmRouteTags: routeTags,
+          tdRouteTags: routeTags,
         },
         {},
         {
-          cmRouteTags: routeTags2,
+          tdRouteTags: routeTags2,
         },
       ]);
       getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
-      expectObservable(service.getLeafConfig('cmRouteTags', [])).toBe('t---t', { t: routeTags2 });
+      expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags2 });
     });
   });
 
@@ -88,15 +88,15 @@ describe('RouteConfigService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       withRouteData([
         {
-          cmRouteTags: routeTags,
+          tdRouteTags: routeTags,
         },
         {
-          cmRouteTags: routeTags2,
+          tdRouteTags: routeTags2,
         },
         {},
       ]);
       getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
-      expectObservable(service.getLeafConfig('cmRouteTags', [])).toBe('t---t', { t: routeTags2 });
+      expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags2 });
     });
   });
 
@@ -105,21 +105,21 @@ describe('RouteConfigService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       withRouteData([
         {
-          cmRouteTags: routeTags,
+          tdRouteTags: routeTags,
         },
         {
-          cmRouteColor: 'secondary',
+          tdRouteColor: 'secondary',
         },
         {
-          cmRouteProgressState: 0.5,
+          tdRouteProgressState: 0.5,
         },
       ]);
       getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
-      expectObservable(service.getLeafConfig('cmRouteTags', [])).toBe('t---t', { t: routeTags });
-      expectObservable(service.getLeafConfig('cmRouteColor', 'primary')).toBe('t---t', {
+      expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags });
+      expectObservable(service.getLeafConfig('tdRouteColor', 'primary')).toBe('t---t', {
         t: 'secondary',
       });
-      expectObservable(service.getLeafConfig('cmRouteProgressState', 0)).toBe('t---t', { t: 0.5 });
+      expectObservable(service.getLeafConfig('tdRouteProgressState', 0)).toBe('t---t', { t: 0.5 });
     });
   });
 
@@ -127,11 +127,11 @@ describe('RouteConfigService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       withRouteData([{}]);
       getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
-      expectObservable(service.getLeafConfig('cmRouteTags', [])).toBe('t---t', { t: [] });
-      expectObservable(service.getLeafConfig('cmRouteColor', 'primary')).toBe('t---t', {
+      expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: [] });
+      expectObservable(service.getLeafConfig('tdRouteColor', 'primary')).toBe('t---t', {
         t: 'primary',
       });
-      expectObservable(service.getLeafConfig('cmRouteProgressState', 0)).toBe('t---t', { t: 0 });
+      expectObservable(service.getLeafConfig('tdRouteProgressState', 0)).toBe('t---t', { t: 0 });
     });
   });
 });

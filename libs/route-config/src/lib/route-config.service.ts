@@ -8,10 +8,10 @@ export type RouteData<CONFIG_PARAMS extends string> = {
 };
 
 @Injectable()
-export class RouteConfigService<CONFIG_PARAMS extends string> {
+export class RouteConfigService {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  getLeafConfig<T>(paramName: CONFIG_PARAMS, defaultValue: T): Observable<T> {
+  getLeafConfig<T>(paramName: string, defaultValue: T): Observable<T> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),

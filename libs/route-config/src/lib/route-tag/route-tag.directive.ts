@@ -4,7 +4,7 @@ import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { RouteConfigService } from '../route-config.service';
 
 @Directive({
-  selector: '[thisDotRouteTag]',
+  selector: '[tdRouteTag]',
   providers: [RouteConfigService],
 })
 export class RouteTagDirective implements OnInit, OnDestroy {
@@ -12,7 +12,8 @@ export class RouteTagDirective implements OnInit, OnDestroy {
   private elseTemplate$ = new BehaviorSubject<TemplateRef<any> | null>(null);
   private destroy$ = new Subject();
 
-  private display$ = combineLatest([this.tags$, this.routeTagService.getLeafConfig('cmRouteTags', [])]).pipe(
+  private display$ = combineLatest([this.tags$, this.routeTagService.getLeafConfig('routeTags', [])]).pipe(
+    tap(console.warn),
     map(([tags, routeTags]) => !!tags.find((tag) => routeTags.includes(tag))),
     distinctUntilChanged()
   );
@@ -25,17 +26,17 @@ export class RouteTagDirective implements OnInit, OnDestroy {
   );
 
   @Input()
-  set cmRouteTag(tags: string | string[]) {
+  set tdRouteTag(tags: string | string[]) {
     const tagArray = Array.isArray(tags) ? tags : [tags];
     this.tags$.next(tagArray);
   }
 
   @Input()
-  set cmRouteTagElse(elseTemplate: TemplateRef<any>) {
+  set tdRouteTagElse(elseTemplate: TemplateRef<any>) {
     this.elseTemplate$.next(elseTemplate);
   }
 
-  constructor(private routeTagService: RouteConfigService<any>, private template: TemplateRef<any>, private entry: ViewContainerRef) {}
+  constructor(private routeTagService: RouteConfigService, private template: TemplateRef<any>, private entry: ViewContainerRef) {}
 
   ngOnInit(): void {
     this.createView$.pipe(takeUntil(this.destroy$)).subscribe();

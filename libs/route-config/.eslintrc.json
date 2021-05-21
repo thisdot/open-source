@@ -5,10 +5,10 @@
     {
       "files": ["*.ts"],
       "extends": ["plugin:@nrwl/nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
-      "parserOptions": { "project": ["libs/route-tags/tsconfig.*?.json"] },
+      "parserOptions": { "project": ["libs/route-config/tsconfig.*?.json"] },
       "rules": {
-        "@angular-eslint/directive-selector": ["error", { "type": "attribute", "prefix": "thisDot", "style": "camelCase" }],
-        "@angular-eslint/component-selector": ["error", { "type": "element", "prefix": "this-dot", "style": "kebab-case" }]
+        "@angular-eslint/directive-selector": ["error", { "type": "attribute", "prefix": "td", "style": "camelCase" }],
+        "@angular-eslint/component-selector": ["error", { "type": "element", "prefix": "td", "style": "kebab-case" }]
       }
     },
     {

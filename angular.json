@@ -144,7 +144,7 @@
       "projectType": "library",
       "root": "libs/route-config",
       "sourceRoot": "libs/route-config/src",
-      "prefix": "this-dot",
+      "prefix": "td",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
