@@ -8,7 +8,8 @@ import { RouteTag } from './route-tag.types';
   name: 'inRouteTags$',
 })
 export class InRouteTags$Pipe implements PipeTransform {
-  constructor(private routeTagService: RouteConfigService) {}
+  // TODO: inject the leafconfig name using injection token
+  constructor(private routeTagService: RouteConfigService<'cmRouteTags'>) {}
 
   routeTags$ = this.routeTagService.getLeafConfig('cmRouteTags', []);
 

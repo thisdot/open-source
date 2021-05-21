@@ -10,8 +10,10 @@ const provideMock = <T>(type: Type<T>, mock: Partial<T>): Provider => ({
   useValue: mock,
 });
 
+type TestRouteTypes = 'cmRouteTags' | 'cmRouteColor' | 'cmRouteProgressState';
+
 describe('RouteConfigService', () => {
-  let service: RouteConfigService;
+  let service: RouteConfigService<TestRouteTypes>;
   let events: Subject<Event>;
   let testScheduler: TestScheduler;
 
@@ -19,7 +21,7 @@ describe('RouteConfigService', () => {
   let pathFromRoot = jest.fn().mockReturnValue([]);
   const firstChild = jest.fn().mockReturnValue(null);
 
-  const withRouteData = (dataArr: Array<Partial<RouteData>>) => {
+  const withRouteData = (dataArr: Array<Partial<RouteData<TestRouteTypes>>>) => {
     pathFromRoot = jest.fn().mockReturnValue(dataArr.map((data) => ({ data: of(data) } as any)));
   };
 

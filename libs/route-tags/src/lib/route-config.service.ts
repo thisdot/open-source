@@ -3,31 +3,20 @@ import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 
-export type RouteData = {
-  [key in RouteConfigParam]: any;
+export type RouteData<CONFIG_PARAMS extends string> = {
+  [key in CONFIG_PARAMS]: never;
 };
-export type RouteConfigParam = 'cmRouteTags' | 'cmRouteColor' | 'cmRouteProgressState';
-export type NavbarColorScheme = 'primary' | 'secondary';
 
 @Injectable()
-export class RouteConfigService {
+export class RouteConfigService<CONFIG_PARAMS extends string> {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  getLeafConfig(paramName: 'cmRouteTags', defaultValue: string[]): Observable<string[]>;
-  getLeafConfig(
-    paramName: 'cmRouteColor',
-    defaultValue: NavbarColorScheme
-  ): Observable<NavbarColorScheme>;
-  getLeafConfig(
-    paramName: 'cmRouteProgressState',
-    defaultValue: number | null
-  ): Observable<number | null>;
-  getLeafConfig<T>(paramName: RouteConfigParam, defaultValue: T): Observable<T> {
+  getLeafConfig<T>(paramName: CONFIG_PARAMS, defaultValue: T): Observable<T> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),
       startWith(this.activatedRoute),
-      switchMap((activatedRoute) => {
+      switchMap((activatedRoute: ActivatedRoute) => {
         const routes: ActivatedRoute[] = activatedRoute.pathFromRoot;
 
         let route = activatedRoute.firstChild;
