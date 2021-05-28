@@ -7,8 +7,9 @@ import { RouteConfigService } from '../route-config.service';
   selector: '[tdRouteTag]',
   providers: [RouteConfigService],
 })
-export class RouteTagDirective<CThen, CElse> implements OnInit, OnDestroy {
-  private tags$ = new BehaviorSubject<string[]>([]);
+export class RouteTagDirective<CThen, CElse, RouteTags extends string = string>
+  implements OnInit, OnDestroy {
+  private tags$ = new BehaviorSubject<RouteTags[]>([]);
   private elseTemplate$ = new BehaviorSubject<TemplateRef<CElse> | null>(null);
   private destroy$ = new Subject();
 
@@ -17,7 +18,7 @@ export class RouteTagDirective<CThen, CElse> implements OnInit, OnDestroy {
     this.routeTagService.getLeafConfig('routeTags', []),
   ]).pipe(
     tap(console.warn),
-    map(([tags, routeTags]) => !!tags.find((tag) => routeTags.includes(tag))),
+    map(([tags, routeTags]) => !!tags.find((tag: RouteTags) => routeTags.includes(tag))),
     distinctUntilChanged()
   );
 
@@ -31,7 +32,7 @@ export class RouteTagDirective<CThen, CElse> implements OnInit, OnDestroy {
   );
 
   @Input()
-  set tdRouteTag(tags: string | string[]) {
+  set tdRouteTag(tags: RouteTags | RouteTags[]) {
     const tagArray = Array.isArray(tags) ? tags : [tags];
     this.tags$.next(tagArray);
   }
