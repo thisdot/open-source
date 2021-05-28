@@ -2,11 +2,7 @@ const path = require('path');
 
 module.exports = {
   '*.{json,md,css,scss}': (files) => {
-    if (
-      files.length > 0 &&
-      files[0] !== '[filename]' &&
-      files[0] !== '[file]'
-    ) {
+    if (files.length > 0 && files[0] !== '[filename]' && files[0] !== '[file]') {
       const cwd = process.cwd();
       const relativePaths = files.map((f) => path.relative(cwd, f));
       /**
@@ -18,11 +14,7 @@ module.exports = {
     }
   },
   '*.{html,js,ts}': (files) => {
-    if (
-      files.length > 0 &&
-      files[0] !== '[filename]' &&
-      files[0] !== '[file]'
-    ) {
+    if (files.length > 0 && files[0] !== '[filename]' && files[0] !== '[file]') {
       const cwd = process.cwd();
       const relativePaths = files.map((f) => path.relative(cwd, f));
       /**
@@ -30,9 +22,7 @@ module.exports = {
        */
       return [
         `nx format:write --files="${relativePaths.join(',')}"`, //
-        `nx affected:lint --files="${relativePaths.join(
-          ','
-        )}" --fix --parallel`, //
+        `nx affected:lint --files="${relativePaths.join(',')}" --fix --parallel`, //
       ];
     } else {
       return [];
