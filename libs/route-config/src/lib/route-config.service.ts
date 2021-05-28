@@ -20,15 +20,11 @@ export type RouteData<
 export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<ConfigParamsNames>;
 
 @Injectable()
-export class RouteConfigService<
-  RouteTags extends string = string,
-  ConfigParamsNames extends string = never
-> {
+export class RouteConfigService<ConfigParamsNames extends string = string> {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  getLeafConfig(paramName: 'routeTags', defaultValue: RouteTags[]): Observable<RouteTags[]>;
   getLeafConfig<T = unknown>(
-    paramName: RouteDataParam<ConfigParamsNames>,
+    paramName: 'routeTags' | RouteDataParam<ConfigParamsNames>,
     defaultValue: T
   ): Observable<T> {
     return this.router.events.pipe(
