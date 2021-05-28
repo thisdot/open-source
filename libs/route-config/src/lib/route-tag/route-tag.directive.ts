@@ -12,7 +12,10 @@ export class RouteTagDirective implements OnInit, OnDestroy {
   private elseTemplate$ = new BehaviorSubject<TemplateRef<any> | null>(null);
   private destroy$ = new Subject();
 
-  private display$ = combineLatest([this.tags$, this.routeTagService.getLeafConfig('routeTags', [])]).pipe(
+  private display$ = combineLatest([
+    this.tags$,
+    this.routeTagService.getLeafConfig('routeTags', []),
+  ]).pipe(
     tap(console.warn),
     map(([tags, routeTags]) => !!tags.find((tag) => routeTags.includes(tag))),
     distinctUntilChanged()
@@ -21,7 +24,9 @@ export class RouteTagDirective implements OnInit, OnDestroy {
   private createView$ = combineLatest([this.display$, this.elseTemplate$]).pipe(
     tap(() => this.entry.clear()),
     tap(([show, elseTemplate]) =>
-      show ? void this.entry.createEmbeddedView(this.template) : void (elseTemplate && this.entry.createEmbeddedView(elseTemplate))
+      show
+        ? void this.entry.createEmbeddedView(this.template)
+        : void (elseTemplate && this.entry.createEmbeddedView(elseTemplate))
     )
   );
 
@@ -36,7 +41,11 @@ export class RouteTagDirective implements OnInit, OnDestroy {
     this.elseTemplate$.next(elseTemplate);
   }
 
-  constructor(private routeTagService: RouteConfigService, private template: TemplateRef<any>, private entry: ViewContainerRef) {}
+  constructor(
+    private routeTagService: RouteConfigService,
+    private template: TemplateRef<any>,
+    private entry: ViewContainerRef
+  ) {}
 
   ngOnInit(): void {
     this.createView$.pipe(takeUntil(this.destroy$)).subscribe();
