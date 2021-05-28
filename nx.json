@@ -28,6 +28,9 @@
     "showcase-e2e": {
       "tags": [],
       "implicitDependencies": ["showcase"]
+    },
+    "route-config": {
+      "tags": []
     }
   }
 }

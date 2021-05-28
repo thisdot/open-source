@@ -47,10 +47,7 @@
             "polyfills": "apps/showcase/src/polyfills.ts",
             "tsConfig": "apps/showcase/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "apps/showcase/src/favicon.ico",
-              "apps/showcase/src/assets"
-            ],
+            "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
             "styles": ["apps/showcase/src/styles.scss"],
             "scripts": []
           },
@@ -104,10 +101,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/showcase/src/**/*.ts",
-              "apps/showcase/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/showcase/src/**/*.ts", "apps/showcase/src/**/*.html"]
           }
         },
         "test": {
@@ -142,6 +136,28 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/showcase-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "route-config": {
+      "projectType": "library",
+      "root": "libs/route-config",
+      "sourceRoot": "libs/route-config/src",
+      "prefix": "td",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/route-config/src/**/*.ts", "libs/route-config/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/route-config"],
+          "options": {
+            "jestConfig": "libs/route-config/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
