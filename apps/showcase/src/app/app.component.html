@@ -1,5 +1,12 @@
 <a routerLink="/first">first</a>
-<br />
 <a routerLink="/second">second</a>
 
 <router-outlet></router-outlet>
+
+<ng-container *tdRouteTag="'show'; else noShowTag">
+  <p>This text is only visible, if there is a 'routeTag.SHOW' in the route data</p>
+</ng-container>
+<ng-template #noShowTag>
+  <p>There is no show tag in this route's config</p>
+</ng-template>
+

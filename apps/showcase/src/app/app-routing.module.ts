@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'first',
     component: FirstRouteComponent,
     data: {
-      tdRouteTags: ['show'],
+      routeTags: ['show'],
     },
   },
   {
@@ -23,6 +23,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  declarations: [FirstRouteComponent, SecondRouteComponent],
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
