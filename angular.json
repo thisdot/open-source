@@ -151,6 +151,21 @@
       "sourceRoot": "libs/route-config/src",
       "prefix": "td",
       "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "project": "libs/route-config/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/route-config/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/route-config/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
