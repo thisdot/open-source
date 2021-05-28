@@ -23,7 +23,10 @@ export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<C
 export class RouteConfigService<ConfigParamsNames extends string = never> {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  getLeafConfig<T>(paramName: RouteDataParam<ConfigParamsNames>, defaultValue: T): Observable<T> {
+  getLeafConfig<T = unknown>(
+    paramName: RouteDataParam<ConfigParamsNames>,
+    defaultValue: T
+  ): Observable<T> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),

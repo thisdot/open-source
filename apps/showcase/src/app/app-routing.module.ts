@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FirstRouteComponent } from './components/first-route/first-route.component';
 import { SecondRouteComponent } from './components/second-route/second-route.component';
+import { AppRouteTags } from './route-config-params';
 
 const routes: Routes = [
   {
     path: 'first',
     component: FirstRouteComponent,
     data: {
-      routeTags: ['show'],
+      routeTags: [AppRouteTags.show],
     },
   },
   {
@@ -19,6 +20,9 @@ const routes: Routes = [
   {
     path: 'second',
     component: SecondRouteComponent,
+    data: {
+      title: 'Second Route Title',
+    },
   },
 ];
 
