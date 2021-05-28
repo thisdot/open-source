@@ -3,15 +3,30 @@ import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 
-export type RouteData<CONFIG_PARAMS extends string> = {
-  [key in CONFIG_PARAMS]: unknown;
+export type RouteConfigParams<RouteTags extends string = string> = {
+  routeTags: RouteTags | RouteTags[];
 };
 
+export type RouteConfigParamNames = keyof RouteConfigParams;
+
+export type RouteData<
+  ConfigParamsNames extends string = never,
+  RouteTags extends string = string
+> = {
+  [key in ConfigParamsNames]: unknown;
+} &
+  RouteConfigParams<RouteTags>;
+
+export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<ConfigParamsNames>;
+
 @Injectable()
-export class RouteConfigService {
+export class RouteConfigService<ConfigParamsNames extends string = never> {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  getLeafConfig<T>(paramName: string, defaultValue: T): Observable<T> {
+  getLeafConfig<T = unknown>(
+    paramName: RouteDataParam<ConfigParamsNames>,
+    defaultValue: T
+  ): Observable<T> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),

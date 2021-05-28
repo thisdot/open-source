@@ -7,9 +7,9 @@ import { RouteConfigService } from '../route-config.service';
   selector: '[tdRouteTag]',
   providers: [RouteConfigService],
 })
-export class RouteTagDirective implements OnInit, OnDestroy {
+export class RouteTagDirective<CThen, CElse> implements OnInit, OnDestroy {
   private tags$ = new BehaviorSubject<string[]>([]);
-  private elseTemplate$ = new BehaviorSubject<TemplateRef<any> | null>(null);
+  private elseTemplate$ = new BehaviorSubject<TemplateRef<CElse> | null>(null);
   private destroy$ = new Subject();
 
   private display$ = combineLatest([
@@ -37,13 +37,13 @@ export class RouteTagDirective implements OnInit, OnDestroy {
   }
 
   @Input()
-  set tdRouteTagElse(elseTemplate: TemplateRef<any>) {
+  set tdRouteTagElse(elseTemplate: TemplateRef<CElse>) {
     this.elseTemplate$.next(elseTemplate);
   }
 
   constructor(
     private routeTagService: RouteConfigService,
-    private template: TemplateRef<any>,
+    private template: TemplateRef<CThen>,
     private entry: ViewContainerRef
   ) {}
 
