@@ -1,13 +1,24 @@
-<h1 *ngIf="title$ | async as title">{{ title }}</h1>
+<header>
+  <a routerLink="/"><img src="assets/images/header-logo.svg" /></a>
+  <h1>ThisDotLabs Open source</h1>
+</header>
 
-<a routerLink="/first">first</a>
-<a routerLink="/second">second</a>
+<aside>
+  <a routerLink="/first">first</a>
+  <a routerLink="/second">second</a>
+</aside>
 
-<router-outlet></router-outlet>
+<main>
+  <h2 *ngIf="title$ | async as title">{{ title }}</h2>
 
-<ng-container *tdRouteTag="'show'; else noShowTag">
-  <p>This text is only visible, if there is a 'routeTag.SHOW' in the route data</p>
-</ng-container>
-<ng-template #noShowTag>
-  <p>There is no show tag in this route's config</p>
-</ng-template>
+  <router-outlet></router-outlet>
+
+  <ng-container *tdRouteTag="'show'; else noShowTag">
+    <p>This text is only visible, if there is a 'routeTag.SHOW' in the route data</p>
+  </ng-container>
+  <ng-template #noShowTag>
+    <p>There is no show tag in this route's config</p>
+  </ng-template>
+</main>
+
+<footer>Copyright ThisDotLabs 2021</footer>

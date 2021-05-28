@@ -1,11 +1,32 @@
 :host {
-  display: block;
-  font-family: sans-serif;
-  min-width: 300px;
-  max-width: 600px;
-  margin: 50px auto;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 60px auto 60px;
+  grid-template-areas:
+    'header header header header header header header header header header header header'
+    'aside aside asid content content content content content content content content content'
+    'footer footer footer footer footer footer footer footer footer footer footer footer';
 }
 
-a {
-  display: block;
+header {
+  grid-area: header;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 2rem;
+}
+
+aside {
+  grid-area: aside;
+}
+
+main {
+  gird-area: content;
+}
+
+footer {
+  grid-area: footer;
 }
