@@ -11,5 +11,5 @@ import { AppRouteConfigParams, AppRouteTag } from './route-config-params';
 export class AppComponent {
   title$ = this.routeConfigService.getLeafConfig('title', 'Default Title');
 
-  constructor(private routeConfigService: RouteConfigService<AppRouteConfigParams>) {}
+  constructor(private routeConfigService: RouteConfigService<AppRouteTag, AppRouteConfigParams>) {}
 }

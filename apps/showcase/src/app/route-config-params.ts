@@ -1,4 +1,4 @@
-export type AppRouteConfigParams = 'title' | 'routeTags';
+export type AppRouteConfigParams = 'title';
 
 export type AppRouteTag = keyof typeof AppRouteTags;
 
