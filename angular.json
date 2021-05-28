@@ -46,10 +46,15 @@
             "main": "apps/showcase/src/main.ts",
             "polyfills": "apps/showcase/src/polyfills.ts",
             "tsConfig": "apps/showcase/tsconfig.app.json",
-            "aot": true,
             "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
             "styles": ["apps/showcase/src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
