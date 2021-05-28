@@ -13,7 +13,7 @@ export class InRouteTags$Pipe<RouteTag extends string = string> implements PipeT
 
   transform(tags: RouteTag[]): Observable<boolean> {
     return this.routeTags$.pipe(
-      map((routeTags) => !!tags.find((tag: RouteTag) => routeTags.includes(tag as never)))
+      map((routeTags) => !!tags.find((tag: RouteTag) => routeTags.includes(tag)))
     );
   }
 }
