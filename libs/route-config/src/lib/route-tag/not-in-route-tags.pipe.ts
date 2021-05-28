@@ -7,7 +7,7 @@ import { RouteConfigService } from '../route-config.service';
   name: 'inRouteTags$',
 })
 export class InRouteTags$Pipe implements PipeTransform {
-  routeTags$ = this.routeTagService.getLeafConfig('tdRouteTags', []);
+  routeTags$ = this.routeTagService.getLeafConfig('routeTags', []);
 
   constructor(private routeTagService: RouteConfigService) {}
 

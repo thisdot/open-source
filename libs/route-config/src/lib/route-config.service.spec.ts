@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivationEnd, Event, Router } from '@angular/router';
 import { Provider, Type } from '@angular/core';
 import { RouteConfigService, RouteData } from './route-config.service';
-import { EMPTY, Observable, of, Subject } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
 const provideMock = <T>(type: Type<T>, mock: Partial<T>): Provider => ({
@@ -12,21 +12,26 @@ const provideMock = <T>(type: Type<T>, mock: Partial<T>): Provider => ({
 
 type TestRouteTypes = 'tdRouteTags' | 'tdRouteColor' | 'tdRouteProgressState';
 
+type CreateObservable =
+  | typeof TestScheduler.prototype.createHotObservable
+  | typeof TestScheduler.prototype.createColdObservable;
+
+const mockActivationEnd$ = <C extends CreateObservable>(createObservable: C) =>
+  jest.fn().mockReturnValue(createObservable('----e', { e: new ActivationEnd({} as any) }));
+
 describe('RouteConfigService', () => {
-  let service: RouteConfigService;
-  let events: Subject<Event>;
+  let service: RouteConfigService<TestRouteTypes>;
   let testScheduler: TestScheduler;
 
-  let getEvents = jest.fn().mockReturnValue(EMPTY);
+  let getEvents = jest.fn<Observable<Event>, []>().mockReturnValue(EMPTY);
   let pathFromRoot = jest.fn().mockReturnValue([]);
   const firstChild = jest.fn().mockReturnValue(null);
 
   const withRouteData = (dataArr: Array<Partial<RouteData<TestRouteTypes>>>) => {
-    pathFromRoot = jest.fn().mockReturnValue(dataArr.map((data) => ({ data: of(data) } as any)));
+    pathFromRoot = jest.fn().mockReturnValue(dataArr.map((data) => ({ data: of(data) })));
   };
 
   beforeEach(() => {
-    events = new Subject<Event>();
     TestBed.configureTestingModule({
       providers: [
         RouteConfigService,
@@ -59,7 +64,7 @@ describe('RouteConfigService', () => {
           tdRouteTags: routeTags,
         },
       ]);
-      getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
+      getEvents = mockActivationEnd$(cold);
       expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags });
     });
   });
@@ -77,7 +82,7 @@ describe('RouteConfigService', () => {
           tdRouteTags: routeTags2,
         },
       ]);
-      getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
+      getEvents = mockActivationEnd$(cold);
       expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags2 });
     });
   });
@@ -95,7 +100,7 @@ describe('RouteConfigService', () => {
         },
         {},
       ]);
-      getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
+      getEvents = mockActivationEnd$(cold);
       expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags2 });
     });
   });
@@ -114,7 +119,7 @@ describe('RouteConfigService', () => {
           tdRouteProgressState: 0.5,
         },
       ]);
-      getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
+      getEvents = mockActivationEnd$(cold);
       expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: routeTags });
       expectObservable(service.getLeafConfig('tdRouteColor', 'primary')).toBe('t---t', {
         t: 'secondary',
@@ -126,7 +131,7 @@ describe('RouteConfigService', () => {
   it('should return default config if no data is present in ActivatedRoute', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       withRouteData([{}]);
-      getEvents = jest.fn().mockReturnValue(cold('----e', { e: new ActivationEnd({} as any) }));
+      getEvents = mockActivationEnd$(cold);
       expectObservable(service.getLeafConfig('tdRouteTags', [])).toBe('t---t', { t: [] });
       expectObservable(service.getLeafConfig('tdRouteColor', 'primary')).toBe('t---t', {
         t: 'primary',
