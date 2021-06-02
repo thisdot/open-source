@@ -6,12 +6,14 @@ import { RouteConfigService } from '../route-config.service';
 @Pipe({
   name: 'inRouteTags$',
 })
-export class InRouteTags$Pipe implements PipeTransform {
+export class InRouteTags$Pipe<RouteTag extends string = string> implements PipeTransform {
   routeTags$ = this.routeTagService.getLeafConfig('routeTags', []);
 
-  constructor(private routeTagService: RouteConfigService) {}
+  constructor(private routeTagService: RouteConfigService<RouteTag>) {}
 
-  transform(tags: string[]): Observable<boolean> {
-    return this.routeTags$.pipe(map((routeTags) => !!tags.find((tag) => routeTags.includes(tag))));
+  transform(tags: RouteTag[]): Observable<boolean> {
+    return this.routeTags$.pipe(
+      map((routeTags) => !!tags.find((tag: RouteTag) => routeTags.includes(tag)))
+    );
   }
 }

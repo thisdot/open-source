@@ -20,7 +20,7 @@ const mockActivationEnd$ = <C extends CreateObservable>(createObservable: C) =>
   jest.fn().mockReturnValue(createObservable('----e', { e: new ActivationEnd({} as any) }));
 
 describe('RouteConfigService', () => {
-  let service: RouteConfigService<TestRouteTypes>;
+  let service: RouteConfigService<'string', TestRouteTypes>;
   let testScheduler: TestScheduler;
 
   let getEvents = jest.fn<Observable<Event>, []>().mockReturnValue(EMPTY);
