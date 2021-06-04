@@ -6,7 +6,6 @@ import { AppRouteConfigParams, AppRouteTag } from './route-config-params';
   selector: 'this-dot-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [RouteConfigService],
 })
 export class AppComponent {
   title$ = this.routeConfigService.getLeafConfig('title', 'Default Title');
