@@ -1,6 +1,23 @@
 {
   "name": "@this-dot/route-config",
   "version": "0.0.1",
+  "description": "A library containing directives and services for configuring components via Route's routeData property",
+  "author": "This Dot Labs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisdot/open-source.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thisdot/open-source/issues"
+  },
+  "keywords": [
+    "angular",
+    "javascript",
+    "typescript",
+    "directive",
+    "router",
+    "route-config"
+  ],
   "peerDependencies": {
     "@angular/common": "^12.0.2",
     "@angular/core": "^12.0.2"
