@@ -6,27 +6,38 @@
   grid-template-rows: 60px auto 60px;
   grid-template-areas:
     'header header header header header header header header header header header header'
-    'aside aside asid content content content content content content content content content'
+    'aside aside content content content content content content content content content content'
     'footer footer footer footer footer footer footer footer footer footer footer footer';
 }
 
-header {
+mat-toolbar.header {
   grid-area: header;
   display: flex;
   flex-flow: column wrap;
   align-items: flex-start;
   justify-content: center;
   padding: 0 2rem;
+  z-index: 3;
 }
 
 aside {
   grid-area: aside;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-flow: column wrap;
+  background-color: #e2e3e6;
 }
 
 main {
-  gird-area: content;
+  grid-area: content;
+  padding: 2rem;
 }
 
-footer {
+mat-toolbar.footer {
   grid-area: footer;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  font-size: 12px;
 }

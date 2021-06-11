@@ -1,6 +1,7 @@
 {
   "version": 1,
   "cli": {
+    "analytics": "dd09100e-b7fd-414b-9917-44fd79f74f98",
     "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "stackblitz",

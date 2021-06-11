@@ -1,0 +1,96 @@
+@use '~@angular/material' as mat;
+
+@include mat.core();
+
+$this-dot-primary-palette: (
+  50: #e2e3e6,
+  100: #b6bac1,
+  200: #858c98,
+  300: #545e6e,
+  400: #2f3c4f,
+  500: #0a1930,
+  600: #09162b,
+  700: #071224,
+  800: #050e1e,
+  900: #030813,
+  A100: #547aff,
+  A200: #2152ff,
+  A400: #0035ed,
+  A700: #002fd4,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #ffffff,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$this-dot-accent-palette: (
+  50: #feedec,
+  100: #fcd1d0,
+  200: #fab3b1,
+  300: #f79492,
+  400: #f67d7a,
+  500: #f46663,
+  600: #f35e5b,
+  700: #f15351,
+  800: #ef4947,
+  900: #ec3835,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffcdcd,
+  A700: #ffb4b3,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$my-primary: mat.define-palette($this-dot-primary-palette, 400, 300, 200);
+$my-accent: mat.define-palette($this-dot-accent-palette, 900);
+
+// The "warn" palette is optional and defaults to red if not specified.
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$my-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+  )
+);
+
+// Emit theme-dependent styles for common features used across multiple components.
+@include mat.core-theme($my-theme);
+
+// Emit styles for MatButton based on `$my-theme`. Because the configuration
+// passed to `define-light-theme` omits typography, `button-theme` will not
+// emit any typography styles.
+@include mat.button-theme($my-theme);
+@include mat.toolbar-theme($my-theme);
+
+// Include the theme mixins for other components you use here.

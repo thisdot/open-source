@@ -1,11 +1,11 @@
-<header>
+<mat-toolbar class="header mat-elevation-z4" color="primary">
   <a routerLink="/"><img src="assets/images/header-logo.svg" /></a>
   <h1>ThisDotLabs Open source</h1>
-</header>
+</mat-toolbar>
 
 <aside>
-  <a routerLink="/first">first</a>
-  <a routerLink="/second">second</a>
+  <a mat-button color="accent" routerLink="/first">first</a>
+  <a mat-button color="accent" routerLink="/second">second</a>
 </aside>
 
 <main>
@@ -21,4 +21,4 @@
   </ng-template>
 </main>
 
-<footer>Copyright ThisDotLabs 2021</footer>
+<mat-toolbar class="footer">© ThisDotLabs 2021</mat-toolbar>
