@@ -3,10 +3,7 @@ import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { RouteConfigService } from '../route-config.service';
 
-@Directive({
-  selector: '[tdRouteTag]',
-  providers: [RouteConfigService],
-})
+@Directive({ selector: '[tdRouteTag]' })
 export class RouteTagDirective<CThen, CElse, RouteTags extends string = string>
   implements OnInit, OnDestroy {
   private tags$ = new BehaviorSubject<RouteTags[]>([]);
@@ -17,7 +14,6 @@ export class RouteTagDirective<CThen, CElse, RouteTags extends string = string>
     this.tags$,
     this.routeTagService.getLeafConfig('routeTags', []),
   ]).pipe(
-    tap(console.warn),
     map(([tags, routeTags]) => !!tags.find((tag: RouteTags) => routeTags.includes(tag))),
     distinctUntilChanged()
   );
