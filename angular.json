@@ -3,7 +3,7 @@
   "cli": {
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "showcase",
+  "defaultProject": "stackblitz",
   "schematics": {
     "@nrwl/angular": {
       "application": {
@@ -32,6 +32,39 @@
     }
   },
   "projects": {
+    "stackblitz": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "apps/showcase/src",
+      "prefix": "this-dot",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/showcase",
+            "index": "apps/showcase/src/index.html",
+            "main": "apps/showcase/src/main.ts",
+            "polyfills": "apps/showcase/src/polyfills.ts",
+            "tsConfig": "apps/showcase/tsconfig.app.json",
+            "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
+            "styles": ["apps/showcase/src/styles.scss"],
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "stackblitz:build"
+          }
+        }
+      }
+    },
     "showcase": {
       "projectType": "application",
       "root": "apps/showcase",
