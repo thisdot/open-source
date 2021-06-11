@@ -30,17 +30,27 @@ Just import the `RouteConfigModule` module
 import { RouteConfigModule } from '@this-dot/route-config';
 ```
 
-and add it you imports array in the Angular module
+and add it to the imports array in the Angular module
+
+```ts
+@NgModule({
+  /* other module props  */
+  imports: [RouteConfigModule.forRoot() /* other modules */],
+})
+export class AppModule {}
+```
+
+The library's elements use Angular's router `data` object to configure the behavior. See the below examples on how to use it in your application.
+
+To use library's provided directives and/or pipes just add `RouteConfigModule` in your submodule that uses them. E.g.
 
 ```ts
 @NgModule({
   /* other module props  */
   imports: [RouteConfigModule /* other modules */],
 })
-export class YourModule {}
+export class YourSubModule {}
 ```
-
-The library's elements use Angular's router `data` object to configure the behavior. See the below examples on how to use it in your application.
 
 ### Examples
 

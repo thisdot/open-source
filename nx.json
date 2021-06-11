@@ -22,6 +22,9 @@
     }
   },
   "projects": {
+    "stackblitz": {
+      "tags": []
+    },
     "showcase": {
       "tags": []
     },
