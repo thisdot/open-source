@@ -4,7 +4,7 @@ Route Config is an Angular library that provides tools to easily set and access 
 
 It supports:
 
-✅ &nbsp;Displaying components/templates based on the tags defined in the <br/>
+✅ &nbsp;Displaying parts of component's template based on the tags defined in the Router config <br/>
 ✅ &nbsp;Retrieving custom properties defined in currently rendered route <br/>
 ✅ &nbsp;Type safety for custom properties <br/>
 
