@@ -7,9 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteConfigModule } from '@this-dot/route-config';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ThisDotLogoComponent } from './components/this-dot-logo/this-dot-logo.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ThisDotLogoComponent],
   imports: [
     BrowserModule,
     RouteConfigModule.forRoot(),
