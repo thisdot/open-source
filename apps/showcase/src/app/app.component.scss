@@ -2,18 +2,15 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: auto;
   grid-template-rows: 60px auto 60px;
   grid-template-areas:
-    'header header header header header header header header header header header header'
-    'aside aside content content content content content content content content content content'
-    'footer footer footer footer footer footer footer footer footer footer footer footer';
+    'header'
+    'content'
+    'footer';
 
-  @media screen and (max-width: 768px) {
-    grid-template-areas:
-      'header header header header header header header header header header header header'
-      'aside aside aside adide content content content content content content content content'
-      'footer footer footer footer footer footer footer footer footer footer footer footer';
+  @media screen and (max-width: 600px) {
+    grid-template-rows: 56px auto 56px;
   }
 }
 
@@ -26,35 +23,47 @@ mat-toolbar.header {
   padding: 0 2rem;
   z-index: 3;
 
-  h1 {
-    flex: 3 1 auto;
-    align-self: center;
+  .labs-link {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex: 1 1 auto;
+    align-items: center;
+    padding-top: 10px;
   }
 
-  .github-link {
+  .header-github-link,
+  .sidenav-toggle {
+    justify-self: flex-end;
     align-self: flex-end;
   }
 
-  .labs-link,
-  .github-link {
+  .sidenav-toggle,
+  .labs-link {
     cursor: pointer;
   }
 }
 
-aside {
-  grid-area: aside;
-  padding-top: 1.5rem;
-  display: flex;
-  flex-flow: column wrap;
-  background-color: #e2e3e6;
-}
-
-main {
+mat-sidenav-container {
   grid-area: content;
-  padding: 2rem;
+
+  main {
+    padding: 1.5rem;
+  }
+
+  mat-sidenav {
+    background-color: #e2e3e6;
+  }
+
+  mat-sidenav ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+
+    .demo-links {
+      display: flex;
+      flex-flow: column nowrap;
+      flex: 1 1 auto;
+    }
+  }
 }
 
 mat-toolbar.footer {
