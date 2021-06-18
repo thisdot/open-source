@@ -18,6 +18,23 @@ mat-toolbar.header {
   justify-content: center;
   padding: 0 2rem;
   z-index: 3;
+
+  h1 {
+    flex: 3 1 auto;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .github-link {
+    align-self: flex-end;
+  }
+
+  .labs-link,
+  .github-link {
+    cursor: pointer;
+  }
 }
 
 aside {
