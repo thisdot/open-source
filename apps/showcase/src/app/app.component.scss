@@ -8,6 +8,13 @@
     'header header header header header header header header header header header header'
     'aside aside content content content content content content content content content content'
     'footer footer footer footer footer footer footer footer footer footer footer footer';
+
+  @media screen and (max-width: 768px) {
+    grid-template-areas:
+      'header header header header header header header header header header header header'
+      'aside aside aside adide content content content content content content content content'
+      'footer footer footer footer footer footer footer footer footer footer footer footer';
+  }
 }
 
 mat-toolbar.header {

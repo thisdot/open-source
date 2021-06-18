@@ -1,0 +1,13 @@
+<nav>
+  <a mat-button routerLinkActive="mat-accent" routerLink="first">First route</a>
+  <a mat-button routerLinkActive="mat-accent" routerLink="second">Second route</a>
+</nav>
+
+<router-outlet></router-outlet>
+
+<ng-container *tdRouteTag="'show'; else noShowTag">
+  <p>This text is only visible, if there is a 'routeTag.SHOW' in the route data</p>
+</ng-container>
+<ng-template #noShowTag>
+  <p>There is no show tag in this route's config</p>
+</ng-template>

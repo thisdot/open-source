@@ -1,33 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FirstRouteComponent } from './components/first-route/first-route.component';
-import { SecondRouteComponent } from './components/second-route/second-route.component';
-import { AppRouteTags } from './route-config-params';
 
 const routes: Routes = [
   {
-    path: 'first',
-    component: FirstRouteComponent,
-    data: {
-      routeTags: [AppRouteTags.show],
-    },
+    path: 'route-tags',
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./modules/route-tags-showcase/route-tags-showcase.module').then(
+            (m) => m.RouteTagsShowcaseModule
+          ),
+      },
+    ],
   },
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'first',
-  },
-  {
-    path: 'second',
-    component: SecondRouteComponent,
-    data: {
-      title: 'Second Route Title',
-    },
+    redirectTo: 'route-tags',
   },
 ];
 
 @NgModule({
-  declarations: [FirstRouteComponent, SecondRouteComponent],
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })

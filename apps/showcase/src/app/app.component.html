@@ -15,21 +15,12 @@
 </mat-toolbar>
 
 <aside>
-  <a mat-button color="accent" routerLink="/first">first</a>
-  <a mat-button color="accent" routerLink="/second">second</a>
+  <a mat-button color="accent" routerLink="/route-tags/first">@this-dot/route-config</a>
 </aside>
 
 <main>
   <h2 *ngIf="title$ | async as title">{{ title }}</h2>
-
   <router-outlet></router-outlet>
-
-  <ng-container *tdRouteTag="'show'; else noShowTag">
-    <p>This text is only visible, if there is a 'routeTag.SHOW' in the route data</p>
-  </ng-container>
-  <ng-template #noShowTag>
-    <p>There is no show tag in this route's config</p>
-  </ng-template>
 </main>
 
 <mat-toolbar class="footer">© ThisDotLabs 2021</mat-toolbar>
