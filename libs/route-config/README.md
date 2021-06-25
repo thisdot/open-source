@@ -1,5 +1,13 @@
 <h1 align="center">Route Config ⚙️</h1>
 
+Route Config is an Angular library that provides tools to easily set and access the properties defined in [RouterModule](https://angular.io/api/router/RouterModule) configuration. It offers some built in tools that work out of the box but also is easily extensible via `data` property of Angular's [Route](https://angular.io/api/router/Route#data) configuration object.
+
+It supports:
+
+✅ &nbsp;Displaying parts of component's template based on the tags defined in the Router config <br/>
+✅ &nbsp;Retrieving custom properties defined in currently rendered route <br/>
+✅ &nbsp;Type safety for custom properties <br/>
+
 ---
 
 <p align="center">
