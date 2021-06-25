@@ -1,6 +1,7 @@
 {
   "version": 1,
   "cli": {
+    "analytics": "dd09100e-b7fd-414b-9917-44fd79f74f98",
     "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "stackblitz",
@@ -47,7 +48,7 @@
             "polyfills": "apps/showcase/src/polyfills.ts",
             "tsConfig": "apps/showcase/tsconfig.app.json",
             "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
-            "styles": ["apps/showcase/src/styles.scss"],
+            "styles": ["apps/showcase/src/theme.scss", "apps/showcase/src/styles.scss"],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -80,7 +81,7 @@
             "polyfills": "apps/showcase/src/polyfills.ts",
             "tsConfig": "apps/showcase/tsconfig.app.json",
             "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
-            "styles": ["apps/showcase/src/styles.scss"],
+            "styles": ["apps/showcase/src/theme.scss", "apps/showcase/src/styles.scss"],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,

@@ -1,0 +1,21 @@
+<nav>
+  <a mat-button routerLinkActive="mat-accent" routerLink="first">First route</a>
+  <a mat-button routerLinkActive="mat-accent" routerLink="second">Second route</a>
+</nav>
+
+<h2>Documentation:</h2>
+<p>
+  You can find the documentation of the <em>@this-dot/route-config</em> library at:
+  <a target="_blank" href="https://github.com/thisdot/open-source/tree/main/libs/route-config"
+    >https://github.com/thisdot/open-source/tree/main/libs/route-config</a
+  >
+</p>
+
+<router-outlet></router-outlet>
+
+<ng-container *tdRouteTag="'show'; else noShowTag">
+  <p>This text is only visible, if there is a 'routeTag.SHOW' in the route data</p>
+</ng-container>
+<ng-template #noShowTag>
+  <p>There is no show tag in this route's config</p>
+</ng-template>

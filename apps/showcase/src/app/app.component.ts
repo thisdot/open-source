@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { RouteConfigService } from '@this-dot/route-config';
+import { pluck, tap } from 'rxjs/operators';
 import { AppRouteConfigParams, AppRouteTag } from './route-config-params';
 
 @Component({
@@ -8,7 +11,19 @@ import { AppRouteConfigParams, AppRouteTag } from './route-config-params';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title$ = this.routeConfigService.getLeafConfig('title', 'Default Title');
+  readonly title$ = this.routeConfigService.getLeafConfig('title', 'Default Title');
+  readonly isHamburgerMenuDisplayed$ = this.breakpointObserver
+    .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
+    .pipe(pluck('matches'));
+  @ViewChild('sidenav')
+  sidenav: MatSidenav;
 
-  constructor(private routeConfigService: RouteConfigService<AppRouteTag, AppRouteConfigParams>) {}
+  constructor(
+    private routeConfigService: RouteConfigService<AppRouteTag, AppRouteConfigParams>,
+    private breakpointObserver: BreakpointObserver
+  ) {}
+
+  toggleSidenav(): void {
+    this.sidenav.toggle();
+  }
 }
