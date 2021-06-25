@@ -55,7 +55,7 @@ export class YourSubModule {}
 
 ### Examples
 
-#### `*tsRouteTag` directive
+#### `*tdRouteTag` directive
 
 To configure this directive lets create the following sample router configuration:
 
