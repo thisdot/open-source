@@ -6,7 +6,6 @@ it still applies to you. Ignorance is not an exemption.
 Contents
 
 - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
-  - [After your pull request is merged](#after-your-pull-request-is-merged)
 - [Coding Guidelines](#coding-guidelines)
 - [Commit message guidelines](#commit-message-guidelines)
 
@@ -57,33 +56,6 @@ Before you submit your Pull Request (PR) consider the following guidelines:
   - When updating your feature branch with the requested changes, please do not overwrite the commit history, but rather contain the changes in new commits. This is for the sake of a clearer and easier review process.
 
 That's it! Thank you for your contribution!
-
-### After your pull request is merged
-
-After your pull request is merged, you can safely delete your branch and pull the changes
-from the main (upstream) repository:
-
-- Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
-
-  ```shell
-  git push origin --delete my-fix-branch
-  ```
-
-- Check out the main branch:
-
-  ```shell
-  git checkout main -f
-
-- Delete the local branch:
-
-  ```shell
-  git branch -D my-fix-branch
-  ```
-
-- Update your main with the latest upstream version:
-
-  ```shell
-  git pull --ff upstream main
 
 ## Coding Guidelines
 
