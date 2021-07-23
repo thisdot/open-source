@@ -43,7 +43,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <main>
-      <h2 *ngIf="title$ | async as title">{{ title }}</h2>
+      <h1 *ngIf="title$ | async as title">{{ title }}</h1>
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
