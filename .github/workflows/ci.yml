@@ -83,3 +83,11 @@ jobs:
 
       - name: E2E tests
         run: npm run e2e
+
+      - name: Archive test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-test-results
+          path: dist/cypress
+          retention-days: 21

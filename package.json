@@ -19,7 +19,7 @@
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",
     "lint:fix": "nx workspace-lint && ng lint --fix",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e --headless=true",
     "e2e:debug": "ng e2e --watch",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
