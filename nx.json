@@ -22,18 +22,18 @@
     }
   },
   "projects": {
-    "stackblitz": {
-      "tags": []
+    "route-config": {
+      "tags": ["framework:angular"]
     },
     "showcase": {
-      "tags": []
+      "tags": ["framework:angular"]
     },
     "showcase-e2e": {
-      "tags": [],
+      "tags": ["framework:angular", "type:e2e"],
       "implicitDependencies": ["showcase"]
     },
-    "route-config": {
-      "tags": []
+    "stackblitz": {
+      "tags": ["framework:angular"]
     }
   }
 }

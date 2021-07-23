@@ -4,10 +4,9 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": "apps/showcase-e2e/tsconfig.*?.json"
-      },
-      "rules": {}
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [0]
+      }
     },
     {
       "files": ["src/plugins/index.js"],
