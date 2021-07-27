@@ -8,10 +8,8 @@
         "plugin:@nrwl/nx/angular",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
-      "parserOptions": {
-        "project": ["apps/showcase/tsconfig.*?.json"]
-      },
       "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [0],
         "@angular-eslint/directive-selector": [
           "error",
           {

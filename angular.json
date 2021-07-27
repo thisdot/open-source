@@ -33,35 +33,39 @@
     }
   },
   "projects": {
-    "stackblitz": {
-      "projectType": "application",
-      "root": "",
-      "sourceRoot": "apps/showcase/src",
-      "prefix": "this-dot",
+    "route-config": {
+      "projectType": "library",
+      "root": "libs/route-config",
+      "sourceRoot": "libs/route-config/src",
+      "prefix": "td",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@nrwl/angular:package",
           "options": {
-            "outputPath": "dist/apps/showcase",
-            "index": "apps/showcase/src/index.html",
-            "main": "apps/showcase/src/main.ts",
-            "polyfills": "apps/showcase/src/polyfills.ts",
-            "tsConfig": "apps/showcase/tsconfig.app.json",
-            "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
-            "styles": ["apps/showcase/src/theme.scss", "apps/showcase/src/styles.scss"],
-            "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "project": "libs/route-config/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/route-config/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/route-config/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/route-config/src/**/*.ts", "libs/route-config/src/**/*.html"]
           }
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/route-config"],
           "options": {
-            "browserTarget": "stackblitz:build"
+            "jestConfig": "libs/route-config/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
@@ -179,39 +183,35 @@
         }
       }
     },
-    "route-config": {
-      "projectType": "library",
-      "root": "libs/route-config",
-      "sourceRoot": "libs/route-config/src",
-      "prefix": "td",
+    "stackblitz": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "apps/showcase/src",
+      "prefix": "this-dot",
       "architect": {
         "build": {
-          "builder": "@nrwl/angular:package",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "project": "libs/route-config/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "libs/route-config/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "libs/route-config/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/route-config/src/**/*.ts", "libs/route-config/src/**/*.html"]
+            "outputPath": "dist/apps/showcase",
+            "index": "apps/showcase/src/index.html",
+            "main": "apps/showcase/src/main.ts",
+            "polyfills": "apps/showcase/src/polyfills.ts",
+            "tsConfig": "apps/showcase/tsconfig.app.json",
+            "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
+            "styles": ["apps/showcase/src/theme.scss", "apps/showcase/src/styles.scss"],
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           }
         },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/route-config"],
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "jestConfig": "libs/route-config/jest.config.js",
-            "passWithNoTests": true
+            "browserTarget": "stackblitz:build"
           }
         }
       }

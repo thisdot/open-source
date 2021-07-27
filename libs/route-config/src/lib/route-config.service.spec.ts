@@ -1,9 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, ActivationEnd, Event, Router } from '@angular/router';
 import { Provider, Type } from '@angular/core';
-import { RouteConfigService, RouteData } from './route-config.service';
+import { TestBed } from '@angular/core/testing';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  ActivationEnd,
+  Event,
+  Router,
+} from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
+import { RouteConfigService, RouteData } from './route-config.service';
 
 const provideMock = <T>(type: Type<T>, mock: Partial<T>): Provider => ({
   provide: type,
@@ -17,7 +23,11 @@ type CreateObservable =
   | typeof TestScheduler.prototype.createColdObservable;
 
 const mockActivationEnd$ = <C extends CreateObservable>(createObservable: C) =>
-  jest.fn().mockReturnValue(createObservable('----e', { e: new ActivationEnd({} as any) }));
+  jest
+    .fn()
+    .mockReturnValue(
+      createObservable('----e', { e: new ActivationEnd({} as ActivatedRouteSnapshot) })
+    );
 
 describe('RouteConfigService', () => {
   let service: RouteConfigService<'string', TestRouteTypes>;

@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { RouteConfigService } from '@this-dot/route-config';
-import { pluck, tap } from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { AppRouteConfigParams, AppRouteTag } from './route-config-params';
 
 @Component({
