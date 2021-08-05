@@ -15,7 +15,7 @@ Contents
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 - Search [GitHub](https://github.com/thisdot/open-source/pulls) for an open or closed PR
-  that relates to your submission. Help us reduce duplication of effort.
+  that relates to your submission. Help us reduce redundancies.
 - Make your changes in your forked repository as a new git branch:
 
   ```shell
