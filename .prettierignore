@@ -2,3 +2,6 @@
 
 /dist
 /coverage
+
+angular.json
+nx.json

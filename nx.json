@@ -14,7 +14,12 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
         "accessToken": "M2M0MGQzYzktZjdlYy00NjU5LWE4MzQtZWFlNDgwM2JlNTFhfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -23,17 +28,28 @@
   },
   "projects": {
     "route-config": {
-      "tags": ["framework:angular"]
+      "tags": [
+        "framework:angular"
+      ]
     },
     "showcase": {
-      "tags": ["framework:angular"]
+      "tags": [
+        "framework:angular"
+      ]
     },
     "showcase-e2e": {
-      "tags": ["framework:angular", "type:e2e"],
-      "implicitDependencies": ["showcase"]
+      "tags": [
+        "framework:angular",
+        "type:e2e"
+      ],
+      "implicitDependencies": [
+        "showcase"
+      ]
     },
     "stackblitz": {
-      "tags": ["framework:angular"]
+      "tags": [
+        "framework:angular"
+      ]
     }
   }
 }
