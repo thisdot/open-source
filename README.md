@@ -1,4 +1,4 @@
-# This Dot
+![This Dot Open Source](TDOS_logo.png)
 
 ## Packages
 
