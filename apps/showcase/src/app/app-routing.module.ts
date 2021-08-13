@@ -15,6 +15,18 @@ const routes: Routes = [
     ],
   },
   {
+    path: 'secure-image',
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./modules/secure-image-pipe-showcase/secure-image-pipe-showcase.module').then(
+            (m) => m.SecureImagePipeShowcaseModule
+          ),
+      },
+    ],
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'route-tags',

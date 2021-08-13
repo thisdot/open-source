@@ -1,0 +1,15 @@
+<h1>Secure image pipe</h1>
+
+<h2>Success scenario</h2>
+<p>The following image displays the This Dot Open-Source logo</p>
+
+<img width="200px" [src]="'assets/images/TDOS_logo.png' | secureImage" />
+
+<br />
+<br />
+<br />
+<h2>Error scenario</h2>
+
+<p>The following image displays a black square, since the error request errored out</p>
+
+<img width="200px" [src]="'assets/images/TDOS_logo__.png' | secureImage" />

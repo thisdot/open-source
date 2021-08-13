@@ -103,6 +103,47 @@
         }
       }
     },
+    "secure-image-pipe": {
+      "projectType": "library",
+      "root": "libs/secure-image-pipe",
+      "sourceRoot": "libs/secure-image-pipe/src",
+      "prefix": "this-dot",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/secure-image-pipe"],
+          "options": {
+            "project": "libs/secure-image-pipe/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/secure-image-pipe/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/secure-image-pipe/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/secure-image-pipe"],
+          "options": {
+            "jestConfig": "libs/secure-image-pipe/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/secure-image-pipe/src/**/*.ts",
+              "libs/secure-image-pipe/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "showcase": {
       "projectType": "application",
       "root": "apps/showcase",

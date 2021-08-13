@@ -28,6 +28,9 @@
     "route-config": {
       "tags": ["framework:angular"]
     },
+    "secure-image-pipe": {
+      "tags": []
+    },
     "showcase": {
       "tags": ["framework:angular"]
     },
