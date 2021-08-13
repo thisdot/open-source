@@ -19,6 +19,18 @@ export type RouteData<
 
 export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<ConfigParamsNames>;
 
+const gatherRoutes = (activatedRoute: ActivatedRoute): ActivatedRoute[] => {
+  const routes: ActivatedRoute[] = activatedRoute.pathFromRoot;
+
+  let route = activatedRoute.firstChild;
+  while (route) {
+    routes.push(route);
+    route = route.firstChild;
+  }
+
+  return routes;
+};
+
 @Injectable()
 export class RouteConfigService<
   RouteTags extends string = string,
@@ -26,33 +38,28 @@ export class RouteConfigService<
 > {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
+  getWholeLeafConfig<C = unknown>(defaultValue: C): Observable<C> {
+    return this.router.events.pipe(
+      filter((event) => event instanceof ActivationEnd),
+      map(() => this.activatedRoute),
+      startWith(this.activatedRoute),
+      map(gatherRoutes),
+      switchMap((routes) =>
+        combineLatest(routes.map(({ data }) => data)).pipe(
+          map((dataArr) => Object.assign({}, defaultValue, ...dataArr))
+        )
+      )
+    );
+  }
+
   getLeafConfig(paramName: 'routeTags', defaultValue: RouteTags[]): Observable<RouteTags[]>;
   getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue: T): Observable<T>;
   getLeafConfig<T = unknown>(
     paramName: RouteDataParam<ConfigParamsNames>,
     defaultValue: T
   ): Observable<T> {
-    return this.router.events.pipe(
-      filter((event) => event instanceof ActivationEnd),
-      map(() => this.activatedRoute),
-      startWith(this.activatedRoute),
-      switchMap((activatedRoute: ActivatedRoute) => {
-        const routes: ActivatedRoute[] = activatedRoute.pathFromRoot;
-
-        let route = activatedRoute.firstChild;
-        while (route) {
-          routes.push(route);
-          route = route.firstChild;
-        }
-
-        return combineLatest(routes.map(({ data }) => data)).pipe(
-          map((dataArr) => {
-            const reversedArr = dataArr.reverse();
-            const index = reversedArr.findIndex((data) => (data && data[paramName]) !== undefined);
-            return (reversedArr[index] && reversedArr[index][paramName]) || defaultValue;
-          })
-        );
-      })
-    );
+    return this.getWholeLeafConfig({
+      [paramName]: defaultValue,
+    }).pipe(map((data) => data[paramName]));
   }
 }

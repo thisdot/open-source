@@ -1,52 +1,57 @@
-<mat-toolbar class="header mat-elevation-z4" color="primary">
-  <a class="labs-link" title="This Dot Labs" href="https://labs.thisdot.co/" target="_blank"
-    ><this-dot-this-dot-logo></this-dot-this-dot-logo
-    ><span class="cdk-visually-hidden">This Dot Labs</span></a
-  >
-  <ng-container *ngIf="isHamburgerMenuDisplayed$ | async; else viewGithub">
-    <mat-icon class="sidenav-toggle" (click)="toggleSidenav()" aria-label="Open menu"
-      >menu</mat-icon
+<ng-container
+  *tdRouteData="let data; defaultValue: { title: 'DefaultTitle', routeTags: ['defaultTag'] }"
+>
+  <mat-toolbar class="header mat-elevation-z4" color="primary">
+    <a class="labs-link" title="This Dot Labs" href="https://labs.thisdot.co/" target="_blank">
+      <this-dot-this-dot-logo></this-dot-this-dot-logo>
+      <span class="cdk-visually-hidden">This Dot Labs</span></a
     >
-  </ng-container>
-  <ng-template #viewGithub>
-    <a
-      mat-button
-      color="accent"
-      class="header-github-link"
-      title="View the repository"
-      href="https://github.com/thisdot/open-source"
-      target="_blank"
-      >View on GitHub</a
-    >
-  </ng-template>
-</mat-toolbar>
+    <ng-container *ngIf="isHamburgerMenuDisplayed$ | async; else viewGithub">
+      <mat-icon class="sidenav-toggle" (click)="toggleSidenav()" aria-label="Open menu"
+        >menu
+      </mat-icon>
+    </ng-container>
+    <ng-template #viewGithub>
+      <a
+        mat-button
+        color="accent"
+        class="header-github-link"
+        title="View the repository"
+        href="https://github.com/thisdot/open-source"
+        target="_blank"
+        >View on GitHub</a
+      >
+    </ng-template>
+  </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav
-    #sidenav
-    [mode]="(isHamburgerMenuDisplayed$ | async) === false ? 'side' : 'push'"
-    [opened]="(isHamburgerMenuDisplayed$ | async) === false"
-  >
-    <div class="demo-links">
-      <a mat-button color="accent" routerLink="/route-tags/first">@this-dot/route-config</a>
-    </div>
-    <a
-      *ngIf="isHamburgerMenuDisplayed$ | async"
-      mat-button
-      color="primary"
-      class="github-link"
-      title="View the repository"
-      href="https://github.com/thisdot/open-source"
-      target="_blank"
-      >View on GitHub</a
+  <mat-sidenav-container>
+    <mat-sidenav
+      #sidenav
+      [mode]="(isHamburgerMenuDisplayed$ | async) === false ? 'side' : 'push'"
+      [opened]="(isHamburgerMenuDisplayed$ | async) === false"
     >
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <main>
-      <h1 *ngIf="title$ | async as title">{{ title }}</h1>
-      <router-outlet></router-outlet>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+      <div class="demo-links">
+        <a mat-button color="accent" routerLink="/route-tags/first">@this-dot/route-config</a>
+      </div>
+      <a
+        *ngIf="isHamburgerMenuDisplayed$ | async"
+        mat-button
+        color="primary"
+        class="github-link"
+        title="View the repository"
+        href="https://github.com/thisdot/open-source"
+        target="_blank"
+        >View on GitHub</a
+      >
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main>
+        <h1 *ngIf="title$ | async as title">{{ title }}</h1>
+        <p>Route data: {{ data | json }}</p>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 
-<mat-toolbar class="footer">© This Dot Labs 2021</mat-toolbar>
+  <mat-toolbar class="footer">© This Dot Labs 2021</mat-toolbar>
+</ng-container>
