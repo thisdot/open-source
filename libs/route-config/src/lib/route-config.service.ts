@@ -38,7 +38,7 @@ export class RouteConfigService<
 > {
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  getWholeLeafConfig<C = unknown>(defaultValue: C): Observable<C> {
+  getWholeLeafConfig<C = unknown>(defaultValue: Partial<C>): Observable<Partial<C>> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),
@@ -60,6 +60,6 @@ export class RouteConfigService<
   ): Observable<T> {
     return this.getWholeLeafConfig({
       [paramName]: defaultValue,
-    }).pipe(map((data) => data[paramName]));
+    }).pipe(map((data) => data[paramName] || defaultValue));
   }
 }

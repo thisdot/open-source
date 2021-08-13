@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@this-dot/route-config": ["libs/route-config/src/index.ts"]
-    }
+    },
+    "strict": true
   },
   "exclude": ["node_modules", "tmp"]
 }

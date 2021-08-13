@@ -6,7 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouteConfigModule } from '@this-dot/route-config';
+import { ROUTE_DATA_DEFAULT_VALUE, RouteConfigModule } from '@this-dot/route-config';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GithubLogoComponent } from './components/logos/github-logo.component';
@@ -25,7 +25,15 @@ import { ThisDotLogoComponent } from './components/logos/this-dot-logo.component
     MatSidenavModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ROUTE_DATA_DEFAULT_VALUE,
+      useValue: {
+        title: 'Injected Default Title',
+        someDefaultParam: 'test',
+      },
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
