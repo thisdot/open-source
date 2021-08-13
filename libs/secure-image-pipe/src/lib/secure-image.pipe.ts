@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, of, Subscription } from 'rxjs';
-import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 @Pipe({
   name: 'secureImage',
@@ -12,9 +12,7 @@ export class SecureImagePipe implements PipeTransform, OnDestroy {
   private subscription!: Subscription;
   private loadingImagePath!: string;
   private errorImagePath!: string;
-  private imagePath!: string;
   private latestValue!: string | SafeUrl;
-
   private transformValue = new BehaviorSubject<string>('');
 
   constructor(
@@ -27,13 +25,10 @@ export class SecureImagePipe implements PipeTransform, OnDestroy {
 
   transform(
     imagePath: string,
-    loadingImagePath: string = this.defaultLoadingImagePath,
-    errorImagePath: string = this.defaultErrorImagePath
+    loadingImagePath?: string,
+    errorImagePath?: string
   ): string | SafeUrl {
     this.setLoadingAndErrorImagePaths(loadingImagePath, errorImagePath);
-    if (!this.imagePath) {
-      this.imagePath = imagePath;
-    }
     if (!imagePath) {
       return this.errorImagePath;
     }
@@ -43,7 +38,7 @@ export class SecureImagePipe implements PipeTransform, OnDestroy {
     if (this.transformValue.getValue() !== imagePath) {
       this.transformValue.next(imagePath);
     }
-    return this.latestValue;
+    return this.latestValue || this.loadingImagePath;
   }
 
   ngOnDestroy(): void {
@@ -60,7 +55,6 @@ export class SecureImagePipe implements PipeTransform, OnDestroy {
             map((response: HttpResponse<Blob>) => URL.createObjectURL(response.body)),
             map((unsafeBlobUrl: string) => this.domSanitizer.bypassSecurityTrustUrl(unsafeBlobUrl)),
             filter((blobUrl) => blobUrl !== this.latestValue),
-            startWith(this.loadingImagePath),
             catchError(() => of(this.errorImagePath))
           )
         )
@@ -71,16 +65,14 @@ export class SecureImagePipe implements PipeTransform, OnDestroy {
       });
   }
 
-  private setLoadingAndErrorImagePaths(loadingImagePath?: string, errorImagePath?: string): void {
+  private setLoadingAndErrorImagePaths(
+    loadingImagePath: string = this.defaultLoadingImagePath,
+    errorImagePath: string = this.defaultErrorImagePath
+  ): void {
     if (this.loadingImagePath && this.errorImagePath) {
       return;
     }
-    if (loadingImagePath) {
-      this.loadingImagePath = loadingImagePath;
-    }
-    if (errorImagePath) {
-      this.errorImagePath = errorImagePath;
-    }
-    console.warn(this.errorImagePath);
+    this.loadingImagePath = loadingImagePath;
+    this.errorImagePath = errorImagePath;
   }
 }

@@ -23,7 +23,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     RouteConfigModule.forRoot(),
     SecureImagePipeModule.forRoot({
       loadingImagePath: 'assets/images/loading.png',
-      errorImagePath: 'assets/images/black_square.png',
+      errorImagePath: 'assets/images/error.png',
     }),
     AppRoutingModule,
     BrowserAnimationsModule,
