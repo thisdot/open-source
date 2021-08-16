@@ -109,6 +109,39 @@ Now we can use it in the component's template
 </ng-template>
 ```
 
+#### `*tdRouteData` directive
+
+This directive allows for access to the whole `data` property defined in the current [Route](https://angular.io/api/router/Route#data) from a Component's template.
+
+We can use it as following:
+
+```angular2html
+<h1 *tdRouteData="let data">
+  Current title is: {{ data.title }}
+</h1>
+```
+
+It is also possible to pass a default value so that if a property is not defined in the Route we will still receive some value:
+
+```angular2html
+<h1 *tdRouteData="let data; defaultValue: { title: 'DefaultTitle', routeTags: ['defaultTag'] }">
+  Current title is: {{ data.title }}
+</h1>
+```
+
+If you want to access multiple properties in one component's template it is **recommended** to wrap the whole template with only one `*tdRouteData` directive. This approach follows DRY principle and is efficient as it only creates one subscription per template.
+
+```angular2html
+<ng-container *tdRouteData="let data; defaultValue: { title: 'DefaultTitle', routeTags: ['defaultTag'] }">
+  <h1>
+    Current title is: {{ data.title }}
+  </h1>
+  <p>
+    Current route contains the following tags: {{ data.routeTags | json }}
+  </p>
+</ng-container>
+```
+
 #### RouteConfigService
 
 In every component you can inject `RouteConfigService` to get the current route configuration properties.
@@ -131,6 +164,18 @@ Now you can treat it as any other Observable and use e.g. `async` pipe to displa
 
 ```angular2html
 <h1>{{ tags$ | async }}</h1>
+```
+
+It is also possible to retrieve the whole `data` object by using `getWholeLeafConfig`:
+
+```ts
+export class AppComponent {
+  data$ = this.routeConfigService.getWholeLeafConfig();
+  dataWithDefaultValue$ = this.routeConfigService.getWholeLeafConfig({
+    routeTags: ['defaultTag'],
+    title: 'Default Title',
+  });
+}
 ```
 
 And if you want to use your custom data properties you can create your custom types:
@@ -182,3 +227,26 @@ In this case your example router config can look like this:
 })
 export class AppModule {}
 ```
+
+#### Providing default value globally
+
+Both `*tdRouteData` and `RouteConfigService` allow for providing a default value in case route data doesn't provide a certain property. It is also possible to provide a default value globally by providing `ROUTE_DATA_DEFAULT_VALUE` injection token when configuring the root module:
+
+```ts
+@NgModule({
+  /* other module props  */
+  imports: [RouteConfigModule.forRoot() /* other modules */],
+  provide: [
+    {
+      provide: ROUTE_DATA_DEFAULT_VALUE,
+      useValue: {
+        title: 'Injected Default Title',
+        someDefaultParam: 'Some other default param',
+      },
+    },
+  ],
+})
+export class AppModule {}
+```
+
+This way we don't need to provide default value each time we use `*tdRouteData` or `RouteConfigService`. However, if a different default value is necessary it still can be provided - and it will overwrite the value injected with a token.
