@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { ROUTE_DATA_DEFAULT_VALUE } from './route-data-default-value-token';
 
 export type RouteConfigParams<RouteTags extends string = string> = {
   routeTags: RouteTags | RouteTags[];
@@ -36,9 +37,17 @@ export class RouteConfigService<
   RouteTags extends string = string,
   ConfigParamsNames extends string = never
 > {
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    @Optional()
+    @Inject(ROUTE_DATA_DEFAULT_VALUE)
+    private _injectedDefaultValue?: Partial<RouteData<ConfigParamsNames, RouteTags>>
+  ) {}
 
-  getWholeLeafConfig<C = unknown>(defaultValue: Partial<C> = {}): Observable<Partial<C>> {
+  getWholeLeafConfig<
+    C extends RouteData<ConfigParamsNames, RouteTags> = RouteData<ConfigParamsNames, RouteTags>
+  >(defaultValue: Partial<C>): Observable<Partial<C>> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),
@@ -60,6 +69,6 @@ export class RouteConfigService<
   ): Observable<T> {
     return this.getWholeLeafConfig({
       [paramName]: defaultValue,
-    }).pipe(map((data) => data[paramName] || defaultValue));
+    } as any).pipe(map((data: { [key: string]: any }) => data[paramName] || defaultValue));
   }
 }

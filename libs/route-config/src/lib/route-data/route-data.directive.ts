@@ -12,7 +12,7 @@ import {
 import { distinctUntilChanged, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { RouteConfigService, RouteData } from '../route-config.service';
-import { ROUTE_DATA_DEFAULT_VALUE } from './route-data-default-value-token';
+import { ROUTE_DATA_DEFAULT_VALUE } from '../route-data-default-value-token';
 
 export interface RouteDataDirectiveContext<C> {
   $implicit: C;
@@ -29,7 +29,7 @@ export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestro
 
   private data$ = this.paramDefaultValues$.pipe(
     switchMap((paramDefaultValue) =>
-      this.routeConfigService.getWholeLeafConfig<C>({
+      this.routeConfigService.getWholeLeafConfig({
         ...this.injectedDefaultValue,
         ...paramDefaultValue,
       })

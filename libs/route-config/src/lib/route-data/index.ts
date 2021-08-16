@@ -1,2 +1,2 @@
-export * from './route-data-default-value-token';
 export * from './route-data.module';
+export * from './route-data.directive';
