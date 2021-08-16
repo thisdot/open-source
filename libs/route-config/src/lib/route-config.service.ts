@@ -37,6 +37,10 @@ export class RouteConfigService<
   RouteTags extends string = string,
   ConfigParamsNames extends string = never
 > {
+  private get injectedDefaultValue(): Partial<RouteData<ConfigParamsNames, RouteTags>> {
+    return this._injectedDefaultValue || {};
+  }
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -47,7 +51,7 @@ export class RouteConfigService<
 
   getWholeLeafConfig<
     C extends RouteData<ConfigParamsNames, RouteTags> = RouteData<ConfigParamsNames, RouteTags>
-  >(defaultValue: Partial<C>): Observable<Partial<C>> {
+  >(defaultValue: Partial<C> = {}): Observable<Partial<C>> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),
@@ -55,20 +59,24 @@ export class RouteConfigService<
       map(gatherRoutes),
       switchMap((routes) =>
         combineLatest(routes.map(({ data }) => data)).pipe(
-          map((dataArr) => Object.assign({}, defaultValue, ...dataArr))
+          map((dataArr) => Object.assign({}, this.injectedDefaultValue, defaultValue, ...dataArr))
         )
       )
     );
   }
 
-  getLeafConfig(paramName: 'routeTags', defaultValue: RouteTags[]): Observable<RouteTags[]>;
-  getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue: T): Observable<T>;
+  getLeafConfig(paramName: 'routeTags', defaultValue?: RouteTags[]): Observable<RouteTags[]>;
+  getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue?: T): Observable<T>;
   getLeafConfig<T = unknown>(
     paramName: RouteDataParam<ConfigParamsNames>,
-    defaultValue: T
+    defaultValue?: T
   ): Observable<T> {
-    return this.getWholeLeafConfig({
-      [paramName]: defaultValue,
-    } as any).pipe(map((data: { [key: string]: any }) => data[paramName] || defaultValue));
+    return this.getWholeLeafConfig(
+      defaultValue
+        ? ({
+            [paramName]: defaultValue,
+          } as any)
+        : {}
+    ).pipe(map((data: { [key: string]: any }) => data[paramName] || defaultValue));
   }
 }

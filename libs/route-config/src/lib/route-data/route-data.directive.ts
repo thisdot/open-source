@@ -1,18 +1,15 @@
 import {
   Directive,
   EmbeddedViewRef,
-  Inject,
   Input,
   OnDestroy,
   OnInit,
-  Optional,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { distinctUntilChanged, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { RouteConfigService, RouteData } from '../route-config.service';
-import { ROUTE_DATA_DEFAULT_VALUE } from '../route-data-default-value-token';
 
 export interface RouteDataDirectiveContext<C> {
   $implicit: C;
@@ -24,16 +21,12 @@ export interface RouteDataDirectiveContext<C> {
 export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
-  private paramDefaultValues$ = new BehaviorSubject<Partial<C> | null>(null);
+  private defaultValue$ = new BehaviorSubject<Partial<C> | null>(null);
   private view!: EmbeddedViewRef<RouteDataDirectiveContext<Partial<C>>>;
 
-  private data$ = this.paramDefaultValues$.pipe(
-    switchMap((paramDefaultValue) =>
-      this.routeConfigService.getWholeLeafConfig({
-        ...this.injectedDefaultValue,
-        ...paramDefaultValue,
-      })
-    ),
+  private data$ = this.defaultValue$.pipe(
+    map((defaultValue) => defaultValue || {}),
+    switchMap((defaultValue) => this.routeConfigService.getWholeLeafConfig<C>(defaultValue)),
     distinctUntilChanged()
   );
 
@@ -46,25 +39,20 @@ export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestro
     })
   );
 
-  private get injectedDefaultValue(): Partial<C> {
-    return this._injectedDefaultValue || {};
-  }
-
   @Input()
   set tdRouteDataDefaultValue(defaultValue: C) {
-    this.paramDefaultValues$.next(defaultValue);
+    this.defaultValue$.next(defaultValue);
   }
 
   constructor(
     private routeConfigService: RouteConfigService,
     private template: TemplateRef<RouteDataDirectiveContext<C>>,
-    private entry: ViewContainerRef,
-    @Optional() @Inject(ROUTE_DATA_DEFAULT_VALUE) private _injectedDefaultValue?: C
+    private entry: ViewContainerRef
   ) {}
 
   ngOnInit(): void {
     this.view = this.entry.createEmbeddedView(this.template, {
-      $implicit: { ...this.injectedDefaultValue, ...this.paramDefaultValues$.value },
+      $implicit: this.defaultValue$.value || {},
     });
 
     this.createView$.pipe(takeUntil(this.destroy$)).subscribe();
