@@ -42,7 +42,7 @@ export class SecureImagePipe implements PipeTransform, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   private setUpSubscription(): void {
