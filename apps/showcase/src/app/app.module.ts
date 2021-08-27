@@ -8,7 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteConfigModule } from '@this-dot/route-config';
-import { SecureImagePipeModule } from '@this-dot/secure-image-pipe';
+import { UseHttpImageSourcePipeModule } from '@this-dot/ng-utils';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GithubLogoComponent } from './components/logos/github-logo.component';
@@ -21,7 +21,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     BrowserModule,
     HttpClientModule,
     RouteConfigModule.forRoot(),
-    SecureImagePipeModule.forRoot({
+    UseHttpImageSourcePipeModule.forRoot({
       loadingImagePath: 'assets/images/loading.png',
       errorImagePath: 'assets/images/error.png',
     }),

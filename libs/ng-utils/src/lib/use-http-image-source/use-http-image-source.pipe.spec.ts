@@ -1,15 +1,15 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ChangeDetectorRef } from '@angular/core';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { SecureImagePipeModule } from './secure-image-pipe.module';
-import { SecureImagePipe } from './secure-image.pipe';
+import { UseHttpImageSourcePipeModule } from './use-http-image-source-pipe.module';
+import { UseHttpImageSourcePipe } from './use-http-image-source.pipe';
 
 const MOCK_CDR = {
   markForCheck: jest.fn(),
 };
 
-describe('SecureImagePipe', () => {
-  let pipe: SecureImagePipe;
+describe('UseHttpImageSourcePipe', () => {
+  let pipe: UseHttpImageSourcePipe;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -17,13 +17,13 @@ describe('SecureImagePipe', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        SecureImagePipeModule.forRoot({
+        UseHttpImageSourcePipeModule.forRoot({
           loadingImagePath: 'test/loading.png',
           errorImagePath: 'test/error.png',
         }),
       ],
       providers: [
-        SecureImagePipe,
+        UseHttpImageSourcePipe,
         {
           provide: ChangeDetectorRef,
           useValue: MOCK_CDR,
@@ -31,7 +31,7 @@ describe('SecureImagePipe', () => {
       ],
     }).compileComponents();
 
-    pipe = TestBed.inject(SecureImagePipe);
+    pipe = TestBed.inject(UseHttpImageSourcePipe);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

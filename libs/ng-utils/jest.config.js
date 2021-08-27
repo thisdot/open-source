@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'secure-image-pipe',
+  displayName: 'ng-utils',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +8,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/secure-image-pipe',
+  coverageDirectory: '../../coverage/libs/ng-utils',
   transform: {
     '^.+\\.(ts|js|html)$': 'jest-preset-angular',
   },

@@ -1,7 +1,7 @@
-# secure-image-pipe
+# ng-utils
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 
-Run `nx test secure-image-pipe` to execute the unit tests.
+Run `nx test ng-utils` to execute the unit tests.

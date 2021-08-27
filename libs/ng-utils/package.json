@@ -1,5 +1,5 @@
 {
-  "name": "@this-dot/secure-image-pipe",
+  "name": "@this-dot/ng-utils",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^12.1.0-",

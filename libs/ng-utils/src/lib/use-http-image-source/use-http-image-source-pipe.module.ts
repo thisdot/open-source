@@ -1,18 +1,18 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SecureImagePipe } from './secure-image.pipe';
+import { UseHttpImageSourcePipe } from './use-http-image-source.pipe';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [SecureImagePipe],
-  exports: [SecureImagePipe],
+  declarations: [UseHttpImageSourcePipe],
+  exports: [UseHttpImageSourcePipe],
 })
-export class SecureImagePipeModule {
+export class UseHttpImageSourcePipeModule {
   static forRoot(
     config: { loadingImagePath?: string; errorImagePath?: string } = {}
-  ): ModuleWithProviders<SecureImagePipeModule> {
+  ): ModuleWithProviders<UseHttpImageSourcePipeModule> {
     return {
-      ngModule: SecureImagePipeModule,
+      ngModule: UseHttpImageSourcePipeModule,
       providers: [
         {
           provide: 'THIS_DOT_LOADING_IMAGE_PATH',

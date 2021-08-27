@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@this-dot/route-config": ["libs/route-config/src/index.ts"],
-      "@this-dot/secure-image-pipe": ["libs/secure-image-pipe/src/index.ts"]
+      "@this-dot/ng-utils": ["libs/ng-utils/src/index.ts"],
+      "@this-dot/route-config": ["libs/route-config/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

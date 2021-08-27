@@ -20,9 +20,9 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./modules/secure-image-pipe-showcase/secure-image-pipe-showcase.module').then(
-            (m) => m.SecureImagePipeShowcaseModule
-          ),
+          import(
+            './modules/use-http-image-source-pipe-showcase/use-http-image-source-pipe-showcase.module'
+          ).then((m) => m.UseHttpImageSourcePipeShowcaseModule),
       },
     ],
   },

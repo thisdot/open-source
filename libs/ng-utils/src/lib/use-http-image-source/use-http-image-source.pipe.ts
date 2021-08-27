@@ -5,10 +5,10 @@ import { BehaviorSubject, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 @Pipe({
-  name: 'secureImage',
+  name: 'useHttpImgSrc',
   pure: false,
 })
-export class SecureImagePipe implements PipeTransform, OnDestroy {
+export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
   private subscription!: Subscription;
   private loadingImagePath!: string;
   private errorImagePath!: string;
