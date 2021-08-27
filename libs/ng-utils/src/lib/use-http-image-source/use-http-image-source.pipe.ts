@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, of, Subscription } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 
 @Pipe({
   name: 'useHttpImgSrc',
@@ -35,9 +35,7 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     if (!this.subscription) {
       this.setUpSubscription();
     }
-    if (this.transformValue.getValue() !== imagePath) {
-      this.transformValue.next(imagePath);
-    }
+    this.transformValue.next(imagePath);
     return this.latestValue || this.loadingImagePath;
   }
 
@@ -50,6 +48,7 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
       .asObservable()
       .pipe(
         filter((v): v is string => !!v),
+        distinctUntilChanged(),
         switchMap((imagePath: string) =>
           this.httpClient.get(imagePath, { observe: 'response', responseType: 'blob' }).pipe(
             map((response: HttpResponse<Blob>) => URL.createObjectURL(response.body)),
