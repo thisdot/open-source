@@ -1,0 +1,29 @@
+{
+  "name": "@this-dot/ng-utils",
+  "version": "0.1.1",
+  "description": "A library containing useful utilities for Angular",
+  "license": "MIT",
+  "author": "This Dot Labs",
+  "homepage": "https://github.com/thisdot/open-source/tree/main/libs/ng-utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisdot/open-source.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thisdot/open-source/issues"
+  },
+  "keywords": [
+    "angular",
+    "javascript",
+    "typescript",
+    "pipe",
+    "utilities"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^12.1.0-",
+    "@angular/core": "^12.1.0-"
+  },
+  "dependencies": {
+    "tslib": "^2.2.0"
+  }
+}

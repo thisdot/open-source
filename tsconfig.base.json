@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@this-dot/ng-utils": ["libs/ng-utils/src/index.ts"],
       "@this-dot/route-config": ["libs/route-config/src/index.ts"]
     },
     "strict": true

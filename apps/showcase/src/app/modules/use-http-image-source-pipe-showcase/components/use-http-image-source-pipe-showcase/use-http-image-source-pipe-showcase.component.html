@@ -1,0 +1,19 @@
+<h1>Use Http Image Source Pipe</h1>
+
+<p>While the requests load, the loading image is displayed</p>
+
+<section class="scenario">
+  <h2>Success scenario</h2>
+
+  <p>The following image displays a happy perfbuddy when the image is returned</p>
+
+  <img width="200px" [src]="'assets/images/success.png' | useHttpImgSrc" />
+</section>
+
+<section class="scenario">
+  <h2>Error scenario</h2>
+
+  <p>The following image displays a very sad perfbuddy when the error is returned</p>
+
+  <img width="200px" [src]="'assets/images/notfound.png' | useHttpImgSrc" />
+</section>

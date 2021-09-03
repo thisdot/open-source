@@ -25,6 +25,9 @@
     "app-stackblitz": {
       "tags": ["framework:angular"]
     },
+    "ng-utils": {
+      "tags": ["framework:angular"]
+    },
     "route-config": {
       "tags": ["framework:angular"]
     },
