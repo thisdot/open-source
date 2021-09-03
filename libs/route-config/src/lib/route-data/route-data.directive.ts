@@ -7,8 +7,8 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { distinctUntilChanged, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { distinctUntilChanged, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { RouteConfigService, RouteData } from '../route-config.service';
 
 export interface RouteDataDirectiveContext<C> {
@@ -25,7 +25,6 @@ export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestro
   private view!: EmbeddedViewRef<RouteDataDirectiveContext<Partial<C>>>;
 
   private data$ = this.defaultValue$.pipe(
-    map((defaultValue) => defaultValue),
     switchMap((defaultValue) => this.routeConfigService.getActivatedRouteConfig<C>(defaultValue)),
     distinctUntilChanged()
   );

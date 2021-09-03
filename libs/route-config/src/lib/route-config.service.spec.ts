@@ -166,7 +166,7 @@ describe('RouteConfigService', () => {
       });
     });
 
-    describe('getWholeLeafConfig', () => {
+    describe('getActivatedRouteConfig', () => {
       it('should return combined config from whole activated route array', () => {
         const routeTags = ['tag1'];
         testScheduler.run(({ cold, expectObservable }) => {
@@ -344,7 +344,7 @@ describe('RouteConfigService', () => {
       });
     });
 
-    describe('getWholeLeafConfig', () => {
+    describe('getActivatedRouteConfig', () => {
       it('should return config combined with injected default value', () => {
         const routeTags = ['tag1'];
         testScheduler.run(({ cold, expectObservable }) => {

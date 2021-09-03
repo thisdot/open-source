@@ -166,12 +166,12 @@ Now you can treat it as any other Observable and use e.g. `async` pipe to displa
 <h1>{{ tags$ | async }}</h1>
 ```
 
-It is also possible to retrieve the whole `data` object by using `getWholeLeafConfig`:
+It is also possible to retrieve the whole `data` object by using `getActivatedRouteConfig`:
 
 ```ts
 export class AppComponent {
-  data$ = this.routeConfigService.getWholeLeafConfig();
-  dataWithDefaultValue$ = this.routeConfigService.getWholeLeafConfig({
+  data$ = this.routeConfigService.getActivatedRouteConfig();
+  dataWithDefaultValue$ = this.routeConfigService.getActivatedRouteConfig({
     routeTags: ['defaultTag'],
     title: 'Default Title',
   });
