@@ -22,8 +22,8 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     HttpClientModule,
     RouteConfigModule.forRoot(),
     UseHttpImageSourcePipeModule.forRoot({
-      loadingImagePath: 'assets/images/loading.png',
-      errorImagePath: 'assets/images/error.png',
+      loadingImagePath: 'https://thisdot-open-source.s3.us-east-1.amazonaws.com/public/loading.png',
+      errorImagePath: 'https://thisdot-open-source.s3.us-east-1.amazonaws.com/public/error.png',
     }),
     AppRoutingModule,
     BrowserAnimationsModule,

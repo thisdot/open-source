@@ -7,7 +7,12 @@
 
   <p>The following image displays a happy perfbuddy when the image is returned</p>
 
-  <img width="200px" [src]="'assets/images/success.png' | useHttpImgSrc" />
+  <img
+    width="200px"
+    [src]="
+      'https://thisdot-open-source.s3.us-east-1.amazonaws.com/public/success.png' | useHttpImgSrc
+    "
+  />
 </section>
 
 <section class="scenario">
@@ -15,5 +20,10 @@
 
   <p>The following image displays a very sad perfbuddy when the error is returned</p>
 
-  <img width="200px" [src]="'assets/images/notfound.png' | useHttpImgSrc" />
+  <img
+    width="200px"
+    [src]="
+      'https://thisdot-open-source.s3.us-east-1.amazonaws.com/public/notfound.png' | useHttpImgSrc
+    "
+  />
 </section>

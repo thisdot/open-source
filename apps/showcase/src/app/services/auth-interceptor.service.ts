@@ -10,14 +10,13 @@ export class AuthInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const withHeader = req.clone({
       setHeaders: {
-        Authorization: `Bearer this-should-be-a-token`,
+        // If I set authorization header, AWS s3 will return a 400 bad request
+        CustomAuthorization: `Bearer this-should-be-a-token`,
       },
     });
 
     return iif(
-      () =>
-        req.url.includes('assets/images/success.png') ||
-        req.url.includes('assets/images/notfound.png'),
+      () => req.url.includes('success.png') || req.url.includes('notfound.png'),
       next.handle(withHeader).pipe(
         delay(5000),
         catchError((e) =>
