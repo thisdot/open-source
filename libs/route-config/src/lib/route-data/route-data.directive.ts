@@ -21,12 +21,12 @@ export interface RouteDataDirectiveContext<C> {
 export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
-  private defaultValue$ = new BehaviorSubject<Partial<C> | null>(null);
+  private defaultValue$ = new BehaviorSubject<Partial<C>>({});
   private view!: EmbeddedViewRef<RouteDataDirectiveContext<Partial<C>>>;
 
   private data$ = this.defaultValue$.pipe(
-    map((defaultValue) => defaultValue || {}),
-    switchMap((defaultValue) => this.routeConfigService.getWholeLeafConfig<C>(defaultValue)),
+    map((defaultValue) => defaultValue),
+    switchMap((defaultValue) => this.routeConfigService.getActivatedRouteConfig<C>(defaultValue)),
     distinctUntilChanged()
   );
 
@@ -52,7 +52,7 @@ export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestro
 
   ngOnInit(): void {
     this.view = this.entry.createEmbeddedView(this.template, {
-      $implicit: this.defaultValue$.value || {},
+      $implicit: this.defaultValue$.value,
     });
 
     this.createView$.pipe(takeUntil(this.destroy$)).subscribe();

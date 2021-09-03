@@ -49,7 +49,7 @@ export class RouteConfigService<
     private _injectedDefaultValue?: Partial<RouteData<ConfigParamsNames, RouteTags>>
   ) {}
 
-  getWholeLeafConfig<
+  getActivatedRouteConfig<
     C extends RouteData<ConfigParamsNames, RouteTags> = RouteData<ConfigParamsNames, RouteTags>
   >(defaultValue: Partial<C> = {}): Observable<Partial<C>> {
     return this.router.events.pipe(
@@ -71,7 +71,7 @@ export class RouteConfigService<
     paramName: RouteDataParam<ConfigParamsNames>,
     defaultValue?: T
   ): Observable<T> {
-    return this.getWholeLeafConfig(
+    return this.getActivatedRouteConfig(
       defaultValue
         ? ({
             [paramName]: defaultValue,

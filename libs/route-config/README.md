@@ -250,3 +250,12 @@ export class AppModule {}
 ```
 
 This way we don't need to provide default value each time we use `*tdRouteData` or `RouteConfigService`. However, if a different default value is necessary it still can be provided - and it will overwrite the value injected with a token.
+
+The injection token can also be provided / overridden in a component's declaration:
+
+```ts
+@Component({
+   // ...
+   providers: [ /* the value provided here will be the default down in the DOM tree */]
+})
+```

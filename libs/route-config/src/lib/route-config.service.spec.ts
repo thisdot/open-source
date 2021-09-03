@@ -183,7 +183,7 @@ describe('RouteConfigService', () => {
           ]);
           getEvents = mockActivationEnd$(cold);
           expectObservable(
-            service.getWholeLeafConfig({
+            service.getActivatedRouteConfig({
               tdRouteTags: [],
               tdRouteColor: 'primary',
               tdRouteProgressState: 0,
@@ -219,7 +219,7 @@ describe('RouteConfigService', () => {
           ]);
           getEvents = mockActivationEnd$(cold);
           expectObservable(
-            service.getWholeLeafConfig({
+            service.getActivatedRouteConfig({
               tdRouteTags: [],
               tdRouteColor: 'primary',
               tdRouteProgressState: 0,
@@ -239,7 +239,7 @@ describe('RouteConfigService', () => {
           withRouteData([{}]);
           getEvents = mockActivationEnd$(cold);
           expectObservable(
-            service.getWholeLeafConfig({
+            service.getActivatedRouteConfig({
               tdRouteTags: [],
               tdRouteColor: 'primary',
               tdRouteProgressState: 0,
@@ -266,7 +266,7 @@ describe('RouteConfigService', () => {
           ]);
           getEvents = mockActivationEnd$(cold);
           expectObservable(
-            service.getWholeLeafConfig({
+            service.getActivatedRouteConfig({
               tdRouteTags: [],
               tdRouteColor: 'primary',
               tdRouteProgressState: 0,
@@ -354,7 +354,7 @@ describe('RouteConfigService', () => {
             },
           ]);
           getEvents = mockActivationEnd$(cold);
-          expectObservable(service.getWholeLeafConfig()).toBe('t---t', {
+          expectObservable(service.getActivatedRouteConfig()).toBe('t---t', {
             t: {
               routeTags: routeTags,
               tdRouteTags: ['injectedDefaultTag'],
@@ -374,7 +374,7 @@ describe('RouteConfigService', () => {
           ]);
           getEvents = mockActivationEnd$(cold);
           expectObservable(
-            service.getWholeLeafConfig({
+            service.getActivatedRouteConfig({
               tdRouteColor: 'primary',
               tdRouteProgressState: 0.5,
             })
