@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { ROUTE_DATA_DEFAULT_VALUE } from './route-data-default-value-token';
 
 export type RouteConfigParams<RouteTags extends string = string> = {
   routeTags: RouteTags | RouteTags[];
@@ -19,40 +20,63 @@ export type RouteData<
 
 export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<ConfigParamsNames>;
 
+const gatherRoutes = (activatedRoute: ActivatedRoute): ActivatedRoute[] => {
+  const routes: ActivatedRoute[] = activatedRoute.pathFromRoot;
+
+  let route = activatedRoute.firstChild;
+  while (route) {
+    routes.push(route);
+    route = route.firstChild;
+  }
+
+  return routes;
+};
+
 @Injectable()
 export class RouteConfigService<
   RouteTags extends string = string,
   ConfigParamsNames extends string = never
 > {
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
+  private get injectedDefaultValue(): Partial<RouteData<ConfigParamsNames, RouteTags>> {
+    return this._injectedDefaultValue || {};
+  }
 
-  getLeafConfig(paramName: 'routeTags', defaultValue: RouteTags[]): Observable<RouteTags[]>;
-  getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue: T): Observable<T>;
-  getLeafConfig<T = unknown>(
-    paramName: RouteDataParam<ConfigParamsNames>,
-    defaultValue: T
-  ): Observable<T> {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    @Optional()
+    @Inject(ROUTE_DATA_DEFAULT_VALUE)
+    private _injectedDefaultValue?: Partial<RouteData<ConfigParamsNames, RouteTags>>
+  ) {}
+
+  getActivatedRouteConfig<
+    C extends RouteData<ConfigParamsNames, RouteTags> = RouteData<ConfigParamsNames, RouteTags>
+  >(defaultValue: Partial<C> = {}): Observable<Partial<C>> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),
       startWith(this.activatedRoute),
-      switchMap((activatedRoute: ActivatedRoute) => {
-        const routes: ActivatedRoute[] = activatedRoute.pathFromRoot;
-
-        let route = activatedRoute.firstChild;
-        while (route) {
-          routes.push(route);
-          route = route.firstChild;
-        }
-
-        return combineLatest(routes.map(({ data }) => data)).pipe(
-          map((dataArr) => {
-            const reversedArr = dataArr.reverse();
-            const index = reversedArr.findIndex((data) => (data && data[paramName]) !== undefined);
-            return (reversedArr[index] && reversedArr[index][paramName]) || defaultValue;
-          })
-        );
-      })
+      map(gatherRoutes),
+      switchMap((routes) =>
+        combineLatest(routes.map(({ data }) => data)).pipe(
+          map((dataArr) => Object.assign({}, this.injectedDefaultValue, defaultValue, ...dataArr))
+        )
+      )
     );
+  }
+
+  getLeafConfig(paramName: 'routeTags', defaultValue?: RouteTags[]): Observable<RouteTags[]>;
+  getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue?: T): Observable<T>;
+  getLeafConfig<T = unknown>(
+    paramName: RouteDataParam<ConfigParamsNames>,
+    defaultValue?: T
+  ): Observable<T> {
+    return this.getActivatedRouteConfig(
+      defaultValue
+        ? ({
+            [paramName]: defaultValue,
+          } as any)
+        : {}
+    ).pipe(map((data: { [key: string]: any }) => data[paramName] || defaultValue));
   }
 }

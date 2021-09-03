@@ -16,7 +16,7 @@ export class AppComponent {
     .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
     .pipe(pluck('matches'));
   @ViewChild('sidenav')
-  sidenav: MatSidenav;
+  sidenav!: MatSidenav;
 
   constructor(
     private routeConfigService: RouteConfigService<AppRouteTag, AppRouteConfigParams>,
