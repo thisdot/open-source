@@ -3,7 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import {
   THIS_DOT_ERROR_IMAGE_PATH,
   THIS_DOT_LOADING_IMAGE_PATH,
-} from './use-http-image-source.injectior';
+} from './use-http-image-source.injector';
 import { UseHttpImageSourcePipe } from './use-http-image-source.pipe';
 
 @NgModule({

@@ -6,7 +6,7 @@ import { catchError, distinctUntilChanged, filter, map, switchMap, tap } from 'r
 import {
   THIS_DOT_ERROR_IMAGE_PATH,
   THIS_DOT_LOADING_IMAGE_PATH,
-} from './use-http-image-source.injectior';
+} from './use-http-image-source.injector';
 
 @Pipe({
   name: 'useHttpImgSrc',
