@@ -66,6 +66,44 @@
         }
       }
     },
+    "ng-utils": {
+      "projectType": "library",
+      "root": "libs/ng-utils",
+      "sourceRoot": "libs/ng-utils/src",
+      "prefix": "this-dot",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "outputs": ["dist/libs/ng-utils"],
+          "options": {
+            "project": "libs/ng-utils/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/ng-utils/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/ng-utils/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ng-utils"],
+          "options": {
+            "jestConfig": "libs/ng-utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ng-utils/src/**/*.ts", "libs/ng-utils/src/**/*.html"]
+          }
+        }
+      }
+    },
     "route-config": {
       "projectType": "library",
       "root": "libs/route-config",

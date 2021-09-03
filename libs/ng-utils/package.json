@@ -1,0 +1,11 @@
+{
+  "name": "@this-dot/ng-utils",
+  "version": "0.1.0",
+  "peerDependencies": {
+    "@angular/common": "^12.1.0-",
+    "@angular/core": "^12.1.0-"
+  },
+  "dependencies": {
+    "tslib": "^2.2.0"
+  }
+}
