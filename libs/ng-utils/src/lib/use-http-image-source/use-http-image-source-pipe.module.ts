@@ -1,5 +1,9 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import {
+  THIS_DOT_ERROR_IMAGE_PATH,
+  THIS_DOT_LOADING_IMAGE_PATH,
+} from './use-http-image-source.injectior';
 import { UseHttpImageSourcePipe } from './use-http-image-source.pipe';
 
 @NgModule({
@@ -15,11 +19,11 @@ export class UseHttpImageSourcePipeModule {
       ngModule: UseHttpImageSourcePipeModule,
       providers: [
         {
-          provide: 'THIS_DOT_LOADING_IMAGE_PATH',
+          provide: THIS_DOT_LOADING_IMAGE_PATH,
           useValue: config.loadingImagePath || null,
         },
         {
-          provide: 'THIS_DOT_ERROR_IMAGE_PATH',
+          provide: THIS_DOT_ERROR_IMAGE_PATH,
           useValue: config.errorImagePath || null,
         },
       ],

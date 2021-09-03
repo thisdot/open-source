@@ -2,14 +2,18 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  THIS_DOT_ERROR_IMAGE_PATH,
+  THIS_DOT_LOADING_IMAGE_PATH,
+} from './use-http-image-source.injectior';
 
 @Pipe({
   name: 'useHttpImgSrc',
   pure: false,
 })
 export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
-  private subscription!: Subscription;
+  private subscription = new Subscription();
   private loadingImagePath!: string;
   private errorImagePath!: string;
   private latestValue!: string | SafeUrl;
@@ -19,9 +23,11 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     private httpClient: HttpClient,
     private domSanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
-    @Inject('THIS_DOT_LOADING_IMAGE_PATH') private defaultLoadingImagePath: string,
-    @Inject('THIS_DOT_ERROR_IMAGE_PATH') private defaultErrorImagePath: string
-  ) {}
+    @Inject(THIS_DOT_LOADING_IMAGE_PATH) private defaultLoadingImagePath: string,
+    @Inject(THIS_DOT_ERROR_IMAGE_PATH) private defaultErrorImagePath: string
+  ) {
+    this.setUpSubscription();
+  }
 
   transform(
     imagePath: string,
@@ -32,19 +38,16 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     if (!imagePath) {
       return this.errorImagePath;
     }
-    if (!this.subscription) {
-      this.setUpSubscription();
-    }
     this.transformValue.next(imagePath);
     return this.latestValue || this.loadingImagePath;
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   private setUpSubscription(): void {
-    this.subscription = this.transformValue
+    const transformSubscription = this.transformValue
       .asObservable()
       .pipe(
         filter((v): v is string => !!v),
@@ -56,12 +59,14 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
             filter((blobUrl) => blobUrl !== this.latestValue),
             catchError(() => of(this.errorImagePath))
           )
-        )
+        ),
+        tap((imagePath: string | SafeUrl) => {
+          this.latestValue = imagePath;
+          this.cdr.markForCheck();
+        })
       )
-      .subscribe((imagePath: string | SafeUrl) => {
-        this.latestValue = imagePath;
-        this.cdr.markForCheck();
-      });
+      .subscribe();
+    this.subscription.add(transformSubscription);
   }
 
   private setLoadingAndErrorImagePaths(

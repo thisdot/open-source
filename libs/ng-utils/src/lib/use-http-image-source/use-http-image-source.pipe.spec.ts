@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ChangeDetectorRef } from '@angular/core';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { DomSanitizer } from '@angular/platform-browser';
 import { UseHttpImageSourcePipeModule } from './use-http-image-source-pipe.module';
 import { UseHttpImageSourcePipe } from './use-http-image-source.pipe';
 
@@ -11,6 +12,7 @@ const MOCK_CDR = {
 describe('UseHttpImageSourcePipe', () => {
   let pipe: UseHttpImageSourcePipe;
   let httpMock: HttpTestingController;
+  let domSanitizer: DomSanitizer;
 
   beforeEach(() => {
     global.URL.createObjectURL = jest.fn().mockReturnValue('blob:testblob.png');
@@ -33,6 +35,7 @@ describe('UseHttpImageSourcePipe', () => {
 
     pipe = TestBed.inject(UseHttpImageSourcePipe);
     httpMock = TestBed.inject(HttpTestingController);
+    domSanitizer = TestBed.inject(DomSanitizer);
   });
 
   afterEach(() => {
@@ -65,7 +68,7 @@ describe('UseHttpImageSourcePipe', () => {
     tick(100);
     expect(MOCK_CDR.markForCheck).toHaveBeenCalled();
     const updatedResult = pipe.transform('test/something.png');
-    expect(updatedResult).toEqual({ changingThisBreaksApplicationSecurity: 'blob:testblob.png' });
+    expect(updatedResult).toEqual(domSanitizer.bypassSecurityTrustUrl('blob:testblob.png'));
   }));
 
   it(`returns the error image path when the request returns with an error`, fakeAsync(() => {
@@ -95,7 +98,7 @@ describe('UseHttpImageSourcePipe', () => {
     tick(100);
     expect(MOCK_CDR.markForCheck).toHaveBeenCalledTimes(1);
     const updatedResult = pipe.transform('test/something.png');
-    expect(updatedResult).toEqual({ changingThisBreaksApplicationSecurity: 'blob:testblob.png' });
+    expect(updatedResult).toEqual(domSanitizer.bypassSecurityTrustUrl('blob:testblob.png'));
 
     pipe.transform('test/something_else.png');
 
@@ -105,6 +108,6 @@ describe('UseHttpImageSourcePipe', () => {
       .flush(new Blob(['something']));
     expect(MOCK_CDR.markForCheck).toHaveBeenCalledTimes(2);
     const secondResult = pipe.transform('test/something_else.png');
-    expect(secondResult).toEqual({ changingThisBreaksApplicationSecurity: 'blob:testblob.png' });
+    expect(secondResult).toEqual(domSanitizer.bypassSecurityTrustUrl('blob:testblob.png'));
   }));
 });
