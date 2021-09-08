@@ -14,7 +14,7 @@ const routes: Routes = [
         path: 'first',
         component: FirstRouteComponent,
         data: {
-          routeTags: [AppRouteTags.show],
+          routeTags: [AppRouteTags.show, 'showRouteData'],
         },
       },
       {
@@ -27,6 +27,7 @@ const routes: Routes = [
         component: SecondRouteComponent,
         data: {
           title: 'Second Route Title',
+          routeTags: ['showRouteData'],
         },
       },
     ],
