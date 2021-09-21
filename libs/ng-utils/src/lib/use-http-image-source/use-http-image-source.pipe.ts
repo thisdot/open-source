@@ -2,7 +2,15 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import {
   THIS_DOT_ERROR_IMAGE_PATH,
   THIS_DOT_LOADING_IMAGE_PATH,
@@ -16,7 +24,8 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
   private subscription = new Subscription();
   private loadingImagePath!: string;
   private errorImagePath!: string;
-  private latestValue!: string | SafeUrl;
+  private latestValue?: SafeUrl;
+  private latestBlobUrl?: string;
   private transformValue = new BehaviorSubject<string>('');
 
   constructor(
@@ -52,9 +61,14 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
       .pipe(
         filter((v): v is string => !!v),
         distinctUntilChanged(),
+        tap(() => (this.latestValue = undefined)),
         switchMap((imagePath: string) =>
           this.httpClient.get(imagePath, { observe: 'response', responseType: 'blob' }).pipe(
             map((response: HttpResponse<Blob>) => URL.createObjectURL(response.body)),
+            tap((blobUrl) => {
+              this.revokeLatestBlob();
+              this.latestBlobUrl = blobUrl;
+            }),
             map((unsafeBlobUrl: string) => this.domSanitizer.bypassSecurityTrustUrl(unsafeBlobUrl)),
             filter((blobUrl) => blobUrl !== this.latestValue),
             catchError(() => of(this.errorImagePath))
@@ -63,6 +77,9 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
         tap((imagePath: string | SafeUrl) => {
           this.latestValue = imagePath;
           this.cdr.markForCheck();
+        }),
+        finalize(() => {
+          this.revokeLatestBlob();
         })
       )
       .subscribe();
@@ -78,5 +95,12 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     }
     this.loadingImagePath = loadingImagePath;
     this.errorImagePath = errorImagePath;
+  }
+
+  private revokeLatestBlob() {
+    if (this.latestBlobUrl) {
+      URL.revokeObjectURL(this.latestBlobUrl);
+      this.latestBlobUrl = undefined;
+    }
   }
 }
