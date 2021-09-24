@@ -28,6 +28,7 @@ const routes: Routes = [
         data: {
           title: 'Second Route Title',
           routeTags: [AppRouteTags.showRouteData],
+          customRouteTags: [AppRouteTags.show],
         },
       },
     ],

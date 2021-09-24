@@ -27,4 +27,8 @@ export class AppComponent {
   toggleSidenav(): void {
     this.sidenav.toggle();
   }
+
+  prettyJson(obj: unknown) {
+    return JSON.stringify(obj, undefined, 8);
+  }
 }

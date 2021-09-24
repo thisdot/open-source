@@ -8,4 +8,5 @@ import { AppRouteTags } from '../../../../route-config-params';
 })
 export class RouteTagsShowcaseComponent {
   readonly AppRouteTags = AppRouteTags;
+  customProp = 'customRouteTags';
 }
