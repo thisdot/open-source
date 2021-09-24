@@ -16,12 +16,14 @@
 <router-outlet></router-outlet>
 
 <ng-container *tdRouteTag="AppRouteTags.show; else noShowTag">
-  <p data-test-id="the route has show tag">
+  <p data-test-id="the route has show tag" class="section-border">
     This text is only visible, if there is a 'routeTag.SHOW' in the route data
   </p>
 </ng-container>
 <ng-template #noShowTag>
-  <p data-test-id="the route does not have show tag">There is no show tag in this route's config</p>
+  <p data-test-id="the route does not have show tag" class="section-border">
+    There is no show tag in this route's config
+  </p>
 </ng-template>
 
 <ng-container *tdRouteDataHas="AppRouteTags.show; else noCustomRouteDataTag; propName: customProp">
