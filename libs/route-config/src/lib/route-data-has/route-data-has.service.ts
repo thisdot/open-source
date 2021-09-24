@@ -1,11 +1,8 @@
 import { Injectable, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { isTruthy } from '@this-dot/utils';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { RouteConfigService } from '../route-config.service';
-
-export type Truthy<T> = NonNullable<T>;
-
-export const isTruthy = <T>(value: T): value is Truthy<T> => Boolean(value);
 
 @Injectable()
 export class RouteDataHasService<
