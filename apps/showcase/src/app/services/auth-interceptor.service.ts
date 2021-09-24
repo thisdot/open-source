@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { iif, Observable, of, timer } from 'rxjs';
+import { iif, Observable, timer } from 'rxjs';
 import { catchError, delay, mapTo, tap } from 'rxjs/operators';
 
 @Injectable({

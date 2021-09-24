@@ -15,16 +15,19 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'secure-image',
+    path: 'ng-utils',
     children: [
       {
         path: '',
         loadChildren: () =>
-          import(
-            './modules/use-http-image-source-pipe-showcase/use-http-image-source-pipe-showcase.module'
-          ).then((m) => m.UseHttpImageSourcePipeShowcaseModule),
+          import('./modules/ng-utils-showcase/ng-utils-showcase.module').then(
+            (m) => m.NgUtilsShowcaseModule
+          ),
       },
     ],
+    data: {
+      title: 'Ng-utils',
+    },
   },
   {
     path: '',

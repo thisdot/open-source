@@ -66,6 +66,26 @@ mat-sidenav-container {
       display: flex;
       flex-flow: column nowrap;
       flex: 1 1 auto;
+
+      .main-link {
+        text-align: left;
+
+        &.active {
+          border-left: 2px solid #2f3c4f;
+          border-top-left-radius: unset;
+          border-bottom-left-radius: unset;
+        }
+      }
+
+      .sub-link {
+        //text-align: right;
+
+        &.active {
+          border-left: 2px solid #2f3c4f;
+          border-top-left-radius: unset;
+          border-bottom-left-radius: unset;
+        }
+      }
     }
   }
 }
