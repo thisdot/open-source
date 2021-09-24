@@ -73,7 +73,7 @@
     <mat-sidenav-content>
       <main>
         <h1 *ngIf="title$ | async as title">{{ title }}</h1>
-        <p *tdRouteTag="'showRouteData'">Route data: {{ data | json }}</p>
+        <p *tdRouteTag="AppRouteTags.showRouteData">Route data: {{ data | json }}</p>
         <router-outlet></router-outlet>
       </main>
     </mat-sidenav-content>

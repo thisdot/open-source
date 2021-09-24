@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { RouteConfigService } from '@this-dot/route-config';
 import { pluck } from 'rxjs/operators';
-import { AppRouteConfigParams, AppRouteTag } from './route-config-params';
+import { AppRouteConfigParams, AppRouteTag, AppRouteTags } from './route-config-params';
 
 @Component({
   selector: 'this-dot-root',
@@ -15,6 +15,7 @@ export class AppComponent {
   readonly isHamburgerMenuDisplayed$ = this.breakpointObserver
     .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
     .pipe(pluck('matches'));
+  readonly AppRouteTags = AppRouteTags;
   @ViewChild('sidenav')
   sidenav!: MatSidenav;
 

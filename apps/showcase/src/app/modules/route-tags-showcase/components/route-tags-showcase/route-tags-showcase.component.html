@@ -15,7 +15,7 @@
 
 <router-outlet></router-outlet>
 
-<ng-container *tdRouteTag="'show'; else noShowTag">
+<ng-container *tdRouteTag="AppRouteTags.show; else noShowTag">
   <p data-test-id="the route has show tag">
     This text is only visible, if there is a 'routeTag.SHOW' in the route data
   </p>
