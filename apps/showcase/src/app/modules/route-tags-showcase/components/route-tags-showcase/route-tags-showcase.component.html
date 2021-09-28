@@ -31,7 +31,7 @@
     <span>This text is only visible, if there is a 'routeTag.SHOW' in the route data property</span>
     <br />
     <mat-form-field>
-      <mat-select [(ngModel)]="customProp">
+      <mat-select [(ngModel)]="customProp" data-test-id="custom prop selector">
         <mat-option value="routeTags">routeTags</mat-option>
         <mat-option value="customRouteTags">customRouteTags</mat-option>
       </mat-select>
@@ -43,7 +43,7 @@
     <span>There is no show tag in this route's config property</span>
     <br />
     <mat-form-field>
-      <mat-select [(ngModel)]="customProp">
+      <mat-select [(ngModel)]="customProp" data-test-id="custom prop selector">
         <mat-option value="routeTags">routeTags</mat-option>
         <mat-option value="customRouteTags">customRouteTags</mat-option>
       </mat-select>
