@@ -16,18 +16,18 @@
 <router-outlet></router-outlet>
 
 <ng-container *tdRouteTag="AppRouteTags.show; else noShowTag">
-  <p data-test-id="the route has show tag" class="section-border">
+  <p data-test-id="route tag section" class="section-border">
     This text is only visible, if there is a 'routeTag.SHOW' in the route data
   </p>
 </ng-container>
 <ng-template #noShowTag>
-  <p data-test-id="the route does not have show tag" class="section-border">
+  <p data-test-id="route tag else section" class="section-border">
     There is no show tag in this route's config
   </p>
 </ng-template>
 
 <ng-container *tdRouteDataHas="AppRouteTags.show; else noCustomRouteDataTag; propName: customProp">
-  <p data-test-id="the route has show tag - custom" class="section-border">
+  <p data-test-id="custom route tag section" class="section-border">
     <span>This text is only visible, if there is a 'routeTag.SHOW' in the route data property</span>
     <br />
     <mat-form-field>
@@ -39,7 +39,7 @@
   </p>
 </ng-container>
 <ng-template #noCustomRouteDataTag>
-  <p data-test-id="the route does not have show tag - custom" class="section-border">
+  <p data-test-id="custom route tag else section" class="section-border">
     <span>There is no show tag in this route's config property</span>
     <br />
     <mat-form-field>
