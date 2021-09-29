@@ -261,7 +261,7 @@
       "prefix": "this-dot",
       "architect": {
         "build": {
-          "builder": "@nrwl/angular:ng-packagr-lite",
+          "builder": "@nrwl/angular:package",
           "outputs": ["dist/libs/utils"],
           "options": {
             "project": "libs/utils/ng-package.json"
