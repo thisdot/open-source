@@ -76,7 +76,7 @@
         <router-outlet></router-outlet>
         <div *tdRouteTag="AppRouteTags.showRouteData">
           Route data:
-          <pre>{{ prettyJson(data) }}</pre>
+          <pre>{{ data | json }}</pre>
         </div>
       </main>
     </mat-sidenav-content>
