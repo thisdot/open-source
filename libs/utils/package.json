@@ -1,10 +1,22 @@
 {
   "name": "@this-dot/utils",
   "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^12.1.0-",
-    "@angular/core": "^12.1.0-"
+  "description": "This library contains handy utilities functions",
+  "license": "MIT",
+  "author": "This Dot Labs",
+  "homepage": "https://github.com/thisdot/open-source/tree/main/libs/utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisdot/open-source.git"
   },
+  "bugs": {
+    "url": "https://github.com/thisdot/open-source/issues"
+  },
+  "keywords": [
+    "javascript",
+    "typescript",
+    "utilities"
+  ],
   "dependencies": {
     "tslib": "^2.2.0"
   }
