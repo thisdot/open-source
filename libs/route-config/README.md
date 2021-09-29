@@ -63,7 +63,9 @@ export class YourSubModule {}
 
 ### Examples
 
-#### `*tdRouteTag` directive
+---
+
+#### RouteTagDirective (`*tdRouteTag`)
 
 To configure this directive lets create the following sample router configuration:
 
@@ -105,11 +107,62 @@ Now we can use it in the component's template
   This text is only visible, if there is a 'show' tag in the route data's `routeTags` Array
 </p>
 <ng-template #noShowTag>
-  <p>There is no show tag in this route's config</p>
+  <p>There is no 'show' tag in this route's config</p>
 </ng-template>
 ```
 
-#### `*tdRouteData` directive
+---
+
+#### RouteDataHasDirective (`*tdRouteDataHas`)
+
+In case you need to use a different route data's property to store the tags you can use `*tdRouteDataHas` directive. It works very similarly to `*tdRouteTag` directive but provides a way to use different property as a source of data.
+Let's imagine the following router configuration:
+
+```ts
+@NgModule({
+  declarations: [FirstRouteComponent, SecondRouteComponent],
+  imports: [
+    RouterModule.forRoot([
+      {
+        path: 'first',
+        component: FirstRouteComponent,
+        data: {
+          customDataProperty: ['customShow'],
+        },
+      },
+      {
+        path: 'second',
+        component: SecondRouteComponent,
+      },
+    ]),
+  ],
+  exports: [RouterModule],
+})
+export class AppModule {}
+```
+
+Now to configure the directive to use this property we can use `tdRouteDataHasPropName` input to set the desired property name:
+
+```angular2html
+<p *tdRouteDataHas="'customShow'; propName: 'customDataProperty'">
+  This text is only visible, if there is a 'show' tag in the route data's `customDataProperty` Array
+</p>
+```
+
+`*tdRouteDataHas` also provides a way do display a fallback template if a given tag is not present
+
+```angular2html
+<p *tdRouteDataHas="'customShow'; propName: 'customDataProperty'; else noShowTag">
+  This text is only visible, if there is a 'customShow' tag in the route data's `customDataProperty` Array
+</p>
+<ng-template #noShowTag>
+  <p>There is no 'customShow' tag in this route's config</p>
+</ng-template>
+```
+
+---
+
+#### RouteDataDirective (`*tdRouteData`)
 
 This directive allows for access to the whole `data` property defined in the current [Route](https://angular.io/api/router/Route#data) from a Component's template.
 
@@ -141,6 +194,8 @@ If you want to access multiple properties in one component's template it is **re
   </p>
 </ng-container>
 ```
+
+---
 
 #### RouteConfigService
 
@@ -227,6 +282,8 @@ In this case your example router config can look like this:
 })
 export class AppModule {}
 ```
+
+---
 
 #### Providing default value globally
 
