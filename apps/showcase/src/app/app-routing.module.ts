@@ -30,6 +30,21 @@ const routes: Routes = [
     },
   },
   {
+    path: 'cypress-helpers',
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./modules/cypress-helpers-showcase/cypress-helpers-showcase.module').then(
+            (m) => m.CypressHelpersShowcaseModule
+          ),
+      },
+    ],
+    data: {
+      title: 'Cypress Helpers',
+    },
+  },
+  {
     path: '',
     pathMatch: 'full',
     redirectTo: 'route-tags',

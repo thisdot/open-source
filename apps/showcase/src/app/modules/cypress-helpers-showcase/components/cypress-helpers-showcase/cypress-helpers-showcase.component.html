@@ -1,0 +1,19 @@
+<div>
+  <mat-form-field color="accent">
+    <mat-label>Set the key to read from the database</mat-label>
+    <input
+      matInput
+      id="readKey"
+      data-test-id="readKeyControl"
+      placeholder="Set the read key"
+      [formControl]="readKeyControl"
+    />
+  </mat-form-field>
+</div>
+
+<div>
+  <p>The data stored paired to the "{{ readKeyControl.value }}" key</p>
+  <pre data-test-id="database value">
+    {{ databaseValue$ | async | json }}
+  </pre>
+</div>

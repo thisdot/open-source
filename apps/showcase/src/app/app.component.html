@@ -58,6 +58,15 @@
           [color]="ngUtilsLink.isActive ? 'accent' : 'primary'"
           >useHttpImgSrc</a
         >
+        <a
+          mat-button
+          class="main-link"
+          routerLink="/cypress-helpers"
+          routerLinkActive="active"
+          #cypressHelpersLink="routerLinkActive"
+          [color]="cypressHelpersLink.isActive ? 'accent' : 'primary'"
+          >@this-dot/cypress-helpers</a
+        >
       </div>
       <a
         *ngIf="isHamburgerMenuDisplayed$ | async"
