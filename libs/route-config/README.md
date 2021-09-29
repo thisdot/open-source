@@ -115,8 +115,8 @@ Now we can use it in the component's template
 
 #### RouteDataHasDirective (`*tdRouteDataHas`)
 
-In case you need to use a different route data's property to store the tags you can use `*tdRouteDataHas` directive. It works very similarly to `*tdRouteTag` directive but provides a way to use different property as a source of data.
-Let's imagine the following router configuration:
+If you need to use a different route data property to store the tags, you can use the `*tdRouteDataHas` directive. It works very similar to `*tdRouteTag` directive but provides a way to use different properties as a source of data.
+Let's take a look at the following router configuration:
 
 ```ts
 @NgModule({
@@ -141,7 +141,7 @@ Let's imagine the following router configuration:
 export class AppModule {}
 ```
 
-Now to configure the directive to use this property we can use `tdRouteDataHasPropName` input to set the desired property name:
+Now to configure the directive to use the `customDataProperty` property we can use `tdRouteDataHasPropName` input to set the desired property name:
 
 ```angular2html
 <p *tdRouteDataHas="'customShow'; propName: 'customDataProperty'">
