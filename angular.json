@@ -76,7 +76,8 @@
           "builder": "@nrwl/angular:package",
           "outputs": ["dist/libs/ng-utils"],
           "options": {
-            "project": "libs/ng-utils/ng-package.json"
+            "project": "libs/ng-utils/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           },
           "configurations": {
             "production": {
@@ -113,7 +114,8 @@
         "build": {
           "builder": "@nrwl/angular:package",
           "options": {
-            "project": "libs/route-config/ng-package.json"
+            "project": "libs/route-config/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           },
           "configurations": {
             "production": {
@@ -264,7 +266,8 @@
           "builder": "@nrwl/angular:package",
           "outputs": ["dist/libs/utils"],
           "options": {
-            "project": "libs/utils/ng-package.json"
+            "project": "libs/utils/ng-package.json",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
           },
           "configurations": {
             "production": {
