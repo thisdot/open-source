@@ -13,6 +13,7 @@ declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
     clearIndexedDb(databaseName: string): Chainable<Cypress.AUTWindow>;
+
     openIndexedDb(databaseName: string): Chainable<IDBDatabase>;
     getObjectStore(storeName: string): Promise<IDBObjectStore>;
   }
@@ -37,17 +38,23 @@ Cypress.Commands.add('clearIndexedDb', (databaseName: string) => {
   });
 });
 
-const DB_VERSIONS = new Map<string, number>();
+const DATABASES = new Map<string, IDBDatabase>();
 
-Cypress.Commands.add('openIndexedDb', (databaseName: string) => {
+Cypress.Commands.add('openIndexedDb', (databaseName: string, versionConfiguredByUser?: number) => {
   return cy.window().then(async (window: Cypress.AUTWindow) => {
-    // TODO: configurable versions
-    const request = window.indexedDB.open(databaseName, DB_VERSIONS.get(databaseName) || 2);
+    const databaseVersion = DATABASES.get(databaseName)?.version;
+    let newVersion = versionConfiguredByUser || 2;
+    if (!versionConfiguredByUser && databaseVersion) {
+      newVersion = databaseVersion + 2;
+    }
+    console.log(newVersion);
+    const request = window.indexedDB.open(databaseName, newVersion);
     return new Promise<IDBDatabase>((resolve, reject) => {
       request.onerror = reject;
       request.onupgradeneeded = (event: any) => {
-        DB_VERSIONS.set(databaseName, event.target?.result.newVersion + 1);
-        resolve(event.target?.result);
+        const db = event.target?.result;
+        DATABASES.set(databaseName, db);
+        resolve(db);
       };
     });
   });
