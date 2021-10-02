@@ -1,6 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { isTruthy } from '@this-dot/utils';
 import { BehaviorSubject, of, Subscription } from 'rxjs';
 import {
   catchError,
@@ -59,7 +60,7 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     const transformSubscription = this.transformValue
       .asObservable()
       .pipe(
-        filter((v): v is string => !!v),
+        filter(isTruthy),
         distinctUntilChanged(),
         tap(() => (this.latestValue = undefined)),
         switchMap((imagePath: string) =>

@@ -37,6 +37,9 @@
     "showcase-e2e": {
       "tags": ["framework:angular", "type:e2e"],
       "implicitDependencies": ["showcase"]
+    },
+    "utils": {
+      "tags": ["framework:none"]
     }
   }
 }
