@@ -1,6 +1,6 @@
 {
   "name": "@this-dot/ng-utils",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A library containing useful utilities for Angular",
   "license": "MIT",
   "author": "This Dot Labs",
@@ -20,8 +20,8 @@
     "utilities"
   ],
   "peerDependencies": {
-    "@angular/common": "^12.1.0-",
-    "@angular/core": "^12.1.0-"
+    "@angular/common": "^12.0.0",
+    "@angular/core": "^12.0.0"
   },
   "dependencies": {
     "tslib": "^2.2.0"
