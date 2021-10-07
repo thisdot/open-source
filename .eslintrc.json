@@ -16,7 +16,10 @@
                 "sourceTag": "framework:angular",
                 "onlyDependOnLibsWithTags": ["framework:angular", "framework:none"]
               },
-              { "sourceTag": "framework:none", "onlyDependOnLibsWithTags": ["framework:none"] }
+              {
+                "sourceTag": "framework:none",
+                "onlyDependOnLibsWithTags": ["framework:none"]
+              }
             ]
           }
         ]
