@@ -2,6 +2,7 @@ describe(`Cypress helpers`, () => {
   beforeEach(() => {
     cy.visit('/cypress-helpers');
     cy.clearIndexedDb('CYPRESS_IDB_HELPER');
+    cy.openIndexedDb('CYPRESS_IDB_HELPER').as('cdb').createObjectStore('keyvaluepairs').as('store');
   });
 
   it(`displays "null" if the indexedDb is not set up`, () => {
@@ -10,14 +11,11 @@ describe(`Cypress helpers`, () => {
   });
 
   it(`displays "{ rickrolled: "never gonna give you up" } when indexedDb is populated at the "testKey" property`, () => {
-    cy.openIndexedDb('CYPRESS_IDB_HELPER')
-      .getObjectStore('keyvaluepairs')
-      .then((store: IDBObjectStore) => {
-        store.add({ rickrolled: 'never gonna give you up' }, 'testKey');
-        store.add({ rickrolled: 'never gonna let you down' }, 'rick');
-      });
+    cy.getStore('@store')
+      .storeItem('testKey', { rickrolled: 'never gonna give you up' })
+      .storeItem('rick', { rickrolled: 'never gonna let you down' });
 
-    cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').type('testKey');
+    cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').clear().type('testKey');
     cy.get(`[data-test-id="database value"]`)
       .should('be.visible')
       .and('contain', '{\n' + '  "rickrolled": "never gonna give you up"\n' + '}');
@@ -26,5 +24,12 @@ describe(`Cypress helpers`, () => {
     cy.get(`[data-test-id="database value"]`)
       .should('be.visible')
       .and('contain', '{\n' + '  "rickrolled": "never gonna let you down"\n' + '}');
+
+    cy.getStore('@store')
+      .storeItem('rick', { rickrolled: 'never gonna run around and desert you' })
+      .deleteItem('testKey');
+
+    cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').clear().type('testKey');
+    cy.get(`[data-test-id="database value"]`).should('be.visible').and('contain', 'null');
   });
 });
