@@ -39,7 +39,7 @@ describe('RouteDataHasServiceService', () => {
     clear.mockReset();
     createEmbeddedView.mockClear();
 
-    service = new RouteDataHasService(routeConfigService, templateRef, viewContainerRef);
+    service = new RouteDataHasService(routeConfigService);
 
     service.setPropName('testProp');
     service.setTags('testTag');
@@ -62,7 +62,7 @@ describe('RouteDataHasServiceService', () => {
 
     routeConfig.next([]);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(clear).toHaveBeenCalledTimes(1);
   });
@@ -75,7 +75,7 @@ describe('RouteDataHasServiceService', () => {
 
     routeConfig.next([]);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(createEmbeddedView).toHaveBeenCalledTimes(1);
     expect(createEmbeddedView).toHaveBeenCalledWith(elseTemplateRef);
@@ -89,7 +89,7 @@ describe('RouteDataHasServiceService', () => {
 
     routeConfig.next(['testTag']);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(clear).toHaveBeenCalledTimes(1);
     expect(createEmbeddedView).toHaveBeenCalledTimes(1);
@@ -104,7 +104,7 @@ describe('RouteDataHasServiceService', () => {
 
     routeConfig.next(['testTag']);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(clear).toHaveBeenCalledTimes(1);
     expect(createEmbeddedView).toHaveBeenCalledTimes(1);
@@ -125,7 +125,7 @@ describe('RouteDataHasServiceService', () => {
 
     routeConfig.next([]);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(clear).toHaveBeenCalledTimes(1);
     expect(createEmbeddedView).toHaveBeenCalledTimes(1);
@@ -155,7 +155,7 @@ describe('RouteDataHasServiceService', () => {
     routeConfig.testProp.next(['testTag']);
     routeConfig.anotherTestProp.next(['notTestTag']);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(clear).toHaveBeenCalledTimes(1);
     expect(createEmbeddedView).toHaveBeenCalledTimes(1);
@@ -176,7 +176,7 @@ describe('RouteDataHasServiceService', () => {
 
     routeConfig.next(['notTestTag']);
 
-    service.init();
+    service.init(templateRef, viewContainerRef);
 
     expect(clear).toHaveBeenCalledTimes(1);
     expect(createEmbeddedView).toHaveBeenCalledTimes(1);

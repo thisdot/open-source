@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, TemplateRef } from '@angular/core';
+import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { RouteDataHasService } from './route-data-has.service';
 
 @Directive({
@@ -23,9 +23,13 @@ export class RouteDataHasDirective<CThen, CElse, RouteTags extends string = stri
     this.routeDataHasService.setElseTemplate(elseTemplate);
   }
 
-  constructor(private routeDataHasService: RouteDataHasService<CThen, CElse, RouteTags>) {}
+  constructor(
+    private template: TemplateRef<CThen>,
+    private viewContainer: ViewContainerRef,
+    private routeDataHasService: RouteDataHasService<CThen, CElse, RouteTags>
+  ) {}
 
   ngOnInit(): void {
-    this.routeDataHasService.init();
+    this.routeDataHasService.init(this.template, this.viewContainer);
   }
 }

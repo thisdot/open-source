@@ -12,6 +12,8 @@ export class RouteDataHasService<
   RoutePropNames extends string = string
 > implements OnDestroy
 {
+  private template!: TemplateRef<CThen>;
+  private viewContainer!: ViewContainerRef;
   private tags$ = new BehaviorSubject<RouteTags[]>([]);
   private propName$ = new BehaviorSubject<RoutePropNames | undefined>(undefined);
   private elseTemplate$ = new BehaviorSubject<TemplateRef<CElse> | null>(null);
@@ -29,11 +31,11 @@ export class RouteDataHasService<
   );
 
   private readonly createView$ = combineLatest([this.display$, this.elseTemplate$]).pipe(
-    tap(() => this.entry.clear()),
+    tap(() => this.viewContainer.clear()),
     tap(([show, elseTemplate]) =>
       show
-        ? void this.entry.createEmbeddedView(this.template)
-        : void (elseTemplate && this.entry.createEmbeddedView(elseTemplate))
+        ? void this.viewContainer.createEmbeddedView(this.template)
+        : void (elseTemplate && this.viewContainer.createEmbeddedView(elseTemplate))
     )
   );
 
@@ -50,13 +52,11 @@ export class RouteDataHasService<
     this.elseTemplate$.next(elseTemplate);
   }
 
-  constructor(
-    private routeConfigService: RouteConfigService<string, string>,
-    private template: TemplateRef<CThen>,
-    private entry: ViewContainerRef
-  ) {}
+  constructor(private routeConfigService: RouteConfigService<string, string>) {}
 
-  init() {
+  init(template: TemplateRef<CThen>, viewContainer: ViewContainerRef) {
+    this.template = template;
+    this.viewContainer = viewContainer;
     this.createView$.pipe(takeUntil(this.destroy$)).subscribe();
   }
 

@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, TemplateRef } from '@angular/core';
+import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { RouteDataHasService } from '../route-data-has/route-data-has.service';
 
 @Directive({ selector: '[tdRouteTag]', providers: [RouteDataHasService] })
@@ -14,11 +14,13 @@ export class RouteTagDirective<CThen, CElse, RouteTags extends string = string> 
   }
 
   constructor(
+    private template: TemplateRef<CThen>,
+    private viewContainer: ViewContainerRef,
     private routeDataHasService: RouteDataHasService<CThen, CElse, RouteTags, 'routeTags'>
   ) {}
 
   ngOnInit(): void {
     this.routeDataHasService.setPropName('routeTags');
-    this.routeDataHasService.init();
+    this.routeDataHasService.init(this.template, this.viewContainer);
   }
 }
