@@ -33,6 +33,39 @@
     }
   },
   "projects": {
+    "cypress-indexeddb": {
+      "root": "libs/cypress-indexeddb",
+      "sourceRoot": "libs/cypress-indexeddb/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/cypress-indexeddb/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/cypress-indexeddb"],
+          "options": {
+            "jestConfig": "libs/cypress-indexeddb/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/cypress-indexeddb",
+            "tsConfig": "libs/cypress-indexeddb/tsconfig.lib.json",
+            "packageJson": "libs/cypress-indexeddb/package.json",
+            "main": "libs/cypress-indexeddb/src/index.ts",
+            "assets": ["libs/cypress-indexeddb/*.md"]
+          }
+        }
+      }
+    },
     "ng-utils": {
       "projectType": "library",
       "root": "libs/ng-utils",

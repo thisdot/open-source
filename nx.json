@@ -22,6 +22,9 @@
     }
   },
   "projects": {
+    "cypress-indexeddb": {
+      "tags": ["framework:none"]
+    },
     "ng-utils": {
       "tags": ["framework:angular"]
     },
