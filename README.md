@@ -11,9 +11,8 @@ This repository currently contains the following packages:
 
 You can try out our showcase application by following the steps below
 
-1. [Import this repository on Stackblitz](https://stackblitz.com/github/thisdot/open-source)
-2. When prompted, install the packages that are missing
-3. Try out the showcase application.
+1. [Import this repository on Stackblitz](https://stackblitz.com/github/thisdot/open-source?preset=node)
+2. Try out the showcase application.
 
 ## How to contribute
 

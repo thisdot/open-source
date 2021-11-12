@@ -4,7 +4,7 @@
     "analytics": "dd09100e-b7fd-414b-9917-44fd79f74f98",
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "app-stackblitz",
+  "defaultProject": "showcase",
   "schematics": {
     "@nrwl/angular": {
       "application": {
@@ -33,39 +33,6 @@
     }
   },
   "projects": {
-    "app-stackblitz": {
-      "projectType": "application",
-      "root": "",
-      "sourceRoot": "apps/showcase/src",
-      "prefix": "this-dot",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/apps/showcase",
-            "index": "apps/showcase/src/index.html",
-            "main": "apps/showcase/src/main.ts",
-            "polyfills": "apps/showcase/src/polyfills.ts",
-            "tsConfig": "apps/showcase/tsconfig.app.json",
-            "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
-            "styles": ["apps/showcase/src/theme.scss", "apps/showcase/src/styles.scss"],
-            "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "app-stackblitz:build"
-          }
-        }
-      }
-    },
     "ng-utils": {
       "projectType": "library",
       "root": "libs/ng-utils",

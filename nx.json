@@ -22,9 +22,6 @@
     }
   },
   "projects": {
-    "app-stackblitz": {
-      "tags": ["framework:angular"]
-    },
     "ng-utils": {
       "tags": ["framework:angular"]
     },
