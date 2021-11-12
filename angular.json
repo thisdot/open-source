@@ -1,37 +1,5 @@
 {
   "version": 1,
-  "cli": {
-    "analytics": "dd09100e-b7fd-414b-9917-44fd79f74f98",
-    "defaultCollection": "@nrwl/angular"
-  },
-  "defaultProject": "app-stackblitz",
-  "schematics": {
-    "@nrwl/angular": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      },
-      "storybook-configuration": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/angular:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
-    }
-  },
   "projects": {
     "app-stackblitz": {
       "projectType": "application",
@@ -64,7 +32,8 @@
             "browserTarget": "app-stackblitz:build"
           }
         }
-      }
+      },
+      "tags": ["framework:angular"]
     },
     "ng-utils": {
       "projectType": "library",
@@ -104,7 +73,8 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["framework:angular"]
     },
     "route-config": {
       "projectType": "library",
@@ -143,7 +113,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["framework:angular"]
     },
     "showcase": {
       "projectType": "application",
@@ -231,7 +202,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["framework:angular"]
     },
     "showcase-e2e": {
       "root": "apps/showcase-e2e",
@@ -258,7 +230,9 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["framework:angular", "type:e2e"],
+      "implicitDependencies": ["showcase"]
     },
     "utils": {
       "projectType": "library",
@@ -298,7 +272,8 @@
           },
           "outputs": ["{options.outputFile}"]
         }
-      }
+      },
+      "tags": ["framework:none"]
     }
   }
 }
