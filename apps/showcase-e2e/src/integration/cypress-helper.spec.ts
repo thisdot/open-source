@@ -2,7 +2,7 @@ describe(`Cypress helpers`, () => {
   beforeEach(() => {
     cy.visit('/cypress-helpers');
     cy.clearIndexedDb('CYPRESS_IDB_HELPER');
-    cy.openIndexedDb('CYPRESS_IDB_HELPER').as('cdb').createObjectStore('keyvaluepairs').as('store');
+    cy.openIndexedDb('CYPRESS_IDB_HELPER').createObjectStore('keyvaluepairs').as('store');
   });
 
   it(`displays "null" if the indexedDb is not set up`, () => {
@@ -27,7 +27,9 @@ describe(`Cypress helpers`, () => {
 
     cy.getStore('@store')
       .storeItem('rick', { rickrolled: 'never gonna run around and desert you' })
-      .deleteItem('testKey');
+      .deleteItem('testKey')
+      .readItem<any>('rick')
+      .should('have.property', 'rickrolled', 'never gonna run around and desert you');
 
     cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').clear().type('testKey');
     cy.get(`[data-test-id="database value"]`).should('be.visible').and('contain', 'null');

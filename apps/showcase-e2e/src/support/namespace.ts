@@ -10,10 +10,10 @@ declare namespace Cypress {
   interface Chainable<Subject> {
     clearIndexedDb(databaseName: string): Chainable<Cypress.AUTWindow>;
     openIndexedDb(databaseName: string): Chainable<IDBDatabase>;
-    getDatabase(databaseName: string): Chainable<IDBDatabase>;
     createObjectStore(storeName: string): Chainable<IDBObjectStore>;
     getStore(storeName: string): Chainable<IDBObjectStore>;
     storeItem(key: string, value: unknown): Chainable<IDBObjectStore>;
+    readItem<T = unknown>(key: IDBValidKey | IDBKeyRange): Chainable<T>;
     deleteItem(key: string): Chainable<IDBObjectStore>;
   }
 }

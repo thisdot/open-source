@@ -1,16 +1,11 @@
-const DATABASES = new Map<string, IDBDatabase>();
 const STORES = new Map<string, IDBObjectStore>();
 
 export function setupIDBHelpers(): void {
-  // -- This is a parent command --
   Cypress.Commands.add('clearIndexedDb', (databaseName: string) => {
     return cy.window().then(async (window: Cypress.AUTWindow) => {
       const promise = new Promise<void>((resolve, reject) => {
         const deleteDb = window.indexedDB.deleteDatabase(databaseName);
         deleteDb.onsuccess = () => {
-          if (DATABASES.has(databaseName)) {
-            DATABASES.delete(databaseName);
-          }
           resolve();
         };
         deleteDb.onerror = (e) => reject(e);
@@ -30,17 +25,12 @@ export function setupIDBHelpers(): void {
     'openIndexedDb',
     (databaseName: string, versionConfiguredByUser?: number) => {
       return cy.window().then(async (window: Cypress.AUTWindow) => {
-        const db = DATABASES.get(databaseName);
-        if (db) {
-          return Promise.resolve(db);
-        }
-        const newVersion = versionConfiguredByUser || 2;
+        const newVersion = versionConfiguredByUser || 55; // 55 to make sure the version is different than the existing database
         const request = window.indexedDB.open(databaseName, newVersion);
         return new Promise<IDBDatabase>((resolve, reject) => {
           request.onerror = reject;
           request.onupgradeneeded = (event: any) => {
             const db = event.target?.result;
-            DATABASES.set(databaseName, db);
             resolve(db);
           };
         });
@@ -83,20 +73,8 @@ export function setupIDBHelpers(): void {
     if (subject?.constructor?.name === 'IDBObjectStore') {
       STORES.set(alias, subject);
       return subject;
-    } else if (subject?.constructor?.name === 'IDBDatabase') {
-      DATABASES.set(alias, subject);
-      return subject;
     } else {
       return originalAs(alias);
-    }
-  });
-
-  Cypress.Commands.add('getDatabase', (alias: string) => {
-    const withoutAtSign = alias.substr(1);
-    if (DATABASES.has(withoutAtSign)) {
-      return Promise.resolve(DATABASES.get(withoutAtSign));
-    } else {
-      throw new Error(`could not find database with alias ${alias}`);
     }
   });
 
@@ -157,6 +135,34 @@ export function setupIDBHelpers(): void {
           };
           request.onsuccess = () => {
             resolve(openStore);
+          };
+        });
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    }
+  );
+
+  Cypress.Commands.add(
+    `readItem`,
+    { prevSubject: true },
+    <T>(store: IDBObjectStore, key: IDBValidKey | IDBKeyRange): Promise<T> => {
+      if (store?.constructor?.name !== 'IDBObjectStore') {
+        throw new Error(
+          `You tried to use the 'storeItem' method without calling 'getObjectStore' first`
+        );
+      }
+      try {
+        const openStore: IDBObjectStore = store.transaction.db
+          .transaction(store.name, 'readwrite')
+          .objectStore(store.name);
+        const request = openStore.get(key);
+        return new Promise((resolve, reject) => {
+          request.onerror = (e) => {
+            reject(e);
+          };
+          request.onsuccess = () => {
+            resolve(request.result);
           };
         });
       } catch (e) {
