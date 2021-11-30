@@ -17,7 +17,7 @@ export class RouteDataHasService<
   private tags$ = new BehaviorSubject<RouteTags[]>([]);
   private propName$ = new BehaviorSubject<RoutePropNames | undefined>(undefined);
   private elseTemplate$ = new BehaviorSubject<TemplateRef<CElse> | null>(null);
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   private display$ = combineLatest([
     this.tags$,
