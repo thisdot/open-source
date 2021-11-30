@@ -1,14 +1,94 @@
 const STORES = new Map<string, IDBObjectStore>();
 
+function createDatabaseConnection(
+  databaseName: string,
+  versionConfiguredByUser?: number
+): Promise<IDBDatabase> {
+  const request: IDBOpenDBRequest =
+    versionConfiguredByUser != null
+      ? window.indexedDB.open(databaseName, versionConfiguredByUser)
+      : window.indexedDB.open(databaseName);
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    request.onerror = (e: Event) => {
+      console.log(`Error occurred during creating an indexedDb database`, JSON.stringify(e));
+      reject(e);
+    };
+    request.onsuccess = (e: Event) => {
+      const db = (e.target as any).result as IDBDatabase;
+      if (!db) {
+        console.log('Could not establish database connection');
+        reject('Could not establish database connection');
+      }
+      resolve(db);
+    };
+  });
+}
+
+function createVersionUpdateDatabaseConnection(openDatabase: IDBDatabase): Promise<IDBDatabase> {
+  const newVersion = openDatabase.version + 1;
+  openDatabase.close();
+  const request: IDBOpenDBRequest = window.indexedDB.open(openDatabase.name, newVersion);
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    request.onerror = (e: Event) => {
+      console.log(`Error occurred during creating an indexedDb database`, JSON.stringify(e));
+      reject(e);
+    };
+    request.onupgradeneeded = (e: Event) => {
+      const db = (e.target as any).result as IDBDatabase;
+      resolve(db);
+    };
+    request.onsuccess = (e: Event) => {
+      console.log('what?', e);
+      resolve((e.target as any).result);
+    };
+    request.onblocked = (e) => {
+      console.log('blocked', e);
+      reject(e);
+    };
+  });
+}
+
+function createObjectStore(database: IDBDatabase, storeName: string): Promise<IDBObjectStore> {
+  let store: IDBObjectStore;
+  if (database.objectStoreNames.contains(storeName)) {
+    store = database.transaction(storeName, 'readwrite').objectStore(storeName);
+  } else {
+    store = database.createObjectStore(storeName);
+  }
+
+  return new Promise<IDBObjectStore>((resolve, reject) => {
+    store.transaction.oncomplete = () => {
+      console.log(`Object store with name "${storeName}" was created`);
+      database.close();
+      resolve(store);
+    };
+    store.transaction.onerror = (e) => {
+      console.log(`Error occurred during creating an indexedDb object store`, JSON.stringify(e));
+      reject(e);
+    };
+  });
+}
+
 export function setupIDBHelpers(): void {
   Cypress.Commands.add('clearIndexedDb', (databaseName: string) => {
     return cy.window().then(async (window: Cypress.AUTWindow) => {
       const promise = new Promise<void>((resolve, reject) => {
-        const deleteDb = window.indexedDB.deleteDatabase(databaseName);
+        const deleteDb: IDBOpenDBRequest = window.indexedDB.deleteDatabase(databaseName);
         deleteDb.onsuccess = () => {
           resolve();
         };
-        deleteDb.onerror = (e) => reject(e);
+        deleteDb.onerror = (e) => {
+          console.log(`delete database error`, e);
+          resolve();
+        };
+        deleteDb.onblocked = (e) => {
+          console.log(`delete database blocked`, e);
+          resolve();
+        };
+        deleteDb.onupgradeneeded = (e) => {
+          console.log(`delete database upgradeNeeded`, e);
+          resolve();
+        };
       });
       try {
         await promise;
@@ -21,51 +101,23 @@ export function setupIDBHelpers(): void {
     });
   });
 
-  Cypress.Commands.add(
-    'openIndexedDb',
-    (databaseName: string, versionConfiguredByUser?: number) => {
-      return cy.window().then(async (window: Cypress.AUTWindow) => {
-        const newVersion = versionConfiguredByUser || 55; // 55 to make sure the version is different than the existing database
-        const request = window.indexedDB.open(databaseName, newVersion);
-        return new Promise<IDBDatabase>((resolve, reject) => {
-          request.onerror = reject;
-          request.onupgradeneeded = (event: any) => {
-            const db = event.target?.result;
-            resolve(db);
-          };
-        });
-      });
-    }
+  Cypress.Commands.add('openIndexedDb', (databaseName: string, versionConfiguredByUser?: number) =>
+    cy.window().then(() => createDatabaseConnection(databaseName, versionConfiguredByUser))
   );
 
   Cypress.Commands.add(
     `createObjectStore`,
     { prevSubject: true },
-    (database: IDBDatabase, storeName: string) => {
-      if (database?.constructor?.name !== 'IDBDatabase') {
+    (existingDatabase: IDBDatabase, storeName: string) => {
+      if (existingDatabase?.constructor?.name !== 'IDBDatabase') {
         throw new Error(
           `You tried to use the 'getObjectStore' method without calling 'openIndexedDb' first`
         );
       }
-      return new Promise((resolve, reject) => {
-        try {
-          let store: IDBObjectStore;
-          if (database.objectStoreNames.contains(storeName)) {
-            store = database.transaction(storeName, 'readwrite').objectStore(storeName);
-          } else {
-            store = database.createObjectStore(storeName);
-          }
-          new Promise((resolve2, reject2) => {
-            store.transaction.oncomplete = resolve2;
-            store.transaction.onerror = reject2;
-            store.transaction.onabort = reject2;
-          }).then(() => {
-            resolve(store);
-          });
-        } catch (e) {
-          reject(e);
-        }
-      });
+      console.log('existingDatabaseVersion', existingDatabase.version);
+      return createVersionUpdateDatabaseConnection(existingDatabase).then(
+        (versionUpdateDatabase: IDBDatabase) => createObjectStore(versionUpdateDatabase, storeName)
+      );
     }
   );
 
@@ -97,17 +149,20 @@ export function setupIDBHelpers(): void {
         );
       }
       try {
-        const openStore: IDBObjectStore = store.transaction.db
-          .transaction(store.name, 'readwrite')
-          .objectStore(store.name);
-        const request = openStore.put(value, key);
-        return new Promise((resolve, reject) => {
-          request.onerror = (e) => {
-            reject(e);
-          };
-          request.onsuccess = () => {
-            resolve(openStore);
-          };
+        return createDatabaseConnection(store.transaction.db.name).then((openDb) => {
+          const request = openDb
+            .transaction(store.name, 'readwrite')
+            .objectStore(store.name)
+            .put(value, key);
+          return new Promise((resolve, reject) => {
+            request.onerror = (e) => {
+              reject(e);
+            };
+            request.onsuccess = () => {
+              openDb.close();
+              resolve(store);
+            };
+          });
         });
       } catch (e) {
         return Promise.reject(e);
@@ -125,17 +180,20 @@ export function setupIDBHelpers(): void {
         );
       }
       try {
-        const openStore: IDBObjectStore = store.transaction.db
-          .transaction(store.name, 'readwrite')
-          .objectStore(store.name);
-        const request = openStore.delete(key);
-        return new Promise((resolve, reject) => {
-          request.onerror = (e) => {
-            reject(e);
-          };
-          request.onsuccess = () => {
-            resolve(openStore);
-          };
+        return createDatabaseConnection(store.transaction.db.name).then((openDb) => {
+          const request = openDb
+            .transaction(store.name, 'readwrite')
+            .objectStore(store.name)
+            .delete(key);
+          return new Promise((resolve, reject) => {
+            request.onerror = (e) => {
+              reject(e);
+            };
+            request.onsuccess = () => {
+              openDb.close();
+              resolve(store);
+            };
+          });
         });
       } catch (e) {
         return Promise.reject(e);
@@ -153,17 +211,20 @@ export function setupIDBHelpers(): void {
         );
       }
       try {
-        const openStore: IDBObjectStore = store.transaction.db
-          .transaction(store.name, 'readwrite')
-          .objectStore(store.name);
-        const request = openStore.get(key);
-        return new Promise((resolve, reject) => {
-          request.onerror = (e) => {
-            reject(e);
-          };
-          request.onsuccess = () => {
-            resolve(request.result);
-          };
+        return createDatabaseConnection(store.transaction.db.name).then((openDb) => {
+          const request = openDb
+            .transaction(store.name, 'readwrite')
+            .objectStore(store.name)
+            .get(key);
+          return new Promise((resolve, reject) => {
+            request.onerror = (e) => {
+              reject(e);
+            };
+            request.onsuccess = () => {
+              openDb.close();
+              resolve(request.result);
+            };
+          });
         });
       } catch (e) {
         return Promise.reject(e);
