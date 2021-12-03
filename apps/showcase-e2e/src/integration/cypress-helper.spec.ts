@@ -25,13 +25,13 @@ describe(`Cypress helpers`, () => {
       .should('be.visible')
       .and('contain', '{\n' + '  "rickrolled": "never gonna let you down"\n' + '}');
 
-    // cy.getStore('@store')
-    //   .storeItem('rick', { rickrolled: 'never gonna run around and desert you' })
-    //   .deleteItem('testKey')
-    //   .readItem<any>('rick')
-    //   .should('have.property', 'rickrolled', 'never gonna run around and desert you');
-    //
-    // cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').clear().type('testKey');
-    // cy.get(`[data-test-id="database value"]`).should('be.visible').and('contain', 'null');
+    cy.getStore('@store')
+      .storeItem('rick', { rickrolled: 'never gonna run around and desert you' })
+      .deleteItem('testKey')
+      .readItem<any>('rick')
+      .should('have.property', 'rickrolled', 'never gonna run around and desert you');
+
+    cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').clear().type('testKey');
+    cy.get(`[data-test-id="database value"]`).should('be.visible').and('contain', 'null');
   });
 });
