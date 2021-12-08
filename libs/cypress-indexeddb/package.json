@@ -1,4 +1,25 @@
 {
   "name": "@this-dot/cypress-indexeddb",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "description": "A Cypress.io helper library for reading and manipulating data inside IndexedDB",
+  "license": "MIT",
+  "author": "This Dot Labs",
+  "homepage": "https://github.com/thisdot/open-source/tree/main/libs/cypress-indexeddb#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisdot/open-source.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thisdot/open-source/issues"
+  },
+  "keywords": [
+    "cypress",
+    "indexedDB",
+    "testing",
+    "javascript",
+    "typescript"
+  ],
+  "peerDependencies": {
+    "cypress": "*"
+  }
 }
