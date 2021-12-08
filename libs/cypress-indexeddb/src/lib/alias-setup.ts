@@ -46,3 +46,7 @@ function getIDBItem(type: IDBItemType): (alias: string) => Promise<IDBDatabase |
     }
   };
 }
+
+export function closeDatabaseConnections(): void {
+  DATABASES.forEach((db) => db.close());
+}

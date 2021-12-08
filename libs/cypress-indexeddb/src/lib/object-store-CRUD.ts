@@ -124,6 +124,7 @@ function makeCreateUpdateDeleteRequest<T, O = undefined>(
       reject(e);
     };
     request.onsuccess = () => {
+      request.onerror = () => void 0;
       db.close();
       const result = operation === 'get' ? request.result : store;
       resolve(result);

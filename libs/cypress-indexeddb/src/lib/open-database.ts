@@ -11,6 +11,7 @@ export function createDatabaseConnection(
       reject(e);
     };
     request.onsuccess = (e: Event) => {
+      request.onerror = () => void 0;
       const db = (e.target as any).result as IDBDatabase;
       resolve(db);
     };

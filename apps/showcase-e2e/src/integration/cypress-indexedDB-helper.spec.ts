@@ -1,43 +1,91 @@
 describe(`@this-dot/cypress-indexeddb`, () => {
+  afterEach(() => {
+    cy.closeConnections();
+  });
+
   beforeEach(() => {
-    cy.clearIndexedDb('CYPRESS_IDB_HELPER');
-    cy.openIndexedDb('CYPRESS_IDB_HELPER', 5).as('database');
-    cy.getIndexedDb('@database').createObjectStore('keyvaluepairs').as('store');
+    cy.clearIndexedDb('FORM_CACHE');
+    cy.openIndexedDb('FORM_CACHE')
+      .as('formCacheDB')
+      .createObjectStore('keyvaluepairs')
+      .as('objectStore');
+  });
+
+  it(`entering data into the form saves it to the indexedDb`, () => {
     cy.visit('/cypress-helpers');
+
+    cy.get('#firstName').should('be.visible').type('Hans');
+    cy.get('#lastName').should('be.visible').type('Gruber');
+    cy.get('#country').should('be.visible').type('Germany');
+    cy.get('#city').should('be.visible').type('Berlin');
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.log('Waiting for the debounceTime to start a db write').wait(1100);
+
+    cy.getStore('@objectStore').readItem('user_form').should('deep.equal', {
+      firstName: 'Hans',
+      lastName: 'Gruber',
+      country: 'Germany',
+      city: 'Berlin',
+      address: '',
+      addressOptional: '',
+    });
   });
 
-  it(`displays "null" if the indexedDb is not set up`, () => {
-    cy.get(`[data-test-id="readKeyControl"]`).should('be.visible').type('testKey');
-    cy.get(`[data-test-id="database value"]`).should('be.visible').and('contain', 'null');
+  it(`when the indexedDb is deleted manually and then the page reloaded, the form does not populate`, () => {
+    cy.visit('/cypress-helpers');
+
+    cy.get('#firstName').should('be.visible').type('Hans');
+    cy.get('#lastName').should('be.visible').type('Gruber');
+    cy.get('#country').should('be.visible').type('Germany');
+    cy.get('#city').should('be.visible').type('Berlin');
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.log('Waiting for the debounceTime to start a db write').wait(1100);
+
+    cy.log('user manually clears the IndexedDb')
+      .getStore('@objectStore')
+      .deleteItem('user_form')
+      .reload();
+
+    cy.get('#firstName').should('be.visible').and('have.value', '');
+    cy.get('#lastName').should('be.visible').and('have.value', '');
+    cy.get('#country').should('be.visible').and('have.value', '');
+    cy.get('#city').should('be.visible').and('have.value', '');
   });
 
-  it(`displays "{ rickrolled: "never gonna give you up" } when indexedDb is populated at the "testKey" property`, () => {
-    cy.getStore('@store')
-      .createItem('testKey', { rickrolled: 'never gonna give you up' })
-      .createItem('rick', { rickrolled: 'never gonna let you down' });
+  it(`when there is relevant data in the indexedDb, the form gets populated when the page opens`, () => {
+    cy.getStore('@objectStore').createItem('user_form', {
+      firstName: 'John',
+      lastName: 'McClane',
+      country: 'USA',
+      city: 'New York',
+    });
 
-    cy.get(`[data-test-id="readKeyControl"]`)
-      .as('control')
-      .should('be.visible')
-      .clear()
-      .type('testKey');
-    cy.get(`[data-test-id="database value"]`)
-      .as('value')
-      .should('be.visible')
-      .and('contain', '{\n' + '  "rickrolled": "never gonna give you up"\n' + '}');
+    cy.visit('/cypress-helpers');
 
-    cy.get(`@control`).should('be.visible').clear().type('rick');
-    cy.get(`@value`)
-      .should('be.visible')
-      .and('contain', '{\n' + '  "rickrolled": "never gonna let you down"\n' + '}');
+    cy.get('#firstName').should('be.visible').and('have.value', 'John');
+    cy.get('#lastName').should('be.visible').and('have.value', 'McClane');
+    cy.get('#country').should('be.visible').and('have.value', 'USA');
+    cy.get('#city').should('be.visible').and('have.value', 'New York');
+  });
 
-    cy.getStore('@store')
-      .updateItem('rick', { rickrolled: 'never gonna run around and desert you' })
-      .deleteItem('testKey')
-      .readItem<any>('rick')
-      .should('have.property', 'rickrolled', 'never gonna run around and desert you');
+  it(`submitting the form clears the indexedDb`, () => {
+    cy.getStore('@objectStore').createItem('user_form', {
+      firstName: 'John',
+      lastName: 'McClane',
+      country: 'USA',
+      city: 'New York',
+    });
 
-    cy.get(`@control`).should('be.visible').clear().type('testKey');
-    cy.get(`@value`).should('be.visible').and('contain', 'null');
+    cy.visit('/cypress-helpers');
+
+    cy.get('#address').type('23rd Street 12');
+    cy.get(`[data-test-id="submit button"]`).should('be.visible').and('not.be.disabled').click();
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.log('Waiting for the save event and DB write to occur').wait(1100);
+
+    cy.getStore('@objectStore').readItem('user_form').should('be.undefined');
   });
 });

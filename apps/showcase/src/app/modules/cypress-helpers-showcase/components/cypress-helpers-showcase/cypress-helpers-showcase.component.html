@@ -1,19 +1,60 @@
-<div>
+<form
+  class="form-wrapper"
+  #formDirective="ngForm"
+  [formGroup]="formGroup"
+  (submit)="submit(formDirective)"
+>
   <mat-form-field color="accent">
-    <mat-label>Set the key to read from the database</mat-label>
-    <input
-      matInput
-      id="readKey"
-      data-test-id="readKeyControl"
-      placeholder="Set the read key"
-      [formControl]="readKeyControl"
-    />
+    <mat-label>First name</mat-label>
+    <input matInput required id="firstName" formControlName="firstName" />
+    <mat-error *ngIf="formGroup.get('firstName')?.hasError('required')"
+      >First name is required</mat-error
+    >
   </mat-form-field>
-</div>
 
-<div>
-  <p>The data stored paired to the "{{ readKeyControl.value }}" key</p>
-  <pre data-test-id="database value">
-    {{ databaseValue$ | async | json }}
-  </pre>
-</div>
+  <mat-form-field color="accent">
+    <mat-label>Last name</mat-label>
+    <input matInput required id="lastName" formControlName="lastName" />
+    <mat-error *ngIf="formGroup.get('lastName')?.hasError('required')"
+      >Last name is required</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-label>Country</mat-label>
+    <input matInput required id="country" formControlName="country" />
+    <mat-error *ngIf="formGroup.get('country')?.hasError('required')"
+      >Country is required</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <mat-label>City</mat-label>
+    <input matInput required id="city" formControlName="city" />
+    <mat-error *ngIf="formGroup.get('city')?.hasError('required')">City is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field color="primary">
+    <mat-label>Address line 1</mat-label>
+    <input matInput required id="address" formControlName="address" maxlength="50" />
+    <mat-error *ngIf="formGroup.get('address')?.hasError('required')"
+      >Address is required</mat-error
+    >
+  </mat-form-field>
+
+  <mat-form-field color="primary">
+    <mat-label>Address line 2</mat-label>
+    <input matInput id="addressOptional" formControlName="addressOptional" maxlength="50" />
+  </mat-form-field>
+
+  <div class="submit-button">
+    <button
+      data-test-id="submit button"
+      mat-raised-button
+      color="accent"
+      [disabled]="!formGroup.valid"
+    >
+      Submit
+    </button>
+  </div>
+</form>
