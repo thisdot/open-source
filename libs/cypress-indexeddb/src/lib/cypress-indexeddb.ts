@@ -1,4 +1,4 @@
-import { closeDatabaseConnections, getDatabase, getStore, overrideAs } from './alias-setup';
+import { getDatabase, getStore, overrideAs } from './alias-setup';
 import { createObjectStore } from './create-object-store';
 import { deleteDatabase } from './delete-database';
 import { createItem, deleteItem, readItem, updateItem } from './object-store-CRUD';
@@ -6,7 +6,6 @@ import { openIndexedDb } from './open-database';
 
 function setupIDBHelpers(): void {
   Cypress.Commands.overwrite('as', overrideAs);
-  Cypress.Commands.add('closeConnections', closeDatabaseConnections);
   Cypress.Commands.add('clearIndexedDb', deleteDatabase);
   Cypress.Commands.add('openIndexedDb', openIndexedDb);
   Cypress.Commands.add('getIndexedDb', getDatabase);

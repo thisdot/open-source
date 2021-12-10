@@ -8,7 +8,6 @@
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-interface
   interface Chainable<Subject> {
-    closeConnections(): void;
     clearIndexedDb(databaseName: string): void;
     openIndexedDb(databaseName: string, version?: number): Chainable<IDBDatabase>;
     getIndexedDb(databaseName: string): Chainable<IDBDatabase>;

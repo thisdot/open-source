@@ -1,8 +1,4 @@
 describe(`@this-dot/cypress-indexeddb`, () => {
-  afterEach(() => {
-    cy.closeConnections();
-  });
-
   beforeEach(() => {
     cy.clearIndexedDb('FORM_CACHE');
     cy.openIndexedDb('FORM_CACHE')
