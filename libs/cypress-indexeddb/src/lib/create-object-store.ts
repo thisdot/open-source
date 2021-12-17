@@ -1,3 +1,4 @@
+import { isIDBDatabase } from './helpers';
 import { createVersionUpdateDatabaseConnection } from './upgrade-database';
 
 function createObjectStoreInternal(
@@ -42,7 +43,7 @@ export function createObjectStore(
     }),
     autoEnd: false,
   });
-  if (existingDatabase?.constructor?.name !== 'IDBDatabase') {
+  if (!isIDBDatabase(existingDatabase)) {
     error = new Error(
       `You tried to use the 'getObjectStore' method without calling 'openIndexedDb' first`
     );

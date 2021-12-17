@@ -11,7 +11,7 @@ It supports:
 ---
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@this-dot/cypress-indexeddb"><img src="https://img.shields.io/badge/%40this--dot-%2Froute--config-blueviolet" /></a>
+  <a href="https://www.npmjs.com/package/@this-dot/cypress-indexeddb"><img src="https://img.shields.io/badge/%40this--dot-%2Fcypress-indexeddb-blueviolet" /></a>
   <a href="https://www.npmjs.com/package/@this-dot/cypress-indexeddb"><img src="https://img.shields.io/npm/v/@this-dot/cypress-indexeddb" /></a>
   <a href="https://github.com/thisdot/open-source/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://github.com/thisdot/open-source/actions/workflows/ci.yml/badge.svg" /></a>
   <a href="https://github.com/thisdot/open-source/blob/main/LICENSE.md"><img src="https://img.shields.io/npm/l/@this-dot/cypress-indexeddb" /></a>

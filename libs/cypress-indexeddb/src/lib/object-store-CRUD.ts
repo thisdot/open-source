@@ -1,3 +1,4 @@
+import { isIDBObjectStore } from './helpers';
 import { createDatabaseConnection } from './open-database';
 import Log = Cypress.Log;
 
@@ -12,7 +13,7 @@ type ConsolePropObject = {
 
 export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
   const { log, consoleProps } = createCRUDLog('read', key);
-  if (store?.constructor?.name !== 'IDBObjectStore') {
+  if (!isIDBObjectStore(store)) {
     const error = new Error(
       `You tried to use the 'readItem' method without calling 'getObjectStore' first`
     );
@@ -36,7 +37,7 @@ export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
 
 export function deleteItem(store: IDBObjectStore, key: string): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog('delete', key);
-  if (store?.constructor?.name !== 'IDBObjectStore') {
+  if (!isIDBObjectStore(store)) {
     const error = new Error(
       `You tried to use the 'deleteItem' method without calling 'getObjectStore' first`
     );
@@ -81,7 +82,7 @@ function setItem(
 ): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog(operation, key);
   consoleProps.value = value;
-  if (store?.constructor?.name !== 'IDBObjectStore') {
+  if (!isIDBObjectStore(store)) {
     const error = new Error(
       `You tried to use the '${operation}Item' method without calling 'getObjectStore' first`
     );

@@ -1,8 +1,7 @@
 export function createVersionUpdateDatabaseConnection(
   openDatabase: IDBDatabase
 ): Promise<IDBDatabase> {
-  let newVersion: number;
-  let error: any;
+  let error: Event | undefined;
   let databaseVersion: number;
   const databaseName = openDatabase.name;
   const log = Cypress.log({
@@ -28,7 +27,7 @@ export function createVersionUpdateDatabaseConnection(
     request.onupgradeneeded = (e: Event) => {
       request.onerror = () => void 0;
       const db = (e.target as any).result as IDBDatabase;
-      newVersion = db.version;
+      databaseVersion = db.version;
       log.end();
       resolve(db);
     };

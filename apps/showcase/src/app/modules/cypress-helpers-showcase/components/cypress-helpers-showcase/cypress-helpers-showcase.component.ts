@@ -1,13 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { merge, of, Subject, timer } from 'rxjs';
+import { isTruthy } from '@this-dot/utils';
+import { merge, Subject, timer } from 'rxjs';
 import { debounceTime, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { IndexedDbHelperService } from '../../services/indexed-db-helper.service';
 
@@ -22,13 +17,13 @@ const USER_FORM_KEY = 'user_form';
 export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  readonly formGroup = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    country: new FormControl('', Validators.required),
-    city: new FormControl('', Validators.required),
-    address: new FormControl('', Validators.required),
-    addressOptional: new FormControl(''),
+  readonly formGroup = this.formBuilder.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    country: ['', Validators.required],
+    city: ['', Validators.required],
+    address: ['', Validators.required],
+    addressOptional: [''],
   });
   savedToIDB$ = new Subject<void>();
 
@@ -42,9 +37,9 @@ export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, O
 
   ngAfterViewInit() {
     this.indexedDbHelper
-      .getCachedItem<{ [key: string]: string }>(DATABASE_NAME, USER_FORM_KEY)
+      .getCachedItem<Record<string, string>>(DATABASE_NAME, USER_FORM_KEY)
       .pipe(
-        filter((v): v is { [key: string]: string } => v != null),
+        filter(isTruthy),
         tap((value) => this.formGroup.patchValue(value)),
         takeUntil(this.destroy$)
       )
@@ -68,6 +63,7 @@ export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, O
   }
 
   submit(directive: FormGroupDirective): void {
+    // The following merge is for avoiding race conditions.
     merge(this.savedToIDB$.asObservable(), timer(1000))
       .pipe(
         take(1),

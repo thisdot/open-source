@@ -19,7 +19,7 @@ export function createDatabaseConnection(
 }
 
 export function openIndexedDb(databaseName: string, version?: number): Promise<IDBDatabase> {
-  let error: any;
+  let error: Error | undefined;
   let databaseVersion: number;
   const log = Cypress.log({
     name: `open`,
@@ -28,6 +28,7 @@ export function openIndexedDb(databaseName: string, version?: number): Promise<I
     consoleProps: () => ({
       'database version': databaseVersion,
       'database name': databaseName,
+      error: error || 'no',
     }),
     autoEnd: false,
   });

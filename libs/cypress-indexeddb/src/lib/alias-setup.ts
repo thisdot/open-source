@@ -1,17 +1,19 @@
+import { isIDBDatabase, isIDBObjectStore } from './helpers';
+
 const STORES = new Map<string, IDBObjectStore>();
 const DATABASES = new Map<string, IDBDatabase>();
 
 type IDBItemType = 'store' | 'database';
 
 export function overrideAs(
-  originalAs: (subject: any, alias: string) => unknown,
-  subject: any | IDBObjectStore,
+  originalAs: (subject: unknown, alias: string) => any,
+  subject: unknown,
   alias: string
 ) {
-  if (subject?.constructor?.name === 'IDBObjectStore') {
+  if (isIDBObjectStore(subject)) {
     STORES.set(alias, subject);
     return subject;
-  } else if (subject?.constructor?.name === 'IDBDatabase') {
+  } else if (isIDBDatabase(subject)) {
     DATABASES.set(alias, subject);
     return subject;
   } else {

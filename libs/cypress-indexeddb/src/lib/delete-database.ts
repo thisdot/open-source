@@ -1,5 +1,5 @@
 export function deleteDatabase(databaseName: string): Promise<void> {
-  let error: any;
+  let error: Event | undefined;
   const log = Cypress.log({
     name: `delete`,
     type: 'parent',
