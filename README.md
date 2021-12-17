@@ -6,6 +6,7 @@ This repository currently contains the following packages:
 
 - [@this-dot/route-config](./libs/route-config/README.md)
 - [@this-dot/ng-utils](./libs/ng-utils/README.md)
+- [@this-dot/cypress-indexeddb](./libs/cypress-indexeddb/README.md)
 
 ## Demo
 
