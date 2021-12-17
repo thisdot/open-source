@@ -19,6 +19,10 @@
               {
                 "sourceTag": "framework:none",
                 "onlyDependOnLibsWithTags": ["framework:none"]
+              },
+              {
+                "sourceTag": "type:e2e",
+                "onlyDependOnLibsWithTags": ["type:e2e"]
               }
             ]
           }

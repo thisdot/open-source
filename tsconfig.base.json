@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@this-dot/cypress-indexeddb": ["libs/cypress-indexeddb/src/index.ts"],
       "@this-dot/ng-utils": ["libs/ng-utils/src/index.ts"],
       "@this-dot/route-config": ["libs/route-config/src/index.ts"],
       "@this-dot/utils": ["libs/utils/src/index.ts"]

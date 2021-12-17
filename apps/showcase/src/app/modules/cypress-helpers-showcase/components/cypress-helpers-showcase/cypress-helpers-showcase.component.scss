@@ -1,0 +1,18 @@
+.form-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-column-gap: 2rem;
+
+  @media screen and (max-width: 500px) {
+    grid-template-columns: auto;
+  }
+
+  .submit-button {
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    display: flex;
+    justify-content: flex-end;
+  }
+}
