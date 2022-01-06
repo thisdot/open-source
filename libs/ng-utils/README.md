@@ -21,7 +21,7 @@
 Install the package:  
 `npm install @this-dot/ng-utils`  
 or  
-`yarn install @this-dot/ng-utils`
+`yarn add @this-dot/ng-utils`
 
 ## useHttpImgSrc pipe
 

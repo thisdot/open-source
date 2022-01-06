@@ -27,7 +27,7 @@ It supports:
 Install the package:  
 `npm install @this-dot/route-config`  
 or  
-`yarn install @this-dot/route-config`
+`yarn add @this-dot/route-config`
 
 ### Using in your Angular app
 
