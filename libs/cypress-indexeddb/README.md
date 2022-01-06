@@ -11,7 +11,7 @@ It supports:
 ---
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@this-dot/cypress-indexeddb"><img src="https://img.shields.io/badge/%40this--dot-%2Fcypress-indexeddb-blueviolet" /></a>
+  <a href="https://www.npmjs.com/package/@this-dot/cypress-indexeddb"><img src="https://img.shields.io/badge/%40this--dot-%2Fcypress--indexeddb-blueviolet" /></a>
   <a href="https://www.npmjs.com/package/@this-dot/cypress-indexeddb"><img src="https://img.shields.io/npm/v/@this-dot/cypress-indexeddb" /></a>
   <a href="https://github.com/thisdot/open-source/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://github.com/thisdot/open-source/actions/workflows/ci.yml/badge.svg" /></a>
   <a href="https://github.com/thisdot/open-source/blob/main/LICENSE.md"><img src="https://img.shields.io/npm/l/@this-dot/cypress-indexeddb" /></a>
@@ -27,7 +27,7 @@ It supports:
 1. Install the package:  
    `npm install @this-dot/cypress-indexeddb`  
    or  
-   `yarn install @this-dot/cypress-indexeddb`
+   `yarn add @this-dot/cypress-indexeddb`
 
 2. Import the plugin in your `cypress/support/commands.js` or `cypress/support/commands.ts` file:
 
@@ -43,6 +43,7 @@ It supports:
         interface Chainable<Subject> {
           clearIndexedDb(databaseName: string): void;
           openIndexedDb(databaseName: string, version?: number): Chainable<IDBDatabase>;
+          getIndexedDb(databaseName: string): Chainable<IDBDatabase>;
           createObjectStore(storeName: string): Chainable<IDBObjectStore>;
           getStore(storeName: string): Chainable<IDBObjectStore>;
           createItem(key: string, value: unknown): Chainable<IDBObjectStore>;
