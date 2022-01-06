@@ -32,7 +32,8 @@
             "assets": ["libs/cypress-indexeddb/*.md"]
           }
         }
-      }
+      },
+      "tags": ["framework:none", "type:e2e"]
     },
     "ng-utils": {
       "projectType": "library",
