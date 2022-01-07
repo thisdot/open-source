@@ -4,6 +4,7 @@ import { createVersionUpdateDatabaseConnection } from './upgrade-database';
 function createObjectStoreInternal(
   database: IDBDatabase,
   storeName: string,
+  options: IDBObjectStoreParameters | null,
   isExistingStore: boolean
 ): Promise<IDBObjectStore> {
   let store: IDBObjectStore;
@@ -11,7 +12,9 @@ function createObjectStoreInternal(
   if (isExistingStore) {
     store = database.transaction(storeName, 'readwrite').objectStore(storeName);
   } else {
-    store = database.createObjectStore(storeName);
+    store = options
+      ? database.createObjectStore(storeName, options)
+      : database.createObjectStore(storeName);
   }
 
   return new Promise<IDBObjectStore>((resolve, reject) => {
@@ -27,7 +30,8 @@ function createObjectStoreInternal(
 
 export function createObjectStore(
   existingDatabase: IDBDatabase,
-  storeName: string
+  storeName: string,
+  options?: IDBObjectStoreParameters
 ): Promise<IDBObjectStore> {
   let error: any;
   const isExistingStore = existingDatabase.objectStoreNames.contains(storeName);
@@ -37,6 +41,7 @@ export function createObjectStore(
     message: `IDBObjectStore - ${storeName}`,
     consoleProps: () => ({
       'store name': storeName,
+      'store creation options': options || 'default',
       'did store exist before?': isExistingStore,
       'database name': existingDatabase.name,
       error: error || 'no',
@@ -52,7 +57,7 @@ export function createObjectStore(
   }
   return createVersionUpdateDatabaseConnection(existingDatabase)
     .then((versionUpdateDatabase: IDBDatabase) =>
-      createObjectStoreInternal(versionUpdateDatabase, storeName, isExistingStore)
+      createObjectStoreInternal(versionUpdateDatabase, storeName, options || null, isExistingStore)
     )
     .then((store) => {
       log.end();

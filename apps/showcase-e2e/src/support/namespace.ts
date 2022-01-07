@@ -11,11 +11,17 @@ declare namespace Cypress {
     clearIndexedDb(databaseName: string): void;
     openIndexedDb(databaseName: string, version?: number): Chainable<IDBDatabase>;
     getIndexedDb(databaseName: string): Chainable<IDBDatabase>;
-    createObjectStore(storeName: string): Chainable<IDBObjectStore>;
+    createObjectStore(
+      storeName: string,
+      options?: IDBObjectStoreParameters
+    ): Chainable<IDBObjectStore>;
     getStore(storeName: string): Chainable<IDBObjectStore>;
     createItem(key: string, value: unknown): Chainable<IDBObjectStore>;
     readItem<T = unknown>(key: IDBValidKey | IDBKeyRange): Chainable<T>;
     updateItem(key: string, value: unknown): Chainable<IDBObjectStore>;
     deleteItem(key: string): Chainable<IDBObjectStore>;
+    addItem<T = unknown>(value: T): Chainable<IDBObjectStore>;
+    keys(): Chainable<IDBValidKey[]>;
+    entries<T = unknown>(): Chainable<T[]>;
   }
 }

@@ -44,12 +44,18 @@ It supports:
           clearIndexedDb(databaseName: string): void;
           openIndexedDb(databaseName: string, version?: number): Chainable<IDBDatabase>;
           getIndexedDb(databaseName: string): Chainable<IDBDatabase>;
-          createObjectStore(storeName: string): Chainable<IDBObjectStore>;
+          createObjectStore(
+            storeName: string,
+            options?: IDBObjectStoreParameters
+          ): Chainable<IDBObjectStore>;
           getStore(storeName: string): Chainable<IDBObjectStore>;
           createItem(key: string, value: unknown): Chainable<IDBObjectStore>;
           readItem<T = unknown>(key: IDBValidKey | IDBKeyRange): Chainable<T>;
           updateItem(key: string, value: unknown): Chainable<IDBObjectStore>;
           deleteItem(key: string): Chainable<IDBObjectStore>;
+          addItem<T = unknown>(value: T): Chainable<IDBObjectStore>;
+          keys(): Chainable<IDBValidKey[]>;
+          entries<T = unknown>(): Chainable<T[]>;
         }
       }
       ```
@@ -95,6 +101,14 @@ You can chain off the `createObjectStore('storeName')` method from methods that 
 cy.getIndexedDb('@database').createObjectStore('example_store').as('exampleStore');
 ```
 
+You can also pass an optional options parameter to configure your object store. For example, you can create an object store with `autoIncrement` with the following command:
+
+```typescript
+cy.getIndexedDb('@database')
+  .createObjectStore('example_store', { autoIncrement: true })
+  .as('exampleStore');
+```
+
 You can retrieve the saved object store using the `cy.getStore('@exampleStore')`;
 
 #### How to make CRUD operations on an Object Store?
@@ -111,6 +125,8 @@ cy.getStore('@exampleStore')
   .createItem('example2', ['testValue', 'testValue2'])
   .createItem('example3', { exampleKey: 1337 });
 ```
+
+// TODO: addItem, keys and entries
 
 The `readItem` method yields the value of the provided key, or undefined if it does not exist. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value.
 

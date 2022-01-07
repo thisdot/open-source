@@ -1,10 +1,27 @@
 describe(`@this-dot/cypress-indexeddb`, () => {
   beforeEach(() => {
     cy.clearIndexedDb('FORM_CACHE');
+    cy.clearIndexedDb('ADD_ITEM_KEYS_ENTRIES');
     cy.openIndexedDb('FORM_CACHE')
       .as('formCacheDB')
       .createObjectStore('keyvaluepairs')
       .as('objectStore');
+  });
+
+  it(`can add items without providing keys and retrieve keys and values`, () => {
+    cy.openIndexedDb('ADD_ITEM_KEYS_ENTRIES')
+      .createObjectStore('test_add_item', { autoIncrement: true })
+      .as('test_add_item')
+      .addItem('test')
+      .addItem({ test: 'object' })
+      .addItem(1337);
+
+    cy.getStore('@test_add_item').keys().should('have.length', 3).and('deep.equal', [1, 2, 3]);
+
+    cy.getStore('@test_add_item')
+      .entries()
+      .should('have.length', 3)
+      .and('deep.equal', ['test', { test: 'object' }, 1337]);
   });
 
   it(`entering data into the form saves it to the indexedDb`, () => {
@@ -42,7 +59,9 @@ describe(`@this-dot/cypress-indexeddb`, () => {
     cy.log('user manually clears the IndexedDb')
       .getStore('@objectStore')
       .deleteItem('user_form')
-      .reload();
+      .keys()
+      .should('have.length', 0);
+    cy.reload();
 
     cy.get('#firstName').should('be.visible').and('have.value', '');
     cy.get('#lastName').should('be.visible').and('have.value', '');

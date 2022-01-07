@@ -1,10 +1,10 @@
-import { isIDBObjectStore } from './helpers';
+import { getCommandArguments, isIDBObjectStore } from './helpers';
 import { createDatabaseConnection } from './open-database';
 import Log = Cypress.Log;
 
-type SetItemOperation = 'create' | 'update';
+type SetItemOperation = 'create' | 'update' | 'add';
 type ReadDeleteOperation = 'read' | 'delete';
-type StoreOperation = keyof Pick<IDBObjectStore, 'get' | 'put' | 'delete'>;
+type StoreOperation = keyof Pick<IDBObjectStore, 'get' | 'put' | 'delete' | 'add'>;
 type ConsolePropObject = {
   key: string;
   value?: unknown;
@@ -22,8 +22,8 @@ export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
     throw error;
   }
   return createDatabaseConnection(store.transaction.db.name)
-    .then((openDb) => makeCreateUpdateDeleteRequest<T>('get', openDb, store, key))
-    .then((result) => {
+    .then((openDb: IDBDatabase) => makeCreateUpdateDeleteRequest<T>('get', openDb, store, key))
+    .then((result: T) => {
       consoleProps.value = result;
       log.end();
       return result as T;
@@ -46,8 +46,10 @@ export function deleteItem(store: IDBObjectStore, key: string): Promise<IDBObjec
     throw error;
   }
   return createDatabaseConnection(store.transaction.db.name)
-    .then((openDb) => makeCreateUpdateDeleteRequest<IDBObjectStore>('delete', openDb, store, key))
-    .then((store) => {
+    .then((openDb: IDBDatabase) =>
+      makeCreateUpdateDeleteRequest<IDBObjectStore>('delete', openDb, store, key)
+    )
+    .then((store: IDBObjectStore) => {
       log.end();
       return store;
     })
@@ -63,7 +65,7 @@ export function createItem(
   key: string,
   value: unknown
 ): Promise<IDBObjectStore> {
-  return setItem('create', store, key, value);
+  return setItem('add', store, key, value);
 }
 
 export function updateItem(
@@ -74,10 +76,14 @@ export function updateItem(
   return setItem('update', store, key, value);
 }
 
+export function addItem(store: IDBObjectStore, value: unknown): Promise<IDBObjectStore> {
+  return setItem('add', store, null, value);
+}
+
 function setItem(
   operation: SetItemOperation,
   store: IDBObjectStore,
-  key: string,
+  key: string | null,
   value: unknown
 ): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog(operation, key);
@@ -92,10 +98,16 @@ function setItem(
   }
 
   return createDatabaseConnection(store.transaction.db.name)
-    .then((openDb) =>
-      makeCreateUpdateDeleteRequest<IDBObjectStore, unknown>('put', openDb, store, key, value)
+    .then((openDb: IDBDatabase) =>
+      makeCreateUpdateDeleteRequest<IDBObjectStore, unknown>(
+        key ? 'put' : 'add',
+        openDb,
+        store,
+        key,
+        value
+      )
     )
-    .then((store) => {
+    .then((store: IDBObjectStore) => {
       log.end();
       return store;
     })
@@ -110,10 +122,10 @@ function makeCreateUpdateDeleteRequest<T, O = undefined>(
   operation: StoreOperation,
   db: IDBDatabase,
   store: IDBObjectStore,
-  key: string,
+  key: string | null,
   value?: O
 ): Promise<T> {
-  const commandArguments: [O, string] | [string] = value ? [value, key] : [key];
+  const commandArguments = getCommandArguments(key, value);
   return new Promise((resolve, reject) => {
     const request: IDBRequest = db
       .transaction(store.name, 'readwrite')
@@ -135,10 +147,10 @@ function makeCreateUpdateDeleteRequest<T, O = undefined>(
 
 function createCRUDLog(
   operation: SetItemOperation | ReadDeleteOperation,
-  key: string
+  key: string | null
 ): { log: Log; consoleProps: ConsolePropObject } {
   const consoleProps: ConsolePropObject = {
-    key,
+    key: key || 'no key provided',
   };
   const log = Cypress.log({
     autoEnd: false,
