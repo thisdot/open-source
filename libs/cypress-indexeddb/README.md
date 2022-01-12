@@ -44,12 +44,18 @@ It supports:
           clearIndexedDb(databaseName: string): void;
           openIndexedDb(databaseName: string, version?: number): Chainable<IDBDatabase>;
           getIndexedDb(databaseName: string): Chainable<IDBDatabase>;
-          createObjectStore(storeName: string): Chainable<IDBObjectStore>;
+          createObjectStore(
+            storeName: string,
+            options?: IDBObjectStoreParameters
+          ): Chainable<IDBObjectStore>;
           getStore(storeName: string): Chainable<IDBObjectStore>;
           createItem(key: string, value: unknown): Chainable<IDBObjectStore>;
           readItem<T = unknown>(key: IDBValidKey | IDBKeyRange): Chainable<T>;
           updateItem(key: string, value: unknown): Chainable<IDBObjectStore>;
           deleteItem(key: string): Chainable<IDBObjectStore>;
+          addItem<T = unknown>(value: T): Chainable<IDBObjectStore>;
+          keys(): Chainable<IDBValidKey[]>;
+          entries<T = unknown>(): Chainable<T[]>;
         }
       }
       ```
@@ -95,6 +101,14 @@ You can chain off the `createObjectStore('storeName')` method from methods that 
 cy.getIndexedDb('@database').createObjectStore('example_store').as('exampleStore');
 ```
 
+You can also pass an optional options parameter to configure your object store. For example, you can create an object store with `autoIncrement` with the following command:
+
+```typescript
+cy.getIndexedDb('@database')
+  .createObjectStore('example_autoincrement_store', { autoIncrement: true })
+  .as('exampleAutoincrementStore');
+```
+
 You can retrieve the saved object store using the `cy.getStore('@exampleStore')`;
 
 #### How to make CRUD operations on an Object Store?
@@ -120,6 +134,34 @@ cy.getStore('@exampleStore').readItem<string[]>('example2').should('have.length'
 cy.getStore('@exampleStore')
   .readItem<number>('example3')
   .should('have.property', 'exampleKey', 1337);
+```
+
+#### How to handle Object Stores with autoIncrement?
+
+When you need to manipulate or assert data stored in an Object Store, that was set up with `{ autoIncrement: true }`, you have the following commands at your disposal: `addItem`, `keys` and `entries`.
+
+The `addItem` method stores the provided value into the Object Store at a new index
+
+```typescript
+cy.getStore('@exampleAutoincrementStore').addItem('test').addItem({ test: 'object' }).addItem(1337);
+```
+
+The `keys` method returns an `IDBValidKey[]`. You can assert the results using the `.should()` method.
+
+```typescript
+cy.getStore('@exampleAutoincrementStore')
+  .keys()
+  .should('have.length', 3)
+  .and('deep.equal', [1, 2, 3]);
+```
+
+The `entries` method returns all the values that are stored in order. You can assert the results using the `.should()` method.
+
+```typescript
+cy.getStore('@exampleAutoincrementStore')
+  .entries()
+  .should('have.length', 3)
+  .and('deep.equal', ['test', { test: 'object' }, 1337]);
 ```
 
 ---
