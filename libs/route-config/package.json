@@ -1,6 +1,6 @@
 {
   "name": "@this-dot/route-config",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "A library containing directives and services for configuring components via Route's routeData property",
   "license": "MIT",
   "author": "This Dot Labs",
