@@ -65,7 +65,7 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
         tap(() => (this.latestValue = undefined)),
         switchMap((imagePath: string) =>
           this.httpClient.get(imagePath, { observe: 'response', responseType: 'blob' }).pipe(
-            map((response: HttpResponse<Blob>) => URL.createObjectURL(response.body)),
+            map((response: HttpResponse<Blob>) => URL.createObjectURL(response.body as Blob)),
             tap((blobUrl) => {
               this.revokeLatestBlob();
               this.latestBlobUrl = blobUrl;

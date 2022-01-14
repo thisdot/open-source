@@ -19,7 +19,7 @@ export interface RouteDataDirectiveContext<C> {
   selector: '[tdRouteData]',
 })
 export class RouteDataDirective<C extends RouteData> implements OnInit, OnDestroy {
-  private destroy$ = new Subject();
+  private destroy$ = new Subject<void>();
 
   private defaultValue$ = new BehaviorSubject<Partial<C>>({});
   private view!: EmbeddedViewRef<RouteDataDirectiveContext<Partial<C>>>;
