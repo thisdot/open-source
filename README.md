@@ -18,3 +18,10 @@ You can try out our showcase application by following the steps below
 ## How to contribute
 
 Follow our [contributing guidelines](CONTRIBUTING.md).
+
+## Publications
+
+- [Introducing our first open-source library: @this-dot/route-config](https://www.thisdot.co/blog/introducing-our-first-open-source-library-this-dot-route-config)
+- [Getting authenticated images in Angular](https://www.thisdot.co/blog/getting-authenticated-images-in-angular)
+- [What's new in @this-dot/route-config v1.2](https://www.thisdot.co/blog/whats-new-in-this-dot-route-config-v1-2)
+- [Cypress testing your IndexedDb contents with @this-dot/cypress-indexeddb](https://www.thisdot.co/blog/cypress-testing-your-indexeddb-contents-with-this-dot-cypress-indexeddb)
