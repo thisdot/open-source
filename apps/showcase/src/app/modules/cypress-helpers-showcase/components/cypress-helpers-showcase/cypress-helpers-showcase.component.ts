@@ -24,10 +24,7 @@ const USER_FORM_KEY = 'user_form';
   providers: [
     {
       provide: 'STORE',
-      useValue: connectIndexedDb(DATABASE_NAME).pipe(
-        getObjectStore('keyvaluepairs'),
-        share({ connector: () => new ReplaySubject(1) })
-      ),
+      useValue: connectIndexedDb(DATABASE_NAME).pipe(getObjectStore('keyvaluepairs')),
     },
   ],
 })
@@ -46,12 +43,9 @@ export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, O
 
   constructor(
     private formBuilder: FormBuilder,
-    // private indexedDbHelper: IndexedDbHelperService,
     private snackbar: MatSnackBar,
     @Inject('STORE') private store$: Observable<IDBObjectStore>
-  ) {
-    // this.indexedDbHelper.initStorage(DATABASE_NAME);
-  }
+  ) {}
 
   ngAfterViewInit() {
     this.store$
@@ -77,7 +71,6 @@ export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, O
       .pipe(
         debounceTime(1000),
         switchMap((value) => this.store$.pipe(updateItem(USER_FORM_KEY, value))),
-        // switchMap((value) => this.indexedDbHelper.cacheItem(DATABASE_NAME, USER_FORM_KEY, value)),
         tap(() => this.savedToIDB$.next()),
         takeUntil(this.destroy$)
       )

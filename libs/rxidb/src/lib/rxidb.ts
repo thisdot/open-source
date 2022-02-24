@@ -1,4 +1,32 @@
-import { filter, from, map, noop, Observable, of, ReplaySubject, startWith, switchMap } from 'rxjs';
+import {
+  filter,
+  from,
+  map,
+  noop,
+  Observable,
+  of,
+  ReplaySubject,
+  share,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
+
+const DATABASE_DELETE_EVENTS = new Subject<string>();
+
+export function deleteIndexedDb(name: string): Observable<void> {
+  const deleteDbSubject = new Subject<void>();
+  const request: IDBOpenDBRequest = window.indexedDB.deleteDatabase(name);
+
+  request.onsuccess = () => {
+    DATABASE_DELETE_EVENTS.next(name);
+    deleteDbSubject.next();
+    deleteDbSubject.complete();
+  };
+
+  return deleteDbSubject.asObservable();
+}
 
 export function connectIndexedDb(name: string, version?: number): Observable<IDBDatabase> {
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
@@ -14,9 +42,15 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
     request.onerror = noop;
     const db = (e.target as any).result as IDBDatabase;
     dbSubject.next(db);
+
+    db.onclose = () => {
+      dbSubject.complete();
+    };
   };
 
-  return dbSubject.asObservable();
+  return dbSubject
+    .asObservable()
+    .pipe(takeUntil(DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === name))));
 }
 
 export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase> {
@@ -42,9 +76,19 @@ export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase
         request.onerror = noop;
         const db = (e.target as any).result as IDBDatabase;
         dbSubject.next(db);
+
+        db.onclose = () => {
+          dbSubject.complete();
+        };
       };
 
-      return dbSubject.asObservable();
+      return dbSubject
+        .asObservable()
+        .pipe(
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
+          )
+        );
     })
   );
 }
@@ -53,7 +97,6 @@ export function getObjectStore(
   name: string,
   options?: IDBObjectStoreParameters
 ): (s$: Observable<IDBDatabase>) => Observable<IDBObjectStore> {
-  const storeSubject = new ReplaySubject<IDBObjectStore>(1);
   return (s$) =>
     s$.pipe(
       switchMap((existingDb: IDBDatabase) => {
@@ -61,6 +104,7 @@ export function getObjectStore(
         const upgrade = isExistingDatabase ? of(existingDb) : upgradeDatabase(existingDb);
         return upgrade.pipe(
           switchMap((db: IDBDatabase) => {
+            const storeSubject = new Subject<IDBObjectStore>();
             let store: IDBObjectStore;
             if (isExistingDatabase) {
               store = db.transaction(name, 'readwrite').objectStore(name);
@@ -74,13 +118,18 @@ export function getObjectStore(
             };
 
             store.transaction.onerror = (e) => {
+              db.close();
               storeSubject.error(e);
             };
 
             return storeSubject.asObservable();
-          })
+          }),
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
+          )
         );
-      })
+      }),
+      share({ connector: () => new ReplaySubject(1) })
     );
 }
 
@@ -112,6 +161,7 @@ export function createItem<T = unknown>(
               .add(value, key);
 
             request.onerror = (e) => {
+              openDb.close();
               objectStoreSubject.complete();
             };
 
@@ -158,6 +208,7 @@ export function updateItem<T = unknown>(
               .put(value, key);
 
             request.onerror = (e) => {
+              openDb.close();
               objectStoreSubject.complete();
             };
 
@@ -231,6 +282,11 @@ export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>)
       switchMap((store: IDBObjectStore) =>
         VALUE_CHANGED.asObservable().pipe(
           startWith({ db: store.transaction.db.name, store: store.name, key }),
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(
+              filter((db) => db === store.transaction.db.name)
+            )
+          ),
           filter(
             (dbChange) =>
               dbChange.db === store.transaction.db.name &&
@@ -257,6 +313,7 @@ export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>)
               .get(key);
 
             request.onerror = (e) => {
+              openDb.close();
               resultSubject.complete();
             };
 
@@ -279,6 +336,11 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
       switchMap((store: IDBObjectStore) =>
         KEY_CHANGED.asObservable().pipe(
           startWith({ db: store.transaction.db.name, store: store.name }),
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(
+              filter((db) => db === store.transaction.db.name)
+            )
+          ),
           filter(
             (dbChange) => dbChange.db === store.transaction.db.name && dbChange.store === store.name
           ),
@@ -302,6 +364,7 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
               .getAllKeys();
 
             request.onerror = (e) => {
+              openDb.close();
               resultSubject.complete();
             };
 
@@ -324,6 +387,11 @@ export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observabl
       switchMap((store: IDBObjectStore) =>
         VALUE_CHANGED.asObservable().pipe(
           startWith({ db: store.transaction.db.name, store: store.name }),
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(
+              filter((db) => db === store.transaction.db.name)
+            )
+          ),
           filter(
             (dbChange) => dbChange.db === store.transaction.db.name && dbChange.store === store.name
           ),
@@ -347,6 +415,7 @@ export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observabl
               .getAll();
 
             request.onerror = (e) => {
+              openDb.close();
               resultSubject.complete();
             };
 
