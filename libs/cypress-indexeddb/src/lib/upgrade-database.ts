@@ -20,11 +20,8 @@ export function createVersionUpdateDatabaseConnection(
   });
   return new Promise<IDBDatabase>((resolve, reject) => {
     openDatabase.close();
-    console.warn('openDb', openDatabase);
     const request: IDBOpenDBRequest = window.indexedDB.open(databaseName, openDatabase.version + 1);
-    console.warn('update db request', request);
     request.onerror = (e: Event) => {
-      console.warn('error');
       error = e;
       log.error(e as unknown as Error).end();
       reject(e);

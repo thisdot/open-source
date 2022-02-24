@@ -10,12 +10,6 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
     dbSubject.error(e);
   };
 
-  // request.onupgradeneeded = (e: IDBVersionChangeEvent) => {
-  //   const db = (e.target as any).result as IDBDatabase;
-  //   db.close();
-  //   dbSubject.error(`This should not have been a version update event!`);
-  // };
-
   request.onsuccess = (e) => {
     request.onerror = noop;
     const db = (e.target as any).result as IDBDatabase;
@@ -47,15 +41,8 @@ export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase
       request.onupgradeneeded = (e: IDBVersionChangeEvent) => {
         request.onerror = noop;
         const db = (e.target as any).result as IDBDatabase;
-        console.warn('this onupgradeneeded runs');
         dbSubject.next(db);
       };
-
-      // request.onsuccess = (e) => {
-      //   const db = (e.target as any).result as IDBDatabase;
-      //   db.close();
-      //   dbSubject.error(`This should have been a version update event!`);
-      // };
 
       return dbSubject.asObservable();
     })
@@ -111,13 +98,22 @@ export function createItem<T = unknown>(
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
+          filter((db: IDBDatabase) => {
+            if (db.objectStoreNames.contains(store.name)) {
+              return true;
+            }
+            db.close();
+            return false;
+          }),
           switchMap((openDb: IDBDatabase) => {
             const request: IDBRequest = openDb
               .transaction(store.name, 'readwrite')
               .objectStore(store.name)
               .add(value, key);
 
-            request.onerror = (e) => objectStoreSubject.error(e);
+            request.onerror = (e) => {
+              objectStoreSubject.complete();
+            };
 
             request.onsuccess = () => {
               request.onerror = noop;
@@ -148,13 +144,22 @@ export function updateItem<T = unknown>(
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
+          filter((db: IDBDatabase) => {
+            if (db.objectStoreNames.contains(store.name)) {
+              return true;
+            }
+            db.close();
+            return false;
+          }),
           switchMap((openDb: IDBDatabase) => {
             const request: IDBRequest = openDb
               .transaction(store.name, 'readwrite')
               .objectStore(store.name)
               .put(value, key);
 
-            request.onerror = (e) => objectStoreSubject.error(e);
+            request.onerror = (e) => {
+              objectStoreSubject.complete();
+            };
 
             request.onsuccess = () => {
               request.onerror = noop;
@@ -183,13 +188,22 @@ export function deleteItem(
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
+          filter((db: IDBDatabase) => {
+            if (db.objectStoreNames.contains(store.name)) {
+              return true;
+            }
+            db.close();
+            return false;
+          }),
           switchMap((openDb: IDBDatabase) => {
             const request: IDBRequest = openDb
               .transaction(store.name, 'readwrite')
               .objectStore(store.name)
               .delete(key);
 
-            request.onerror = (e) => objectStoreSubject.error(e);
+            request.onerror = (e) => {
+              objectStoreSubject.complete();
+            };
 
             request.onsuccess = () => {
               request.onerror = noop;
@@ -228,6 +242,13 @@ export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>)
       ),
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
+          filter((db: IDBDatabase) => {
+            if (db.objectStoreNames.contains(store.name)) {
+              return true;
+            }
+            db.close();
+            return false;
+          }),
           switchMap((openDb: IDBDatabase) => {
             const resultSubject = new ReplaySubject<T>(1);
             const request: IDBRequest = openDb
@@ -235,7 +256,9 @@ export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>)
               .objectStore(store.name)
               .get(key);
 
-            request.onerror = (e) => resultSubject.error(e);
+            request.onerror = (e) => {
+              resultSubject.complete();
+            };
 
             request.onsuccess = () => {
               request.onerror = noop;
@@ -264,6 +287,13 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
       ),
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
+          filter((db: IDBDatabase) => {
+            if (db.objectStoreNames.contains(store.name)) {
+              return true;
+            }
+            db.close();
+            return false;
+          }),
           switchMap((openDb: IDBDatabase) => {
             const resultSubject = new ReplaySubject<IDBValidKey[]>(1);
             const request: IDBRequest = openDb
@@ -271,7 +301,9 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
               .objectStore(store.name)
               .getAllKeys();
 
-            request.onerror = (e) => resultSubject.error(e);
+            request.onerror = (e) => {
+              resultSubject.complete();
+            };
 
             request.onsuccess = () => {
               request.onerror = noop;
@@ -300,6 +332,13 @@ export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observabl
       ),
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
+          filter((db: IDBDatabase) => {
+            if (db.objectStoreNames.contains(store.name)) {
+              return true;
+            }
+            db.close();
+            return false;
+          }),
           switchMap((openDb: IDBDatabase) => {
             const resultSubject = new ReplaySubject<T>(1);
             const request: IDBRequest<any[]> = openDb
@@ -307,7 +346,9 @@ export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observabl
               .objectStore(store.name)
               .getAll();
 
-            request.onerror = (e) => resultSubject.error(e);
+            request.onerror = (e) => {
+              resultSubject.complete();
+            };
 
             request.onsuccess = () => {
               request.onerror = noop;
