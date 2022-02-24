@@ -12,8 +12,13 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-
-const DATABASE_DELETE_EVENTS = new Subject<string>();
+import {
+  filterKeyEventsForStore,
+  filterValueEventsForStore,
+  filterValueEventsForStoreKey,
+} from './helpers/rxidb-events.helpers';
+import { filterIfStoreDoesNotExist } from './helpers/rxidb-object-store.helpers';
+import { DATABASE_DELETE_EVENTS, KEY_CHANGED, VALUE_CHANGED } from './rxidb-internal.events';
 
 export function deleteIndexedDb(name: string): Observable<void> {
   const deleteDbSubject = new Subject<void>();
@@ -133,11 +138,6 @@ export function getObjectStore(
     );
 }
 
-type DbChangeMetadata = { db: string; store: string; key: string };
-
-const KEY_CHANGED = new ReplaySubject<DbChangeMetadata>(1);
-const VALUE_CHANGED = new ReplaySubject<DbChangeMetadata>(1);
-
 export function createItem<T = unknown>(
   key: string,
   value: T
@@ -147,13 +147,7 @@ export function createItem<T = unknown>(
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
-          filter((db: IDBDatabase) => {
-            if (db.objectStoreNames.contains(store.name)) {
-              return true;
-            }
-            db.close();
-            return false;
-          }),
+          filterIfStoreDoesNotExist(store),
           switchMap((openDb: IDBDatabase) => {
             const request: IDBRequest = openDb
               .transaction(store.name, 'readwrite')
@@ -194,13 +188,7 @@ export function updateItem<T = unknown>(
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
-          filter((db: IDBDatabase) => {
-            if (db.objectStoreNames.contains(store.name)) {
-              return true;
-            }
-            db.close();
-            return false;
-          }),
+          filterIfStoreDoesNotExist(store),
           switchMap((openDb: IDBDatabase) => {
             const request: IDBRequest = openDb
               .transaction(store.name, 'readwrite')
@@ -239,13 +227,7 @@ export function deleteItem(
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
-          filter((db: IDBDatabase) => {
-            if (db.objectStoreNames.contains(store.name)) {
-              return true;
-            }
-            db.close();
-            return false;
-          }),
+          filterIfStoreDoesNotExist(store),
           switchMap((openDb: IDBDatabase) => {
             const request: IDBRequest = openDb
               .transaction(store.name, 'readwrite')
@@ -279,32 +261,10 @@ export function deleteItem(
 export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>) => Observable<T> {
   return (s$) =>
     s$.pipe(
-      switchMap((store: IDBObjectStore) =>
-        VALUE_CHANGED.asObservable().pipe(
-          startWith({ db: store.transaction.db.name, store: store.name, key }),
-          takeUntil(
-            DATABASE_DELETE_EVENTS.asObservable().pipe(
-              filter((db) => db === store.transaction.db.name)
-            )
-          ),
-          filter(
-            (dbChange) =>
-              dbChange.db === store.transaction.db.name &&
-              dbChange.store === store.name &&
-              dbChange.key === key
-          ),
-          map(() => store)
-        )
-      ),
+      filterValueEventsForStoreKey(key),
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
-          filter((db: IDBDatabase) => {
-            if (db.objectStoreNames.contains(store.name)) {
-              return true;
-            }
-            db.close();
-            return false;
-          }),
+          filterIfStoreDoesNotExist(store),
           switchMap((openDb: IDBDatabase) => {
             const resultSubject = new ReplaySubject<T>(1);
             const request: IDBRequest = openDb
@@ -333,29 +293,10 @@ export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>)
 export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidKey[]> {
   return (s$) =>
     s$.pipe(
-      switchMap((store: IDBObjectStore) =>
-        KEY_CHANGED.asObservable().pipe(
-          startWith({ db: store.transaction.db.name, store: store.name }),
-          takeUntil(
-            DATABASE_DELETE_EVENTS.asObservable().pipe(
-              filter((db) => db === store.transaction.db.name)
-            )
-          ),
-          filter(
-            (dbChange) => dbChange.db === store.transaction.db.name && dbChange.store === store.name
-          ),
-          map(() => store)
-        )
-      ),
+      filterKeyEventsForStore(),
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
-          filter((db: IDBDatabase) => {
-            if (db.objectStoreNames.contains(store.name)) {
-              return true;
-            }
-            db.close();
-            return false;
-          }),
+          filterIfStoreDoesNotExist(store),
           switchMap((openDb: IDBDatabase) => {
             const resultSubject = new ReplaySubject<IDBValidKey[]>(1);
             const request: IDBRequest = openDb
@@ -384,29 +325,10 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
 export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observable<T> {
   return (s$) =>
     s$.pipe(
-      switchMap((store: IDBObjectStore) =>
-        VALUE_CHANGED.asObservable().pipe(
-          startWith({ db: store.transaction.db.name, store: store.name }),
-          takeUntil(
-            DATABASE_DELETE_EVENTS.asObservable().pipe(
-              filter((db) => db === store.transaction.db.name)
-            )
-          ),
-          filter(
-            (dbChange) => dbChange.db === store.transaction.db.name && dbChange.store === store.name
-          ),
-          map(() => store)
-        )
-      ),
+      filterValueEventsForStore(),
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
-          filter((db: IDBDatabase) => {
-            if (db.objectStoreNames.contains(store.name)) {
-              return true;
-            }
-            db.close();
-            return false;
-          }),
+          filterIfStoreDoesNotExist(store),
           switchMap((openDb: IDBDatabase) => {
             const resultSubject = new ReplaySubject<T>(1);
             const request: IDBRequest<any[]> = openDb
