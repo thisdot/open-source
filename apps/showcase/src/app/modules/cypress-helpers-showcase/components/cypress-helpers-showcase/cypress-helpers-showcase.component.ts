@@ -1,18 +1,10 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {
-  connectIndexedDb,
-  createItem,
-  deleteItem,
-  getObjectStore,
-  read,
-  updateItem,
-} from '@this-dot/rxidb';
+import { connectIndexedDb, deleteItem, getObjectStore, read, setItem } from '@this-dot/rxidb';
 import { isTruthy } from '@this-dot/utils';
-import { merge, Observable, ReplaySubject, share, Subject, timer } from 'rxjs';
+import { merge, Observable, Subject, timer } from 'rxjs';
 import { debounceTime, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { IndexedDbHelperService } from '../../services/indexed-db-helper.service';
 
 const DATABASE_NAME = 'FORM_CACHE';
 const USER_FORM_KEY = 'user_form';
@@ -24,7 +16,7 @@ const USER_FORM_KEY = 'user_form';
   providers: [
     {
       provide: 'STORE',
-      useValue: connectIndexedDb(DATABASE_NAME).pipe(getObjectStore('keyvaluepairs')),
+      useValue: connectIndexedDb(DATABASE_NAME).pipe(getObjectStore('user_form_store')),
     },
   ],
 })
@@ -56,21 +48,13 @@ export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, O
         takeUntil(this.destroy$)
       )
       .subscribe();
-    //   this.indexedDbHelper
-    //     .getCachedItem<Record<string, string>>(DATABASE_NAME, USER_FORM_KEY)
-    //     .pipe(
-    //       filter(isTruthy),
-    //       tap((value) => this.formGroup.patchValue(value)),
-    //       takeUntil(this.destroy$)
-    //     )
-    //     .subscribe();
   }
 
   ngOnInit(): void {
     this.formGroup.valueChanges
       .pipe(
         debounceTime(1000),
-        switchMap((value) => this.store$.pipe(updateItem(USER_FORM_KEY, value))),
+        switchMap((value) => this.store$.pipe(setItem(USER_FORM_KEY, value))),
         tap(() => this.savedToIDB$.next()),
         takeUntil(this.destroy$)
       )
@@ -88,7 +72,6 @@ export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, O
       .pipe(
         take(1),
         switchMap(() => this.store$.pipe(deleteItem(USER_FORM_KEY))),
-        // switchMap(() => this.indexedDbHelper.invalidateCacheEntry(DATABASE_NAME, USER_FORM_KEY)),
         tap(() => {
           directive.resetForm();
           this.openSnackbar();

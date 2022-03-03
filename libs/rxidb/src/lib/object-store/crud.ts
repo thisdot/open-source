@@ -1,84 +1,49 @@
+import { Observable, switchMap, tap } from 'rxjs';
 import { connectIndexedDb } from '../database';
-import { noop, Observable, ReplaySubject, switchMap } from 'rxjs';
 import { filterValueEventsForStoreKey } from '../helpers/rxidb-events.helpers';
 import { filterIfStoreDoesNotExist } from '../helpers/rxidb-object-store.helpers';
+import { performObjectStoreOperation } from '../helpers/rxidb-operations.helpers';
 import { KEY_CHANGED, VALUE_CHANGED } from '../rxidb-internal.events';
 
-export function createItem<T = unknown>(
-  key: string,
+export function addItem<T = unknown>(
   value: T
 ): (s$: Observable<IDBObjectStore>) => Observable<IDBObjectStore> {
-  const objectStoreSubject = new ReplaySubject<IDBObjectStore>(1);
   return (s$) =>
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          switchMap((openDb: IDBDatabase) => {
-            const request: IDBRequest = openDb
-              .transaction(store.name, 'readwrite')
-              .objectStore(store.name)
-              .add(value, key);
-
-            request.onerror = (e) => {
-              openDb.close();
-              objectStoreSubject.complete();
+          performObjectStoreOperation<IDBObjectStore>(store.name, 'add', null, value),
+          tap((store: IDBObjectStore) => {
+            const metadata = {
+              db: store.transaction.db.name,
+              store: store.name,
             };
-
-            request.onsuccess = () => {
-              request.onerror = noop;
-              openDb.close();
-              const metadata = {
-                db: openDb.name,
-                store: store.name,
-                key,
-              };
-              KEY_CHANGED.next(metadata);
-              VALUE_CHANGED.next(metadata);
-              objectStoreSubject.next(store);
-            };
-
-            return objectStoreSubject.asObservable();
+            KEY_CHANGED.next(metadata);
+            VALUE_CHANGED.next(metadata);
           })
         )
       )
     );
 }
 
-export function updateItem<T = unknown>(
+export function setItem<T = unknown>(
   key: string,
-  value: T
+  value: T | unknown
 ): (s$: Observable<IDBObjectStore>) => Observable<IDBObjectStore> {
-  const objectStoreSubject = new ReplaySubject<IDBObjectStore>(1);
   return (s$) =>
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          switchMap((openDb: IDBDatabase) => {
-            const request: IDBRequest = openDb
-              .transaction(store.name, 'readwrite')
-              .objectStore(store.name)
-              .put(value, key);
-
-            request.onerror = (e) => {
-              openDb.close();
-              objectStoreSubject.complete();
+          performObjectStoreOperation<IDBObjectStore>(store.name, 'put', key, value),
+          tap((store: IDBObjectStore) => {
+            const metadata = {
+              db: store.transaction.db.name,
+              store: store.name,
+              key,
             };
-
-            request.onsuccess = () => {
-              request.onerror = noop;
-              openDb.close();
-              const metadata = {
-                db: openDb.name,
-                store: store.name,
-                key,
-              };
-              VALUE_CHANGED.next(metadata);
-              objectStoreSubject.next(store);
-            };
-
-            return objectStoreSubject.asObservable();
+            VALUE_CHANGED.next(metadata);
           })
         )
       )
@@ -88,36 +53,20 @@ export function updateItem<T = unknown>(
 export function deleteItem(
   key: string
 ): (s$: Observable<IDBObjectStore>) => Observable<IDBObjectStore> {
-  const objectStoreSubject = new ReplaySubject<IDBObjectStore>(1);
   return (s$) =>
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          switchMap((openDb: IDBDatabase) => {
-            const request: IDBRequest = openDb
-              .transaction(store.name, 'readwrite')
-              .objectStore(store.name)
-              .delete(key);
-
-            request.onerror = (e) => {
-              objectStoreSubject.complete();
+          performObjectStoreOperation<IDBObjectStore>(store.name, 'delete', key),
+          tap((store: IDBObjectStore) => {
+            const metadata = {
+              db: store.transaction.db.name,
+              store: store.name,
+              key,
             };
-
-            request.onsuccess = () => {
-              request.onerror = noop;
-              openDb.close();
-              const metadata = {
-                db: openDb.name,
-                store: store.name,
-                key,
-              };
-              KEY_CHANGED.next(metadata);
-              VALUE_CHANGED.next(metadata);
-              objectStoreSubject.next(store);
-            };
-
-            return objectStoreSubject.asObservable();
+            KEY_CHANGED.next(metadata);
+            VALUE_CHANGED.next(metadata);
           })
         )
       )
@@ -131,26 +80,7 @@ export function read<T = unknown>(key: string): (s$: Observable<IDBObjectStore>)
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          switchMap((openDb: IDBDatabase) => {
-            const resultSubject = new ReplaySubject<T>(1);
-            const request: IDBRequest = openDb
-              .transaction(store.name, 'readwrite')
-              .objectStore(store.name)
-              .get(key);
-
-            request.onerror = (e) => {
-              openDb.close();
-              resultSubject.complete();
-            };
-
-            request.onsuccess = () => {
-              request.onerror = noop;
-              openDb.close();
-              resultSubject.next(request.result as T);
-            };
-
-            return resultSubject.asObservable();
-          })
+          performObjectStoreOperation<T>(store.name, 'get', key)
         )
       )
     );

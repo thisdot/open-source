@@ -1,19 +1,35 @@
 import { noop, Observable, ReplaySubject, switchMap } from 'rxjs';
 
-type ObjectStoreMetadataOperations = keyof Pick<IDBObjectStore, 'getAllKeys' | 'getAll'>;
+type ObjectStoreOperation = keyof Pick<
+  IDBObjectStore,
+  'getAllKeys' | 'getAll' | 'get' | 'delete' | 'put' | 'add'
+>;
 
-export function performMetadataOperation<T>(
+const IS_OBJECT_STORE_RETURN_OPERATION = new Set(['put', 'delete', 'add']);
+
+export function performObjectStoreOperation<T = IDBObjectStore>(
   storeName: string,
-  operation: ObjectStoreMetadataOperations
+  operation: ObjectStoreOperation,
+  key?: string | null,
+  value?: unknown
 ): (s$: Observable<IDBDatabase>) => Observable<T> {
   return (s$) =>
     s$.pipe(
       switchMap((openDb: IDBDatabase) => {
         const resultSubject = new ReplaySubject<T>(1);
-        const request: IDBRequest = openDb
+        const store: IDBObjectStore = openDb
           .transaction(storeName, 'readwrite')
-          .objectStore(storeName)
-          [operation]();
+          .objectStore(storeName);
+        let request: IDBRequest;
+        if (operation === 'get' || operation === 'delete') {
+          request = store[operation](key as string);
+        } else if (operation === 'put') {
+          request = store[operation](value, key as string);
+        } else if (operation === 'add') {
+          request = store[operation](value);
+        } else {
+          request = store[operation]();
+        }
 
         request.onerror = () => {
           openDb.close();
@@ -23,7 +39,11 @@ export function performMetadataOperation<T>(
         request.onsuccess = () => {
           request.onerror = noop;
           openDb.close();
-          resultSubject.next(request.result);
+          if (IS_OBJECT_STORE_RETURN_OPERATION.has(operation)) {
+            resultSubject.next(store as unknown as T);
+          } else {
+            resultSubject.next(request.result as T);
+          }
         };
 
         return resultSubject.asObservable();

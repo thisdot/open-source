@@ -6,7 +6,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
 
   describe(`key-value pair based databases`, () => {
     beforeEach(() => {
-      cy.getIndexedDb('@formCacheDB').createObjectStore('keyvaluepairs').as('objectStore');
+      cy.getIndexedDb('@formCacheDB').createObjectStore('user_form_store').as('objectStore');
     });
 
     it(`entering data into the form saves it to the indexedDb`, () => {
