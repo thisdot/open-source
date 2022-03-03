@@ -10,7 +10,7 @@ const IS_OBJECT_STORE_RETURN_OPERATION = new Set(['put', 'delete', 'add']);
 export function performObjectStoreOperation<T = IDBObjectStore>(
   storeName: string,
   operation: ObjectStoreOperation,
-  key?: string | null,
+  key?: IDBValidKey | null,
   value?: unknown
 ): (s$: Observable<IDBDatabase>) => Observable<T> {
   return (s$) =>

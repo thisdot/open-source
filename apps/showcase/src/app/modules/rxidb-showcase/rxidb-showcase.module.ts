@@ -7,9 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RxidbRoutingModule } from './rxidb-routing.module';
 import { RxidbKeyValuePairShowcaseComponent } from './components/rxidb-key-value-pair-showcase/rxidb-key-value-pair-showcase.component';
+import { RxidbAutoIncrementComponent } from './components/rxidb-auto-increment/rxidb-auto-increment.component';
 
 @NgModule({
-  declarations: [RxidbKeyValuePairShowcaseComponent],
+  declarations: [RxidbKeyValuePairShowcaseComponent, RxidbAutoIncrementComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

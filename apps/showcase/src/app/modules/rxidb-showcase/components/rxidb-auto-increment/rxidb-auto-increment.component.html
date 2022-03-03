@@ -1,0 +1,30 @@
+<form (submit)="append($event)">
+  <mat-form-field color="accent">
+    <input matInput [formControl]="inputControl" placeholder="add to queue" />
+  </mat-form-field>
+
+  <button type="submit" mat-raised-button>Submit</button>
+</form>
+
+<hr />
+
+<section>
+  <table>
+    <thead>
+      <tr>
+        <td>Keys</td>
+        <td>Values</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let keyValuePair of keyValues$ | async">
+        <td>{{ keyValuePair.key }}</td>
+        <td>{{ keyValuePair.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button (click)="deleteFirst()" mat-raised-button>Delete first</button>
+  <button (click)="deleteLast()" mat-raised-button>Delete last</button>
+  <button (click)="clearAll()" mat-raised-button>Clear All</button>
+</section>

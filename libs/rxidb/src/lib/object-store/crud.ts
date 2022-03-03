@@ -51,7 +51,7 @@ export function setItem<T = unknown>(
 }
 
 export function deleteItem(
-  key: string
+  key: IDBValidKey
 ): (s$: Observable<IDBObjectStore>) => Observable<IDBObjectStore> {
   return (s$) =>
     s$.pipe(
