@@ -41,7 +41,7 @@ const routes: Routes = [
       },
     ],
     data: {
-      title: 'Cypress Helpers',
+      title: '@this-dot/rxidb',
     },
   },
   {

@@ -1,0 +1,35 @@
+form {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: column wrap;
+  align-items: flex-end;
+  width: 350px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .hint-submit {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.queue {
+  box-sizing: border-box;
+  width: 350px;
+  height: 400px;
+  max-height: 400px;
+  overflow: auto;
+  border: 1px solid lightgray;
+  padding: 3px;
+  margin-bottom: 5px;
+}
+
+.buttons {
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+}

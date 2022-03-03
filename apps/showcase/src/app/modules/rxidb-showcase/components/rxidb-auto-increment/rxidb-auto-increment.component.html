@@ -1,14 +1,17 @@
 <form (submit)="append($event)">
   <mat-form-field color="accent">
+    <mat-label>Queue input</mat-label>
     <input matInput [formControl]="inputControl" placeholder="add to queue" />
   </mat-form-field>
-
-  <button type="submit" mat-raised-button>Submit</button>
+  <div class="hint-submit">
+    <mat-hint>Add a text to the indexedDb queue</mat-hint>
+    <button color="accent" type="submit" mat-raised-button>Submit</button>
+  </div>
 </form>
 
 <hr />
 
-<section>
+<section class="queue">
   <table>
     <thead>
       <tr>
@@ -23,8 +26,27 @@
       </tr>
     </tbody>
   </table>
-
-  <button (click)="deleteFirst()" mat-raised-button>Delete first</button>
-  <button (click)="deleteLast()" mat-raised-button>Delete last</button>
-  <button (click)="clearAll()" mat-raised-button>Clear All</button>
 </section>
+<div class="buttons">
+  <button
+    [disabled]="(isLoading$ | async) || !(keyValues$ | async)?.length"
+    (click)="deleteFirst()"
+    mat-raised-button
+  >
+    Delete first
+  </button>
+  <button
+    [disabled]="(isLoading$ | async) || !(keyValues$ | async)?.length"
+    (click)="deleteLast()"
+    mat-raised-button
+  >
+    Delete last
+  </button>
+  <button
+    [disabled]="(isLoading$ | async) || !(keyValues$ | async)?.length"
+    (click)="clearAll()"
+    mat-raised-button
+  >
+    Clear All
+  </button>
+</div>
