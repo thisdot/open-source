@@ -16,7 +16,7 @@ const filterEvent =
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         eventSource$.pipe(
-          startWithDefault(store),
+          startWithDefault(store, key),
           takeUntilDbDelete(store),
           filterStoreKeyEvents(store, key),
           map(() => store)
@@ -25,9 +25,9 @@ const filterEvent =
     );
 
 const startWithDefault =
-  <T>(store: IDBObjectStore) =>
+  <T>(store: IDBObjectStore, key?: string) =>
   (s$: Observable<T>) =>
-    s$.pipe(startWith({ db: store.transaction.db.name, store: store.name }));
+    s$.pipe(startWith({ db: store.transaction.db.name, store: store.name, key }));
 
 const takeUntilDbDelete =
   <T>(store: IDBObjectStore) =>
