@@ -10,9 +10,9 @@ const DATABASE_NAME = 'FORM_CACHE';
 const USER_FORM_KEY = 'user_form';
 
 @Component({
-  selector: 'this-dot-cypress-helpers-showcase',
-  templateUrl: './cypress-helpers-showcase.component.html',
-  styleUrls: ['./cypress-helpers-showcase.component.scss'],
+  selector: 'this-dot-rxidb-key-value-pair-showcase',
+  templateUrl: './rxidb-key-value-pair-showcase.component.html',
+  styleUrls: ['./rxidb-key-value-pair-showcase.component.scss'],
   providers: [
     {
       provide: 'STORE',
@@ -20,7 +20,7 @@ const USER_FORM_KEY = 'user_form';
     },
   ],
 })
-export class CypressHelpersShowcaseComponent implements AfterViewInit, OnInit, OnDestroy {
+export class RxidbKeyValuePairShowcaseComponent implements AfterViewInit, OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly formGroup = this.formBuilder.group({

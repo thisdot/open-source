@@ -35,8 +35,8 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./modules/cypress-helpers-showcase/cypress-helpers-showcase.module').then(
-            (m) => m.CypressHelpersShowcaseModule
+          import('./modules/rxidb-showcase/rxidb-showcase.module').then(
+            (m) => m.RxidbShowcaseModule
           ),
       },
     ],

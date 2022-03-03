@@ -1,4 +1,4 @@
-describe(`@this-dot/cypress-indexeddb`, () => {
+describe(`@this-dot/rxidb`, () => {
   beforeEach(() => {
     cy.clearIndexedDb('FORM_CACHE');
     cy.openIndexedDb('FORM_CACHE').as('formCacheDB');
