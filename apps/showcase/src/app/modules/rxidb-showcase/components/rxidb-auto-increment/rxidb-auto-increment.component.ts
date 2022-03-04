@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
@@ -17,11 +17,12 @@ import {
   from,
   map,
   Observable,
+  Subject,
   switchMap,
   takeLast,
   tap,
 } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 const DATABASE_NAME = 'AUTO_INCREMENT';
 
@@ -38,7 +39,8 @@ const DATABASE_NAME = 'AUTO_INCREMENT';
     },
   ],
 })
-export class RxidbAutoIncrementComponent {
+export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   private isLoadingSubject = new BehaviorSubject(false);
   private readonly keys$ = this.store$.pipe(keys());
   private readonly entries$ = this.store$.pipe(entries());
@@ -59,6 +61,26 @@ export class RxidbAutoIncrementComponent {
     @Inject('STORE') private store$: Observable<IDBObjectStore>
   ) {}
 
+  ngOnInit() {
+    this.isLoading$
+      .pipe(
+        tap((isLoading: boolean) => {
+          if (isLoading) {
+            this.inputControl.disable();
+          } else {
+            this.inputControl.enable();
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   append(evt: any) {
     evt.preventDefault();
     this.store$
@@ -76,7 +98,6 @@ export class RxidbAutoIncrementComponent {
       .pipe(
         take(1),
         switchMap(([first]) => {
-          console.log('first', first);
           if (!first) {
             this.isLoadingSubject.next(false);
             return EMPTY;

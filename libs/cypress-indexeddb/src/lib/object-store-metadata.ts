@@ -67,6 +67,7 @@ function getMetadata<T>(
       .objectStore(store.name)
       [operation]();
     request.onerror = (e) => {
+      db.close();
       reject(e);
     };
     request.onsuccess = () => {

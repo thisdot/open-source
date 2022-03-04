@@ -134,6 +134,7 @@ function makeCreateUpdateDeleteRequest<T, O = undefined>(
       // @ts-ignore
       [operation](...commandArguments);
     request.onerror = (e) => {
+      db.close();
       reject(e);
     };
     request.onsuccess = () => {

@@ -11,6 +11,12 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
     dbSubject.error(e);
   };
 
+  request.onupgradeneeded = (e) => {
+    console.warn('onupgradeneeded', e);
+    const db = (e.target as any).result as IDBDatabase;
+    db.close();
+  };
+
   request.onsuccess = (e) => {
     request.onerror = noop;
     const db = (e.target as any).result as IDBDatabase;

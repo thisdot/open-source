@@ -1,11 +1,8 @@
 describe(`@this-dot/rxidb`, () => {
-  beforeEach(() => {
-    cy.clearIndexedDb('FORM_CACHE');
-    cy.openIndexedDb('FORM_CACHE').as('formCacheDB');
-  });
-
   describe(`key-value pair based databases`, () => {
     beforeEach(() => {
+      cy.clearIndexedDb('FORM_CACHE');
+      cy.openIndexedDb('FORM_CACHE').as('formCacheDB');
       cy.getIndexedDb('@formCacheDB').createObjectStore('user_form_store').as('objectStore');
     });
 
@@ -90,22 +87,92 @@ describe(`@this-dot/rxidb`, () => {
     });
   });
 
-  describe(`addItem, keys and entries`, () => {
+  describe.only(`auto-increment database`, () => {
     beforeEach(() => {
-      cy.getIndexedDb('@formCacheDB')
-        .createObjectStore('test_add_item', { autoIncrement: true })
+      cy.clearIndexedDb('AUTO_INCREMENT');
+      cy.openIndexedDb('AUTO_INCREMENT').as('autoIncrementDb');
+      cy.getIndexedDb('@autoIncrementDb')
+        .createObjectStore('store', { autoIncrement: true })
         .as('test_add_item');
-    });
 
-    it(`can add items without providing keys and retrieve keys and values`, () => {
-      cy.getStore('@test_add_item').addItem('test').addItem({ test: 'object' }).addItem(1337);
+      cy.getStore('@test_add_item').addItem('test').addItem('test2').addItem(`1337`);
 
       cy.getStore('@test_add_item').keys().should('have.length', 3).and('deep.equal', [1, 2, 3]);
 
       cy.getStore('@test_add_item')
         .entries()
         .should('have.length', 3)
-        .and('deep.equal', ['test', { test: 'object' }, 1337]);
+        .and('deep.equal', ['test', 'test2', `1337`]);
+
+      cy.visit('/cypress-helpers/auto-increment');
+    });
+
+    it(`can retrieve pre-existing keys and values`, () => {
+      cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
+    });
+
+    it(`can add new values`, () => {
+      cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
+
+      cy.get(`[data-test-id="add-to-queue-input"]`)
+        .should('be.visible')
+        .and('not.be.disabled')
+        .type(`something{enter}`)
+        .type(`anything{enter}`)
+        .type(`whatever{enter}`)
+        .type(`seriously{enter}`);
+
+      cy.getStore('@test_add_item')
+        .entries()
+        .should('have.length', 7)
+        .and('deep.equal', [
+          'test',
+          'test2',
+          `1337`,
+          'something',
+          'anything',
+          'whatever',
+          'seriously',
+        ]);
+
+      cy.get(`[data-test-id="row_4"]`).should('be.visible').first().should('contain', 'something');
+      cy.get(`[data-test-id="row_5"]`).should('be.visible').first().should('contain', 'anything');
+      cy.get(`[data-test-id="row_6"]`).should('be.visible').first().should('contain', 'whatever');
+
+      cy.get(`[data-test-id="row_7"]`).should('be.visible').first().should('contain', 'seriously');
+    });
+
+    it(`can delete items by keys`, () => {
+      cy.get(`[data-test-id="delete-first-button"]`).should('be.visible').click();
+      cy.get(`[data-test-id="delete-last-button"]`).should('be.visible').click();
+
+      cy.getStore('@test_add_item').entries().should('have.length', 1).and('deep.equal', ['test2']);
+
+      cy.get(`[data-test-id="row_1"]`).should('not.exist');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_3"]`).should('not.exist');
+    });
+
+    it(`can delete all entries`, () => {
+      cy.get(`[data-test-id="clear-all-button"]`).should('be.visible').click();
+
+      cy.get(`[data-test-id="clear-all-button"]`).should('be.disabled');
+      cy.get(`[data-test-id="delete-first-button"]`).should('be.disabled');
+      cy.get(`[data-test-id="delete-last-button"]`).should('be.disabled');
+      cy.get(`[data-test-id="add-to-queue-input"]`).should('be.disabled');
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.log('Wait for all snackbar items to disappear').wait(5000);
+
+      cy.getStore('@test_add_item').entries().should('have.length', 0);
+
+      cy.get(`[data-test-id="row_1"]`).should('not.exist');
+      cy.get(`[data-test-id="row_2"]`).should('not.exist');
+      cy.get(`[data-test-id="row_3"]`).should('not.exist');
     });
   });
 });
