@@ -16,8 +16,8 @@ const filterEvent =
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         eventSource$.pipe(
-          startWithDefault(store, key),
-          takeUntilDbDelete(store),
+          startWithDefault<DbChangeMetadata>(store, key),
+          takeUntilDbDelete<DbChangeMetadata>(store),
           filterStoreKeyEvents(store, key),
           map(() => store)
         )

@@ -11,33 +11,29 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
     dbSubject.error(e);
   };
 
-  request.onupgradeneeded = (e) => {
-    console.warn('onupgradeneeded', e);
-    const db = (e.target as any).result as IDBDatabase;
-    db.close();
-  };
-
   request.onsuccess = (e) => {
     request.onerror = noop;
     const db = (e.target as any).result as IDBDatabase;
     dbSubject.next(db);
-
+    db.onversionchange = (e) => {
+      const db = e.target as any;
+      db.close();
+    };
     db.onclose = () => {
       dbSubject.complete();
     };
   };
 
-  return dbSubject
-    .asObservable()
-    .pipe(takeUntil(DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === name))));
+  return dbSubject.asObservable();
+  // .pipe(takeUntil(DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === name))));
 }
 
 export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase> {
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
-  existingDb.close();
 
   return from(window.indexedDB.databases()).pipe(
     switchMap((dbInfo: IDBDatabaseInfo[]) => {
+      existingDb.close();
       const currentDb = dbInfo.find((i) => i.name === existingDb.name);
       if (!currentDb) {
         throw new Error('you cannot make a version upgrade on a non-existent database');
@@ -61,13 +57,12 @@ export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase
         };
       };
 
-      return dbSubject
-        .asObservable()
-        .pipe(
-          takeUntil(
-            DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
-          )
-        );
+      return dbSubject.asObservable();
+      // .pipe(
+      //   takeUntil(
+      //     DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
+      //   )
+      // );
     })
   );
 }

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   addItem,
   connectIndexedDb,
+  deleteIndexedDb,
   deleteItem,
   entries,
   getObjectStore,
@@ -146,6 +147,10 @@ export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
         tap(() => this.isLoadingSubject.next(false))
       )
       .subscribe();
+  }
+
+  deleteDatabase(): void {
+    deleteIndexedDb(DATABASE_NAME).subscribe();
   }
 
   private openSnackbar(key: IDBValidKey, value: unknown): Observable<IDBValidKey> {

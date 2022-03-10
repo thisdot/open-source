@@ -55,7 +55,11 @@ export function createObjectStore(
     log.error(error).end();
     throw error;
   }
-  return createVersionUpdateDatabaseConnection(existingDatabase)
+
+  const objectStoreDb = isExistingStore
+    ? Promise.resolve(existingDatabase)
+    : createVersionUpdateDatabaseConnection(existingDatabase);
+  return objectStoreDb
     .then((versionUpdateDatabase: IDBDatabase) =>
       createObjectStoreInternal(versionUpdateDatabase, storeName, options || null, isExistingStore)
     )

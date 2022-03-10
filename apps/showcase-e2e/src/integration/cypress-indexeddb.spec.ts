@@ -1,4 +1,4 @@
-describe(`@this-dot/rxidb`, () => {
+describe(`@this-dot/cypress-indexeddb`, () => {
   describe(`key-value pair based databases`, () => {
     beforeEach(() => {
       cy.clearIndexedDb('FORM_CACHE');
@@ -87,7 +87,7 @@ describe(`@this-dot/rxidb`, () => {
     });
   });
 
-  describe.only(`auto-increment database`, () => {
+  describe(`auto-increment database`, () => {
     beforeEach(() => {
       cy.clearIndexedDb('AUTO_INCREMENT');
       cy.openIndexedDb('AUTO_INCREMENT').as('autoIncrementDb');
@@ -109,13 +109,13 @@ describe(`@this-dot/rxidb`, () => {
 
     it(`can retrieve pre-existing keys and values`, () => {
       cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
       cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
     });
 
     it(`can add new values`, () => {
       cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
       cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
 
       cy.get(`[data-test-id="add-to-queue-input"]`)
@@ -153,7 +153,7 @@ describe(`@this-dot/rxidb`, () => {
       cy.getStore('@test_add_item').entries().should('have.length', 1).and('deep.equal', ['test2']);
 
       cy.get(`[data-test-id="row_1"]`).should('not.exist');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
       cy.get(`[data-test-id="row_3"]`).should('not.exist');
     });
 

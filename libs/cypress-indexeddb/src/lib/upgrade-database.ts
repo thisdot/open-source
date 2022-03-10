@@ -29,6 +29,9 @@ export function createVersionUpdateDatabaseConnection(
     request.onupgradeneeded = (e: Event) => {
       request.onerror = () => void 0;
       const db = (e.target as any).result as IDBDatabase;
+      db.onversionchange = (e) => {
+        console.warn('onversionchange', e);
+      };
       databaseVersion = db.version;
       setDatabaseInternal(databaseName, db);
       log.end();

@@ -13,6 +13,9 @@ export function createDatabaseConnection(
     request.onsuccess = (e: Event) => {
       request.onerror = () => void 0;
       const db = (e.target as any).result as IDBDatabase;
+      db.onversionchange = (e) => {
+        console.warn('onversionchange', e);
+      };
       resolve(db);
     };
   });
