@@ -24,8 +24,9 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
     };
   };
 
-  return dbSubject.asObservable();
-  // .pipe(takeUntil(DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === name))));
+  return dbSubject
+    .asObservable()
+    .pipe(takeUntil(DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === name))));
 }
 
 export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase> {
@@ -57,12 +58,13 @@ export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase
         };
       };
 
-      return dbSubject.asObservable();
-      // .pipe(
-      //   takeUntil(
-      //     DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
-      //   )
-      // );
+      return dbSubject
+        .asObservable()
+        .pipe(
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
+          )
+        );
     })
   );
 }

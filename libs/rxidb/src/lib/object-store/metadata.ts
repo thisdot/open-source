@@ -1,4 +1,4 @@
-import { Observable, switchMap } from 'rxjs';
+import { endWith, filter, map, Observable, switchMap, takeUntil } from 'rxjs';
 import { connectIndexedDb } from '../database';
 import {
   filterKeyEventsForStore,
@@ -6,6 +6,7 @@ import {
 } from '../helpers/rxidb-events.helpers';
 import { filterIfStoreDoesNotExist } from '../helpers/rxidb-object-store.helpers';
 import { performObjectStoreOperation } from '../helpers/rxidb-operations.helpers';
+import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
 export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidKey[]> {
   return (s$) =>
@@ -14,7 +15,14 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          performObjectStoreOperation<IDBValidKey[]>(store.name, 'getAllKeys')
+          performObjectStoreOperation<IDBValidKey[]>(store.name, 'getAllKeys'),
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(
+              filter((db) => db === store.transaction.db.name)
+            )
+          ),
+          endWith(null),
+          map((r) => (r === null ? [] : r))
         )
       )
     );
@@ -27,7 +35,14 @@ export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observabl
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          performObjectStoreOperation<T>(store.name, 'getAll')
+          performObjectStoreOperation<T>(store.name, 'getAll'),
+          takeUntil(
+            DATABASE_DELETE_EVENTS.asObservable().pipe(
+              filter((db) => db === store.transaction.db.name)
+            )
+          ),
+          endWith(null),
+          map((r) => (r === null ? ([] as unknown as T) : r))
         )
       )
     );
