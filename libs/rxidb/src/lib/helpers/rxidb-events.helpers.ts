@@ -8,11 +8,12 @@ import {
 
 export const filterKeyEventsForStore = () => filterEvent(KEY_CHANGED.asObservable());
 export const filterValueEventsForStore = () => filterEvent(VALUE_CHANGED.asObservable());
-export const filterValueEventsForStoreKey = (key: string) =>
+export const filterValueEventsForStoreKey = (key: IDBValidKey) =>
   filterEvent(VALUE_CHANGED.asObservable(), key);
 
 const filterEvent =
-  (eventSource$: Observable<DbChangeMetadata>, key?: string) => (s$: Observable<IDBObjectStore>) =>
+  (eventSource$: Observable<DbChangeMetadata>, key?: IDBValidKey) =>
+  (s$: Observable<IDBObjectStore>) =>
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         eventSource$.pipe(
@@ -25,7 +26,7 @@ const filterEvent =
     );
 
 const startWithDefault =
-  <T>(store: IDBObjectStore, key?: string) =>
+  <T>(store: IDBObjectStore, key?: IDBValidKey) =>
   (s$: Observable<T>) =>
     s$.pipe(startWith({ db: store.transaction.db.name, store: store.name, key }));
 
@@ -39,7 +40,7 @@ const takeUntilDbDelete =
     );
 
 const filterStoreKeyEvents =
-  (store: IDBObjectStore, key?: string) => (s$: Observable<DbChangeMetadata>) =>
+  (store: IDBObjectStore, key?: IDBValidKey) => (s$: Observable<DbChangeMetadata>) =>
     s$.pipe(
       filter(
         (dbChange: DbChangeMetadata) =>

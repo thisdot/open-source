@@ -1,6 +1,25 @@
 import { filter, from, noop, Observable, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
+/**
+ * Creates an Observable<IDBDatabase> stream.
+ *
+ * @example
+ * const database$ = connectIndexedDb('test_db');
+ *
+ * // subscribing to the observable will create the database
+ * database$.subscribe({
+ *   next: (db: IDBDatabase) => console.log(db.name),
+ *   error: (e) => console.error(e),
+ *   complete: () => console.warn('database deleted')
+ * })
+ *
+ * @remarks The Observable stream completes when the `deleteDatabase('databaseName')` method is called.
+ *
+ * @param name - The database name that you want to connect to
+ * @param version - (Optional) the database version you want to start the connection with
+ * @returns An Observable<IDBDatabase> stream
+ */
 export function connectIndexedDb(name: string, version?: number): Observable<IDBDatabase> {
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
   const request: IDBOpenDBRequest = version
@@ -27,44 +46,4 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
   return dbSubject
     .asObservable()
     .pipe(takeUntil(DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === name))));
-}
-
-export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase> {
-  const dbSubject = new ReplaySubject<IDBDatabase>(1);
-
-  return from(window.indexedDB.databases()).pipe(
-    switchMap((dbInfo: IDBDatabaseInfo[]) => {
-      existingDb.close();
-      const currentDb = dbInfo.find((i) => i.name === existingDb.name);
-      if (!currentDb) {
-        throw new Error('you cannot make a version upgrade on a non-existent database');
-      }
-      const request: IDBOpenDBRequest = window.indexedDB.open(
-        currentDb.name!,
-        currentDb.version! + 1
-      );
-
-      request.onerror = (e) => {
-        dbSubject.error(e);
-      };
-
-      request.onupgradeneeded = (e: IDBVersionChangeEvent) => {
-        request.onerror = noop;
-        const db = (e.target as any).result as IDBDatabase;
-        dbSubject.next(db);
-
-        db.onclose = () => {
-          dbSubject.complete();
-        };
-      };
-
-      return dbSubject
-        .asObservable()
-        .pipe(
-          takeUntil(
-            DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === existingDb.name))
-          )
-        );
-    })
-  );
 }

@@ -1,13 +1,38 @@
 import { endWith, filter, map, Observable, switchMap, takeUntil } from 'rxjs';
 import { connectIndexedDb } from '../database';
 import {
+  filterIfStoreDoesNotExist,
   filterKeyEventsForStore,
   filterValueEventsForStore,
-} from '../helpers/rxidb-events.helpers';
-import { filterIfStoreDoesNotExist } from '../helpers/rxidb-object-store.helpers';
-import { performObjectStoreOperation } from '../helpers/rxidb-operations.helpers';
+  performObjectStoreOperation,
+} from '../helpers';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
+/**
+ * Reads the keys present in the store
+ *
+ * @example
+ * const database$ = connectIndexedDb('test_db');
+ * const autoIncrementStore$ = database$.pipe(getObjectStore('test_autoincrement_store', { autoIncrement: true }));
+ *
+ * // we append one item to the store
+ * autoIncrementStore$
+ *   .pipe(
+ *     addItem('item')
+ *   ).subscribe()
+ *
+ * const storeKeys$: Observable<IDBValidKey[]> = autoIncrementStore$
+ *   .pipe(
+ *     keys()
+ *   );
+ *
+ * storeKeys$.subscribe((keys: IDBValidKey[]) => {
+ *     // You can display the keys in UI
+ *   });
+ *
+ * @remarks Emits an empty array when the database gets deleted
+ * @returns Observable<IDBValidKey[]>
+ */
 export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidKey[]> {
   return (s$) =>
     s$.pipe(
@@ -28,6 +53,31 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
     );
 }
 
+/**
+ * Reads the entries from the store
+ *
+ * @example
+ * const database$ = connectIndexedDb('test_db');
+ * const autoIncrementStore$ = database$.pipe(getObjectStore('test_autoincrement_store', { autoIncrement: true }));
+ *
+ * // we append one item to the store
+ * autoIncrementStore$
+ *   .pipe(
+ *     addItem('item')
+ *   ).subscribe()
+ *
+ * const storeKeys$: Observable<string[]> = autoIncrementStore$
+ *   .pipe(
+ *     entries()
+ *   );
+ *
+ * storeKeys$.subscribe((keys: string[]) => {
+ *     // You can display the keys in UI
+ *   });
+ *
+ * @remarks Emits an empty array when the database gets deleted
+ * @returns Observable<T[]>
+ */
 export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observable<T> {
   return (s$) =>
     s$.pipe(
