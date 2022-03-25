@@ -10,7 +10,9 @@
   </mat-form-field>
   <div class="hint-submit">
     <mat-hint>Add a text to the indexedDb queue</mat-hint>
-    <button color="accent" type="submit" mat-raised-button>Submit</button>
+    <button [disabled]="inputControl.disabled" color="accent" type="submit" mat-raised-button>
+      Submit
+    </button>
   </div>
 </form>
 

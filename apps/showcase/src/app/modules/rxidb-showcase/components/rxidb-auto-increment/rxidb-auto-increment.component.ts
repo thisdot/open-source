@@ -75,6 +75,17 @@ export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+
+    this.store$
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          complete: () => {
+            this.inputControl.disable();
+          },
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {

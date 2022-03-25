@@ -63,8 +63,13 @@ describe(`@this-dot/rxidb`, () => {
       cy.get(`[data-test-id="row_3"]`).should('not.exist');
     });
 
-    it.skip(`can delete entire databases`, () => {
+    it(`can delete entire databases`, () => {
       cy.get(`[data-test-id="delete-database-button"]`).should('be.visible').click();
+
+      cy.get(`[data-test-id="clear-all-button"]`).should('be.disabled');
+      cy.get(`[data-test-id="delete-first-button"]`).should('be.disabled');
+      cy.get(`[data-test-id="delete-last-button"]`).should('be.disabled');
+      cy.get(`[data-test-id="add-to-queue-input"]`).should('be.disabled');
     });
   });
 });
