@@ -9,7 +9,9 @@ import {
   entries,
   getObjectStore,
   keys,
+  read,
 } from '@this-dot/rxidb';
+import { isTruthy } from '@this-dot/utils';
 import {
   BehaviorSubject,
   combineLatest,
@@ -23,7 +25,7 @@ import {
   takeLast,
   tap,
 } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 const DATABASE_NAME = 'AUTO_INCREMENT';
 
@@ -98,7 +100,6 @@ export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
     this.store$
       .pipe(
         addItem(this.inputControl.value),
-        take(1),
         tap(() => this.inputControl.reset(''))
       )
       .subscribe();

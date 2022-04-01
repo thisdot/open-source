@@ -1,4 +1,4 @@
-import { endWith, filter, Observable, switchMap, takeUntil, tap } from 'rxjs';
+import { endWith, exhaustMap, filter, Observable, switchMap, takeUntil, tap } from 'rxjs';
 import { connectIndexedDb } from '../database';
 import {
   filterIfStoreDoesNotExist,

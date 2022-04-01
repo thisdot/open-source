@@ -9,5 +9,5 @@
   <a href="https://www.npmjs.com/package/@this-dot/utils"><img src="https://img.shields.io/npm/v/@this-dot/utils" /></a>
   <a href="https://github.com/thisdot/open-source/actions/workflows/ci.yml?query=branch%3Amain"><img src="https://github.com/thisdot/open-source/actions/workflows/ci.yml/badge.svg" /></a>
   <a href="https://github.com/thisdot/open-source/blob/main/LICENSE.md"><img src="https://img.shields.io/npm/l/@this-dot/utils" /></a>
-  <a href="https://github.com/thisdot/open-source/issues"><img src="https://img.shields.io/github/issues/thisdot/open-source" /></a>
+  <a href="https://github.com/thisdot/open-source/issues?q=is%3Aissue+is%3Aopen+label%3Autils"><img src="https://img.shields.io/github/issues/thisdot/open-source?q=is%3Aissue+is%3Aopen+label%3Autils" /></a>
 </p>

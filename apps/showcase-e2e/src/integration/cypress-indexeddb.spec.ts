@@ -108,15 +108,15 @@ describe(`@this-dot/cypress-indexeddb`, () => {
     });
 
     it(`can retrieve pre-existing keys and values`, () => {
-      cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
-      cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
+      cy.get(`[data-test-id="row_1"]`).should('be.visible').should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test2');
+      cy.get(`[data-test-id="row_3"]`).should('be.visible').should('contain', '1337');
     });
 
     it(`can add new values`, () => {
-      cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
-      cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
+      cy.get(`[data-test-id="row_1"]`).should('be.visible').should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test2');
+      cy.get(`[data-test-id="row_3"]`).should('be.visible').should('contain', '1337');
 
       cy.get(`[data-test-id="add-to-queue-input"]`)
         .should('be.visible')
@@ -139,11 +139,11 @@ describe(`@this-dot/cypress-indexeddb`, () => {
           'seriously',
         ]);
 
-      cy.get(`[data-test-id="row_4"]`).should('be.visible').first().should('contain', 'something');
-      cy.get(`[data-test-id="row_5"]`).should('be.visible').first().should('contain', 'anything');
-      cy.get(`[data-test-id="row_6"]`).should('be.visible').first().should('contain', 'whatever');
+      cy.get(`[data-test-id="row_4"]`).should('be.visible').should('contain', 'something');
+      cy.get(`[data-test-id="row_5"]`).should('be.visible').should('contain', 'anything');
+      cy.get(`[data-test-id="row_6"]`).should('be.visible').should('contain', 'whatever');
 
-      cy.get(`[data-test-id="row_7"]`).should('be.visible').first().should('contain', 'seriously');
+      cy.get(`[data-test-id="row_7"]`).should('be.visible').should('contain', 'seriously');
     });
 
     it(`can delete items by keys`, () => {
@@ -153,7 +153,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
       cy.getStore('@test_add_item').entries().should('have.length', 1).and('deep.equal', ['test2']);
 
       cy.get(`[data-test-id="row_1"]`).should('not.exist');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test2');
       cy.get(`[data-test-id="row_3"]`).should('not.exist');
     });
 

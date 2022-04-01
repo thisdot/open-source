@@ -8,20 +8,22 @@ describe(`@this-dot/rxidb`, () => {
         .should('be.visible')
         .and('not.be.disabled')
         .type(`test{enter}`)
+        .clear()
         .type(`test2{enter}`)
+        .clear()
         .type(`1337{enter}`);
     });
 
     it(`can add new values and persist them`, () => {
-      cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
-      cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
+      cy.get(`[data-test-id="row_1"]`).should('be.visible').should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test2');
+      cy.get(`[data-test-id="row_3"]`).should('be.visible').should('contain', '1337');
 
       cy.log('reload to test persistence').reload();
 
-      cy.get(`[data-test-id="row_1"]`).should('be.visible').first().should('contain', 'test');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test2');
-      cy.get(`[data-test-id="row_3"]`).should('be.visible').first().should('contain', '1337');
+      cy.get(`[data-test-id="row_1"]`).should('be.visible').should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test2');
+      cy.get(`[data-test-id="row_3"]`).should('be.visible').should('contain', '1337');
 
       cy.get(`[data-test-id="add-to-queue-input"]`)
         .should('be.visible')
@@ -31,11 +33,11 @@ describe(`@this-dot/rxidb`, () => {
         .type(`whatever{enter}`)
         .type(`seriously{enter}`);
 
-      cy.get(`[data-test-id="row_4"]`).should('be.visible').first().should('contain', 'something');
-      cy.get(`[data-test-id="row_5"]`).should('be.visible').first().should('contain', 'anything');
-      cy.get(`[data-test-id="row_6"]`).should('be.visible').first().should('contain', 'whatever');
+      cy.get(`[data-test-id="row_4"]`).should('be.visible').should('contain', 'something');
+      cy.get(`[data-test-id="row_5"]`).should('be.visible').should('contain', 'anything');
+      cy.get(`[data-test-id="row_6"]`).should('be.visible').should('contain', 'whatever');
 
-      cy.get(`[data-test-id="row_7"]`).should('be.visible').first().should('contain', 'seriously');
+      cy.get(`[data-test-id="row_7"]`).should('be.visible').should('contain', 'seriously');
     });
 
     it(`can delete items by keys`, () => {
@@ -43,7 +45,7 @@ describe(`@this-dot/rxidb`, () => {
       cy.get(`[data-test-id="delete-last-button"]`).should('be.visible').click();
 
       cy.get(`[data-test-id="row_1"]`).should('not.exist');
-      cy.get(`[data-test-id="row_2"]`).should('be.visible').first().should('contain', 'test');
+      cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test');
       cy.get(`[data-test-id="row_3"]`).should('not.exist');
     });
 
