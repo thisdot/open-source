@@ -1,26 +1,57 @@
 import { noop, Observable, ReplaySubject, switchMap } from 'rxjs';
 
-type ObjectStoreValueOperation = keyof Pick<IDBObjectStore, 'getAllKeys' | 'getAll' | 'get'>;
+type NoKeyValueOperationReturnsValues = keyof Pick<IDBObjectStore, 'getAll'>;
+type NoKeyValueOperationReturnsKeys = keyof Pick<IDBObjectStore, 'getAllKeys'>;
 
-type ObjectStoreReturnOperation = keyof Pick<IDBObjectStore, 'delete' | 'put' | 'add'>;
+type OnlyKeyOperationReturnsValue = keyof Pick<IDBObjectStore, 'get'>;
+type OnlyKeyOperationReturnsStore = keyof Pick<IDBObjectStore, 'delete'>;
+
+type OnlyValueOperations = keyof Pick<IDBObjectStore, 'add'>;
+type KeyValueOperations = keyof Pick<IDBObjectStore, 'put'>;
+
+type Operations =
+  | NoKeyValueOperationReturnsValues
+  | NoKeyValueOperationReturnsKeys
+  | OnlyKeyOperationReturnsValue
+  | OnlyKeyOperationReturnsStore
+  | OnlyValueOperations
+  | KeyValueOperations;
 
 const IS_OBJECT_STORE_RETURN_OPERATION = new Set(['put', 'delete', 'add']);
 
+export function performObjectStoreOperation<T>(
+  storeName: string,
+  operation: NoKeyValueOperationReturnsValues
+): (s$: Observable<IDBDatabase>) => Observable<T>;
 export function performObjectStoreOperation(
   storeName: string,
-  operation: ObjectStoreReturnOperation,
-  key?: IDBValidKey | null,
-  value?: unknown
+  operation: NoKeyValueOperationReturnsKeys
+): (s$: Observable<IDBDatabase>) => Observable<IDBValidKey[]>;
+export function performObjectStoreOperation<T>(
+  storeName: string,
+  operation: OnlyKeyOperationReturnsValue,
+  key: IDBValidKey
+): (s$: Observable<IDBDatabase>) => Observable<T>;
+export function performObjectStoreOperation(
+  storeName: string,
+  operation: OnlyKeyOperationReturnsStore,
+  key: IDBValidKey
+): (s$: Observable<IDBDatabase>) => Observable<IDBObjectStore>;
+export function performObjectStoreOperation(
+  storeName: string,
+  operation: OnlyValueOperations,
+  key: null,
+  value: unknown
+): (s$: Observable<IDBDatabase>) => Observable<IDBObjectStore>;
+export function performObjectStoreOperation(
+  storeName: string,
+  operation: KeyValueOperations,
+  key: IDBValidKey,
+  value: unknown
 ): (s$: Observable<IDBDatabase>) => Observable<IDBObjectStore>;
 export function performObjectStoreOperation<T>(
   storeName: string,
-  operation: ObjectStoreValueOperation,
-  key?: IDBValidKey | null,
-  value?: unknown
-): (s$: Observable<IDBDatabase>) => Observable<T>;
-export function performObjectStoreOperation<T>(
-  storeName: string,
-  operation: ObjectStoreValueOperation | ObjectStoreReturnOperation,
+  operation: Operations,
   key?: IDBValidKey | null,
   value?: unknown
 ): (s$: Observable<IDBDatabase>) => Observable<T | IDBObjectStore> {

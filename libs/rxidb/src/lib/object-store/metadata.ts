@@ -40,7 +40,7 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          performObjectStoreOperation<IDBValidKey[]>(store.name, 'getAllKeys'),
+          performObjectStoreOperation(store.name, 'getAllKeys'),
           takeUntil(
             DATABASE_DELETE_EVENTS.asObservable().pipe(
               filter((db) => db === store.transaction.db.name)
