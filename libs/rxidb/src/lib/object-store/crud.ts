@@ -1,4 +1,4 @@
-import { endWith, exhaustMap, filter, Observable, switchMap, takeUntil, tap } from 'rxjs';
+import { endWith, filter, Observable, switchMap, takeUntil, tap } from 'rxjs';
 import { connectIndexedDb } from '../database';
 import {
   filterIfStoreDoesNotExist,
@@ -42,7 +42,7 @@ export function addItem<T = unknown>(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          performObjectStoreOperation<IDBObjectStore>(store.name, 'add', null, value),
+          performObjectStoreOperation(store.name, 'add', null, value),
           tap((store: IDBObjectStore) => {
             const metadata = {
               db: store.transaction.db.name,
@@ -93,7 +93,7 @@ export function setItem<T = unknown>(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          performObjectStoreOperation<IDBObjectStore>(store.name, 'put', key, value),
+          performObjectStoreOperation(store.name, 'put', key, value),
           tap((store: IDBObjectStore) => {
             const metadata = {
               db: store.transaction.db.name,
@@ -139,7 +139,7 @@ export function deleteItem(
       switchMap((store: IDBObjectStore) =>
         connectIndexedDb(store.transaction.db.name).pipe(
           filterIfStoreDoesNotExist(store),
-          performObjectStoreOperation<IDBObjectStore>(store.name, 'delete', key),
+          performObjectStoreOperation(store.name, 'delete', key),
           tap((store: IDBObjectStore) => {
             const metadata = {
               db: store.transaction.db.name,
