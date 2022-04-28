@@ -30,7 +30,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'cypress-helpers',
+    path: 'rxidb',
     children: [
       {
         path: '',

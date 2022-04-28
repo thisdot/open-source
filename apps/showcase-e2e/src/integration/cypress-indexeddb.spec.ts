@@ -7,7 +7,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
     });
 
     it(`entering data into the form saves it to the indexedDb`, () => {
-      cy.visit('/cypress-helpers');
+      cy.visit('/rxidb');
 
       cy.get('#firstName').should('be.visible').type('Hans');
       cy.get('#lastName').should('be.visible').type('Gruber');
@@ -28,7 +28,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
     });
 
     it(`when the indexedDb is deleted manually and then the page reloaded, the form does not populate`, () => {
-      cy.visit('/cypress-helpers');
+      cy.visit('/rxidb');
 
       cy.get('#firstName').should('be.visible').type('Hans');
       cy.get('#lastName').should('be.visible').type('Gruber');
@@ -59,7 +59,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
         city: 'New York',
       });
 
-      cy.visit('/cypress-helpers');
+      cy.visit('/rxidb');
 
       cy.get('#firstName').should('be.visible').and('have.value', 'John');
       cy.get('#lastName').should('be.visible').and('have.value', 'McClane');
@@ -75,7 +75,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
         city: 'New York',
       });
 
-      cy.visit('/cypress-helpers');
+      cy.visit('/rxidb');
 
       cy.get('#address').type('23rd Street 12');
       cy.get(`[data-test-id="submit button"]`).should('be.visible').and('not.be.disabled').click();
@@ -104,7 +104,7 @@ describe(`@this-dot/cypress-indexeddb`, () => {
         .should('have.length', 3)
         .and('deep.equal', ['test', 'test2', `1337`]);
 
-      cy.visit('/cypress-helpers/auto-increment');
+      cy.visit('/rxidb/auto-increment');
     });
 
     it(`can retrieve pre-existing keys and values`, () => {

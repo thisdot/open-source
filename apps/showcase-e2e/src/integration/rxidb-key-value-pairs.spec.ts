@@ -2,7 +2,7 @@ describe(`@this-dot/rxidb`, () => {
   describe(`key-value pair based databases`, () => {
     beforeEach(() => {
       cy.clearIndexedDb('FORM_CACHE');
-      cy.visit('/cypress-helpers');
+      cy.visit('/rxidb');
     });
 
     it(`entering data into the form saves it to the indexedDb`, () => {

@@ -1,4 +1,4 @@
-import { endWith, filter, map, Observable, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, endWith, filter, map, Observable, of, switchMap, takeUntil } from 'rxjs';
 import { connectIndexedDb } from '../database';
 import {
   filterIfStoreDoesNotExist,
@@ -54,7 +54,7 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
 }
 
 /**
- * Reads the entries from the store
+ * Reads the values from the store
  *
  * @example
  * const database$ = connectIndexedDb('test_db');
@@ -68,7 +68,7 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
  *
  * const storeKeys$: Observable<string[]> = autoIncrementStore$
  *   .pipe(
- *     entries()
+ *     values()
  *   );
  *
  * storeKeys$.subscribe((keys: string[]) => {
@@ -78,7 +78,7 @@ export function keys(): (s$: Observable<IDBObjectStore>) => Observable<IDBValidK
  * @remarks Emits an empty array when the database gets deleted
  * @returns Observable<T[]>
  */
-export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observable<T> {
+export function values<T = []>(): (s$: Observable<IDBObjectStore>) => Observable<T> {
   return (s$) =>
     s$.pipe(
       filterValueEventsForStore(),
@@ -95,5 +95,51 @@ export function entries<T = []>(): (s$: Observable<IDBObjectStore>) => Observabl
           map((r) => (r === null ? ([] as unknown as T) : r))
         )
       )
+    );
+}
+
+/**
+ * Reads the entries (key-value pairs) from the store
+ *
+ * @example
+ * const database$ = connectIndexedDb('test_db');
+ * const autoIncrementStore$ = database$.pipe(getObjectStore('test_autoincrement_store', { autoIncrement: true }));
+ *
+ * // we append one item to the store
+ * autoIncrementStore$
+ *   .pipe(
+ *     addItem('item')
+ *   ).subscribe()
+ *
+ * const entries$: Observable<string[]> = autoIncrementStore$
+ *   .pipe(
+ *     entries()
+ *   );
+ *
+ * entries$.subscribe((entries: { key: IDBValidKey, value: any }[]) => {
+ *     // You can display the keys and their corresponding values in UI
+ *   });
+ *
+ * @remarks Emits an empty array when the database gets deleted
+ * @returns Observable<T[]>
+ */
+export function entries<T = any>(): (
+  s$: Observable<IDBObjectStore>
+) => Observable<{ key: IDBValidKey; value: T }[]> {
+  return (s$) =>
+    s$.pipe(
+      switchMap((store: IDBObjectStore) => {
+        const keys$ = of(store).pipe(keys());
+        const values$ = of(store).pipe(values());
+
+        return combineLatest([keys$, values$]).pipe(
+          map(([keys, values]) =>
+            keys.map((key: IDBValidKey, index: number) => ({
+              key,
+              value: values[index],
+            }))
+          )
+        );
+      })
     );
 }

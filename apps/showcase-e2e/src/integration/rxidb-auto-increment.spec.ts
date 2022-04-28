@@ -2,7 +2,7 @@ describe(`@this-dot/rxidb`, () => {
   describe(`auto-increment database`, () => {
     beforeEach(() => {
       cy.clearIndexedDb('AUTO_INCREMENT');
-      cy.visit('/cypress-helpers/auto-increment');
+      cy.visit('/rxidb/auto-increment');
 
       cy.get(`[data-test-id="add-to-queue-input"]`)
         .should('be.visible')

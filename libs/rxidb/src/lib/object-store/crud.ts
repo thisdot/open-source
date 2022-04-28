@@ -30,6 +30,8 @@ import { DATABASE_DELETE_EVENTS, KEY_CHANGED, VALUE_CHANGED } from '../rxidb-int
  *
  * @remarks It is only usable with an autoIncrement object store. Emits key and value change events internally.
  *
+ * @throws {Error} If the store was not initiated with `autoIncrement: true`:
+ * "DOMException: Failed to execute 'add' on 'IDBObjectStore': The object store uses out-of-line keys and has no key generator and the key parameter was not provided."
  * @param value - the value you want to append to the store
  * @returns Observable<IDBObjectStore>
  *

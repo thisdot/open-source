@@ -65,6 +65,10 @@ store$.subscribe((store) => {
 });
 ```
 
+#### Database versioning
+
+The `connectIndexedDb` method allows you to set your own database version, however, database versioning is handled by the library when it is needed. When a store needs to be created, the database connection must be an upgrade process. That is handled internally by the library, by always implementing the database version by `1`.
+
 ### Storing, updating and deleting data in an Object Store
 
 #### setItem()
@@ -90,7 +94,7 @@ saveToDatabase('example_key2', 1337);
 
 #### addItem()
 
-If you have an Object Store that is set to `autoIncrement`, you can use the `addItem` operator to add a new value to the store.
+If you have an Object Store, that was set to `autoIncrement`, you can use the `addItem` operator to add a new value to the store.
 
 ```typescript
 import { connectIndexedDb, getObjectStore, addItem } from '@this-dot/rxidb';
@@ -103,13 +107,15 @@ const store$: Observable<IDBObjectStore> = database$.pipe(
   getObjectStore('example_store', { autoIncrement: true })
 );
 
-function saveToDatabase<T>(key: string, value: T): void {
-  store$.pipe(addItem(key, value)).subscribe();
+function saveToDatabase<T>(value: T): void {
+  store$.pipe(addItem(value)).subscribe();
 }
 
 saveToDatabase('example_value');
 saveToDatabase(1337);
 ```
+
+Please note, that if you try to use the `addItem` operator on a non-autoIncrement Object Store, you will get an error: `"DOMException: Failed to execute 'add' on 'IDBObjectStore': The object store uses out-of-line keys and has no key generator and the key parameter was not provided."`
 
 #### deleteItem()
 
@@ -160,12 +166,12 @@ store$
   .subscribe();
 ```
 
-#### keys() & entries()
+#### keys() & values()
 
-You can get all the keys of a database using the `keys()` operator. This will return an `Observable` of all the keys in the store. With the `entries()` operator you can get all the values of the store.
+You can get all the keys of a database using the `keys()` operator. This will return an `Observable` of all the keys in the store. With the `values()` operator you can get all the values of the store.
 
 ```typescript
-import { connectIndexedDb, getObjectStore, addItem, keys, entries } from '@this-dot/rxidb';
+import { connectIndexedDb, getObjectStore, addItem, keys, values } from '@this-dot/rxidb';
 import { Observable } from 'rxjs';
 
 // Connect to an IndexedDB database (create if the database does not exist)
@@ -179,10 +185,31 @@ const store$: Observable<IDBObjectStore> = database$.pipe(
 const keys$: Observable<IDBValidKey[]> = store$.pipe(keys());
 
 // returns an Observable of all the values in the store.
-const entries$: Observable<any[]> = store$.pipe(entries());
+const values$: Observable<any[]> = store$.pipe(values());
 
 keys$.subscribe(console.log); // emits every time the keys in the database change. (add a new key, remove a key, etc)
-entries$.subscribe(console.log); // emits every time the values change. Either by adding a new value, or by updating or deleting an existing value.
+values$.subscribe(console.log); // emits every time the values change. Either by adding a new value, or by updating or deleting an existing value.
+```
+
+#### entries()
+
+You can retrieve an array of key-value pairs using the `entries()` operator.
+
+```typescript
+import { connectIndexedDb, getObjectStore, addItem, keys, values } from '@this-dot/rxidb';
+import { Observable } from 'rxjs';
+
+// Connect to an IndexedDB database (create if the database does not exist)
+const database$: Observable<IDBDatabase> = connectIndexedDb('example_database');
+// Create an Object Store or get an existing one with autoIncrement.
+const store$: Observable<IDBObjectStore> = database$.pipe(
+  getObjectStore('example_store', { autoIncrement: true })
+);
+
+// returns an Observable of all the key-value pairs in the store.
+const entries$: Observable<{ key: IDBValidKey; value: any }[]> = store$.pipe(entries());
+
+entries$.subscribe(console.log); // emits every time the keys or the values in the database change. (add a new key, remove a key, update a value, etc)
 ```
 
 ### Deleting databases
@@ -216,5 +243,7 @@ store$
 // deletes the database
 deleteDatabase('example_database').subscribe();
 ```
+
+It throws an error if the database does not exist.
 
 Please keep in mind, that if you would like to use the observables after you delete the database, you need to reinitalise them again.

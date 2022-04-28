@@ -9,12 +9,9 @@ import {
   entries,
   getObjectStore,
   keys,
-  read,
 } from '@this-dot/rxidb';
-import { isTruthy } from '@this-dot/utils';
 import {
   BehaviorSubject,
-  combineLatest,
   concatMap,
   EMPTY,
   from,
@@ -25,7 +22,7 @@ import {
   takeLast,
   tap,
 } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 const DATABASE_NAME = 'AUTO_INCREMENT';
 
@@ -46,16 +43,8 @@ export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private isLoadingSubject = new BehaviorSubject(false);
   private readonly keys$ = this.store$.pipe(keys());
-  private readonly entries$ = this.store$.pipe(entries());
   readonly isLoading$ = this.isLoadingSubject.asObservable();
-  readonly keyValues$ = combineLatest([this.keys$, this.entries$]).pipe(
-    map(([keys, values]) =>
-      keys.map((key: IDBValidKey, index: number) => ({
-        key,
-        value: values[index],
-      }))
-    )
-  );
+  readonly keyValues$ = this.store$.pipe(entries());
 
   readonly inputControl = new FormControl('');
 
