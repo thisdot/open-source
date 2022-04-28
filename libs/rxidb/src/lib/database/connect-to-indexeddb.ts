@@ -1,4 +1,4 @@
-import { filter, from, noop, Observable, ReplaySubject, switchMap, takeUntil } from 'rxjs';
+import { filter, noop, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
 /**

@@ -54,11 +54,11 @@ export function performObjectStoreOperation<T>(
   operation: Operations,
   key?: IDBValidKey | null,
   value?: unknown
-): (s$: Observable<IDBDatabase>) => Observable<T | IDBObjectStore> {
+): (s$: Observable<IDBDatabase>) => Observable<T | IDBObjectStore | IDBValidKey[]> {
   return (s$) =>
     s$.pipe(
       switchMap((openDb: IDBDatabase) => {
-        const resultSubject = new ReplaySubject<T | IDBObjectStore>(1);
+        const resultSubject = new ReplaySubject<T | IDBObjectStore | IDBValidKey[]>(1);
         const store: IDBObjectStore = openDb
           .transaction(storeName, 'readwrite')
           .objectStore(storeName);

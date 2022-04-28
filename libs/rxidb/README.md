@@ -6,7 +6,7 @@ It supports:
 
 ✅ &nbsp;Creating new IndexedDB databases and Object Stores <br/>
 ✅ &nbsp;Making CRUD operations on the above-mentioned stores <br/>
-✅ &nbsp;Read data out of indexedDB <br/>
+✅ &nbsp;Reading data out of indexedDB <br/>
 
 ---
 
@@ -25,9 +25,9 @@ It supports:
 ### Installation
 
 1. Install the package:  
-   `npm install @this-dot/cypress-indexeddb`  
+   `npm install @this-dot/rxidb`  
    or  
-   `yarn add @this-dot/cypress-indexeddb`
+   `yarn add @this-dot/rxidb`
 
 ### Connecting to an IndexedDB database and creating an Object Store
 

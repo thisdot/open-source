@@ -17,8 +17,8 @@ const filterEvent =
     s$.pipe(
       switchMap((store: IDBObjectStore) =>
         eventSource$.pipe(
-          startWithDefault<DbChangeMetadata>(store, key),
-          takeUntilDbDelete<DbChangeMetadata>(store),
+          startWithDefault(store, key),
+          takeUntilDbDelete(store),
           filterStoreKeyEvents(store, key),
           map(() => store)
         )
@@ -26,18 +26,15 @@ const filterEvent =
     );
 
 const startWithDefault =
-  <T>(store: IDBObjectStore, key?: IDBValidKey) =>
-  (s$: Observable<T>) =>
+  (store: IDBObjectStore, key?: IDBValidKey) => (s$: Observable<DbChangeMetadata>) =>
     s$.pipe(startWith({ db: store.transaction.db.name, store: store.name, key }));
 
-const takeUntilDbDelete =
-  <T>(store: IDBObjectStore) =>
-  (s$: Observable<T>) =>
-    s$.pipe(
-      takeUntil(
-        DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === store.transaction.db.name))
-      )
-    );
+const takeUntilDbDelete = (store: IDBObjectStore) => (s$: Observable<DbChangeMetadata>) =>
+  s$.pipe(
+    takeUntil(
+      DATABASE_DELETE_EVENTS.asObservable().pipe(filter((db) => db === store.transaction.db.name))
+    )
+  );
 
 const filterStoreKeyEvents =
   (store: IDBObjectStore, key?: IDBValidKey) => (s$: Observable<DbChangeMetadata>) =>

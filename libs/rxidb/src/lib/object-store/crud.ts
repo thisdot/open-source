@@ -128,7 +128,7 @@ export function setItem<T = unknown>(
  *     deleteItem('key'),
  *   ).subscribe()
  *
- * @remarks Emits key and value changed events internally
+ * @remarks Emits key and value changed events internally. It works both with autoIncrement and non-autoIncrement stores.
  *
  * @param key - the key which you want to delete from the store
  * @returns Observable<IdbObjectStore>
@@ -176,9 +176,9 @@ export function deleteItem(
  *     read<string>('key'),
  *   )
  *
- * const readKey$.subscribe((value: string) => {
- *     // You can set the value to be displayed in the UI here.
- *   })
+ * readKey$.subscribe((value: string) => {
+ *   // You can set the value to be displayed in the UI here.
+ * })
  *
  * @remarks If the database gets deleted, it emits a `null` value last.
  *

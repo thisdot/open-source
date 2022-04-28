@@ -7,10 +7,10 @@ import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
  *
  * @remarks This should only be used internally, that is why it is not exported in the index.ts file
  *
- * @throws Error when the database that supposed to be upgraded does not exist.
+ * @throws Error when the database that is supposed to be upgraded does not exist.
  *
  * @param existingDb - An existing IDBDatabase instance
- * @returns An Observable that emits an version updtage IDBDatabase instance
+ * @returns An Observable that emits a version update IDBDatabase instance
  */
 export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase> {
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
