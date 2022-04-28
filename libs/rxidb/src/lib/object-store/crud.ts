@@ -88,7 +88,7 @@ export function addItem<T = unknown>(
  */
 export function setItem<T = unknown>(
   key: IDBValidKey,
-  value: T | unknown
+  value: T
 ): (s$: Observable<IDBObjectStore>) => Observable<IDBObjectStore> {
   return (s$) =>
     s$.pipe(
