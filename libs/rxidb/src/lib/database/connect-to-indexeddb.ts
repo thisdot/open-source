@@ -1,4 +1,4 @@
-import { filter, noop, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { EMPTY, filter, NEVER, noop, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
 /**
@@ -21,6 +21,12 @@ import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
  * @returns An Observable<IDBDatabase> stream
  */
 export function connectIndexedDb(name: string, version?: number): Observable<IDBDatabase> {
+  if (typeof document === 'undefined') {
+    console.warn(
+      'RxIDB: connectIndexedDb() is only supported in the browser. The RxIDB methods will not be available in the server.'
+    );
+    return EMPTY;
+  }
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
   const request: IDBOpenDBRequest = version
     ? window.indexedDB.open(name, version)

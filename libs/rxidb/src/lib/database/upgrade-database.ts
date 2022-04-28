@@ -1,4 +1,4 @@
-import { filter, from, noop, Observable, ReplaySubject, switchMap, takeUntil } from 'rxjs';
+import { EMPTY, filter, from, noop, Observable, ReplaySubject, switchMap, takeUntil } from 'rxjs';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
 /**
@@ -13,6 +13,12 @@ import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
  * @returns An Observable that emits a version update IDBDatabase instance
  */
 export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase> {
+  if (typeof document === 'undefined') {
+    console.warn(
+      'RxIDB: upgradeDatabase() is only supported in the browser. The RxIDB methods will not be available in the server.'
+    );
+    return EMPTY;
+  }
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
 
   return from(window.indexedDB.databases()).pipe(

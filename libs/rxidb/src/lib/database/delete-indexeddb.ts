@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
 
 /**
@@ -24,6 +24,12 @@ import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
  * @returns An Observable<void> stream that immediately emits and completes when the deletion occurs.
  */
 export function deleteIndexedDb(name: string): Observable<void> {
+  if (typeof document === 'undefined') {
+    console.warn(
+      'RxIDB: deleteIndexedDb() is only supported in the browser. The RxIDB methods will not be available in the server.'
+    );
+    return EMPTY;
+  }
   const deleteDbSubject = new Subject<void>();
   window.indexedDB.databases().then((databases: IDBDatabaseInfo[]) => {
     const db = databases.find((database: IDBDatabaseInfo) => database.name === name);
