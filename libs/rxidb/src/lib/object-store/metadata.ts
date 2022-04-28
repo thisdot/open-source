@@ -129,8 +129,9 @@ export function entries<T = any>(): (
   return (s$) =>
     s$.pipe(
       switchMap((store: IDBObjectStore) => {
-        const keys$ = of(store).pipe(keys());
-        const values$ = of(store).pipe(values());
+        const store$ = of(store);
+        const keys$ = store$.pipe(keys());
+        const values$ = store$.pipe(values());
 
         return combineLatest([keys$, values$]).pipe(
           map(([keys, values]) =>

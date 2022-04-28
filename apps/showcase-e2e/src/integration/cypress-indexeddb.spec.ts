@@ -148,8 +148,12 @@ describe(`@this-dot/cypress-indexeddb`, () => {
 
     it(`can delete items by keys`, () => {
       cy.get(`[data-test-id="delete-first-button"]`).should('be.visible').click();
-      cy.get(`[data-test-id="delete-last-button"]`).should('be.visible').click();
+      cy.getStore('@test_add_item')
+        .entries()
+        .should('have.length', 2)
+        .and('deep.equal', ['test2', '1337']);
 
+      cy.get(`[data-test-id="delete-last-button"]`).should('be.visible').click();
       cy.getStore('@test_add_item').entries().should('have.length', 1).and('deep.equal', ['test2']);
 
       cy.get(`[data-test-id="row_1"]`).should('not.exist');
