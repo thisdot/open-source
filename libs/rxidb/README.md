@@ -65,6 +65,15 @@ store$.subscribe((store) => {
 });
 ```
 
+The second optional parameter is of type `IDBObjectStoreParameters`, where you can set the `keyPath` and `autoIncrement` properties.
+
+```typescript
+interface IDBObjectStoreParameters {
+  autoIncrement?: boolean;
+  keyPath?: string | string[] | null;
+}
+```
+
 #### Database versioning
 
 The `connectIndexedDb` method allows you to set your own database version, however, database versioning is handled by the library when it is needed. When a store needs to be created, the database connection must be an upgrade process. That is handled internally by the library, by always implementing the database version by `1`.
