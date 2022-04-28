@@ -1,0 +1,34 @@
+{
+  "root": "libs/rxidb",
+  "sourceRoot": "libs/rxidb/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/rxidb/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rxidb"],
+      "options": {
+        "jestConfig": "libs/rxidb/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/rxidb",
+        "tsConfig": "libs/rxidb/tsconfig.lib.json",
+        "packageJson": "libs/rxidb/package.json",
+        "main": "libs/rxidb/src/index.ts",
+        "assets": ["libs/rxidb/*.md"]
+      }
+    }
+  },
+  "tags": ["framework:none"]
+}
