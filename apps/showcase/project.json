@@ -1,0 +1,89 @@
+{
+  "projectType": "application",
+  "root": "apps/showcase",
+  "sourceRoot": "apps/showcase/src",
+  "prefix": "this-dot",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/showcase",
+        "index": "apps/showcase/src/index.html",
+        "main": "apps/showcase/src/main.ts",
+        "polyfills": "apps/showcase/src/polyfills.ts",
+        "tsConfig": "apps/showcase/tsconfig.app.json",
+        "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
+        "styles": ["apps/showcase/src/theme.scss", "apps/showcase/src/styles.scss"],
+        "scripts": [],
+        "vendorChunk": true,
+        "extractLicenses": false,
+        "buildOptimizer": false,
+        "sourceMap": true,
+        "optimization": false,
+        "namedChunks": true
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/showcase/src/environments/environment.ts",
+              "with": "apps/showcase/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "showcase:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "showcase:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "showcase:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/showcase/src/**/*.ts", "apps/showcase/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/showcase"],
+      "options": {
+        "jestConfig": "apps/showcase/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["framework:angular"]
+}

@@ -1,0 +1,29 @@
+{
+  "root": "apps/showcase-e2e",
+  "sourceRoot": "apps/showcase-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/showcase-e2e/cypress.json",
+        "tsConfig": "apps/showcase-e2e/tsconfig.e2e.json",
+        "devServerTarget": "showcase:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "showcase:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/showcase-e2e/**/*.{js,ts}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["framework:angular", "type:e2e"],
+  "implicitDependencies": ["showcase"]
+}

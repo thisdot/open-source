@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "projects": {
+    "cypress-indexeddb": "libs/cypress-indexeddb",
+    "ng-utils": "libs/ng-utils",
+    "route-config": "libs/route-config",
+    "showcase": "apps/showcase",
+    "showcase-e2e": "apps/showcase-e2e",
+    "utils": "libs/utils"
+  }
+}

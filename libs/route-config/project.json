@@ -1,0 +1,40 @@
+{
+  "projectType": "library",
+  "root": "libs/route-config",
+  "sourceRoot": "libs/route-config/src",
+  "prefix": "td",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:package",
+      "options": {
+        "project": "libs/route-config/ng-package.json",
+        "buildableProjectDepsInPackageJsonType": "dependencies"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/route-config/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/route-config/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/route-config/src/**/*.ts", "libs/route-config/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/route-config"],
+      "options": {
+        "jestConfig": "libs/route-config/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["framework:angular"]
+}
