@@ -128,7 +128,7 @@ export function setItem<T = unknown>(
  *     deleteItem('key'),
  *   ).subscribe()
  *
- * @remarks Emits key and value changed events internally. It works both with autoIncrement and non-autoIncrement stores.
+ * @remarks Emits key and value changed events internally. It works both with autoIncrement and non-autoIncrement stores. If the key is not present in the store, nothing happens.
  *
  * @param key - the key which you want to delete from the store
  * @returns Observable<IdbObjectStore>
