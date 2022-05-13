@@ -1,5 +1,6 @@
 {
   "projectType": "library",
+  "root": "libs/ng-utils",
   "sourceRoot": "libs/ng-utils/src",
   "prefix": "this-dot",
   "targets": {

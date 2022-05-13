@@ -1,4 +1,5 @@
 {
+  "root": "libs/cypress-indexeddb",
   "sourceRoot": "libs/cypress-indexeddb/src",
   "projectType": "library",
   "targets": {
