@@ -67,6 +67,7 @@
     "@angular/language-service": "^13.1.1",
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
+    "@jscutlery/semver": "^2.23.4",
     "@nrwl/cli": "^13.4.3",
     "@nrwl/cypress": "^13.4.3",
     "@nrwl/eslint-plugin-nx": "^13.4.3",

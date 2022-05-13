@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/ng-utils",
   "sourceRoot": "libs/ng-utils/src",
   "prefix": "this-dot",
   "targets": {
@@ -35,6 +34,12 @@
         "lintFilePatterns": ["libs/ng-utils/src/**/*.ts", "libs/ng-utils/src/**/*.html"]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
+      }
     }
   },
   "tags": ["framework:angular"]

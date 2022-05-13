@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/route-config",
   "sourceRoot": "libs/route-config/src",
   "prefix": "td",
   "targets": {
@@ -33,6 +32,12 @@
       "options": {
         "jestConfig": "libs/route-config/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
       }
     }
   },

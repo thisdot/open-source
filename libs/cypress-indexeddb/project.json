@@ -1,5 +1,4 @@
 {
-  "root": "libs/cypress-indexeddb",
   "sourceRoot": "libs/cypress-indexeddb/src",
   "projectType": "library",
   "targets": {
@@ -27,6 +26,12 @@
         "packageJson": "libs/cypress-indexeddb/package.json",
         "main": "libs/cypress-indexeddb/src/index.ts",
         "assets": ["libs/cypress-indexeddb/*.md"]
+      }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional"
       }
     }
   },
