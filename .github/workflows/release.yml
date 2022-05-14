@@ -24,11 +24,11 @@ jobs:
         uses: ./.github/actions/setup
 
       - if: contains(['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease'], ${{ inputs.release_as }}) == false
+        uses: actions/github-script@v3
         with:
-          message: 'Invalid release type: ${{ inputs.release_as }}'
-          status: failure
-      - run: echo "Releasing ${{ inputs.release_as }}"
-
+          script: core.setFailed('envA and envB are not equivalent!')
+      - name: Release
+        run: echo "Releasing ${{ inputs.release_as }}"
 #      - if: ${{ inputs.target_project }} == 'affected'
 #        name: Release all affected versions
 #        env:
