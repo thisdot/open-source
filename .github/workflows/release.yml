@@ -1,0 +1,47 @@
+name: Release NPM packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_project:
+        description: 'The target project to release. Defaults to release all affected packages since the last package was released'
+        required: true
+        default: 'affected'
+      release_as:
+        description: 'The release type. It can be one of: major, minor, patch, premajor, preminor, prepatch, or prerelease. Defaults to "patch"'
+        required: true
+        default: 'patch'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - if: contains(['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease'], ${{ inputs.release_as }}) == false
+        with:
+          message: 'Invalid release type: ${{ inputs.release_as }}'
+          status: failure
+      - run: echo "Releasing ${{ inputs.release_as }}"
+
+#      - if: ${{ inputs.target_project }} == 'affected'
+#        name: Release all affected versions
+#        env:
+#          NODE_AUTH_TOKEN: ${{ inputs.NPM_TOKEN }}
+#        shell: bash
+#        run: npx nx affected --base=last-release --target=version --releaseAs={{ inputs.release_as }}
+#      - name: Tag last-release
+#        shell: bash
+#        run: git tag -f last-release
+#      - name: Push changes
+#        uses: ad-m/github-push-action@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: ${{ github.ref }}
+#          force: true
+#          tags: true
