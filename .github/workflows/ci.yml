@@ -1,7 +1,9 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: this-dot-open-source
+
+env:
+  NX_MAX_PARALLEL: 2
 
 on:
   push:
@@ -25,7 +27,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: Lint files
-        run: npm run affected:lint
+        run: npx nx affected --target=lint --parallel --max-parallel=$NX_MAX_PARALLEL
 
   test:
     runs-on: ubuntu-latest
@@ -42,7 +44,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: Test Projects
-        run: npm run affected:test
+        run: npx nx affected --target=test --parallel --max-parallel=$NX_MAX_PARALLEL
 
   e2e:
     runs-on: ubuntu-latest
