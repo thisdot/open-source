@@ -36,14 +36,14 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx nx affected --base=last-release --target=version --releaseAs={{ inputs.release_as }} --parallel --max-parallel=$NX_MAX_PARALLEL
+        run: npx nx affected --base=last-release --target=version --releaseAs={{ inputs.release_as }} --parallel=$NX_MAX_PARALLEL
 
       - if: ${{ inputs.target_project }} != 'affected'
         name: Release a specific project
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx nx version {{ inputs.target_project }} --releaseAs={{ inputs.release_as }} --parallel --max-parallel=$NX_MAX_PARALLEL
+        run: npx nx version {{ inputs.target_project }} --releaseAs={{ inputs.release_as }} --parallel=$NX_MAX_PARALLEL
 
       # Always mark the last release as the latest to avoid releasing the same version again.
       - name: Tag last-release

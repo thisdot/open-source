@@ -27,7 +27,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: Lint files
-        run: npx nx affected --target=lint --parallel --max-parallel=$NX_MAX_PARALLEL
+        run: npx nx affected --target=lint --parallel=$NX_MAX_PARALLEL
 
   test:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: Test Projects
-        run: npx nx affected --target=test --parallel --max-parallel=$NX_MAX_PARALLEL
+        run: npx nx affected --target=test --parallel=$NX_MAX_PARALLEL
 
   e2e:
     runs-on: ubuntu-latest
