@@ -39,7 +39,22 @@
     "version": {
       "executor": "@jscutlery/semver:version",
       "options": {
-        "preset": "conventional"
+        "preset": "conventional",
+        "tagPrefix": "${projectName}-v",
+        "postTargets": ["semver:publish", "semver:github"]
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      }
+    },
+    "publish": {
+      "executor": "ngx-deploy-npm:deploy",
+      "options": {
+        "access": "public"
       }
     }
   },
