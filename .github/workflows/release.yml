@@ -26,22 +26,29 @@ jobs:
       - if: contains(['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease'], ${{ inputs.release_as }}) == false
         uses: actions/github-script@v3
         with:
-          script: core.setFailed('envA and envB are not equivalent!')
-      - name: Release
-        run: echo "Releasing ${{ inputs.release_as }}"
-#      - if: ${{ inputs.target_project }} == 'affected'
-#        name: Release all affected versions
-#        env:
-#          NODE_AUTH_TOKEN: ${{ inputs.NPM_TOKEN }}
-#        shell: bash
-#        run: npx nx affected --base=last-release --target=version --releaseAs={{ inputs.release_as }}
-#      - name: Tag last-release
-#        shell: bash
-#        run: git tag -f last-release
-#      - name: Push changes
-#        uses: ad-m/github-push-action@master
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: ${{ github.ref }}
-#          force: true
-#          tags: true
+          script: core.setFailed('Release type must be one of major, minor, patch, premajor, preminor, prepatch, or prerelease')
+
+      - if: ${{ inputs.target_project }} == 'affected'
+        name: Release all affected versions
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx nx affected --base=last-release --target=version --releaseAs={{ inputs.release_as }}
+
+      - if: ${{ inputs.target_project }} != 'affected'
+        name: Release a specific project
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx nx version {{ inputs.target_project }} --releaseAs={{ inputs.release_as }}
+
+      # Always mark the last release as the latest to avoid releasing the same version again.
+      - name: Tag last-release
+        run: git tag -f last-release
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+          tags: true
