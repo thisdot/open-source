@@ -5,19 +5,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { CypressHelpersShowcaseRoutingModule } from './cypress-helpers-showcase-routing.module';
-import { CypressHelpersShowcaseComponent } from './components/cypress-helpers-showcase/cypress-helpers-showcase.component';
+import { RxidbRoutingModule } from './rxidb-routing.module';
+import { RxidbKeyValuePairShowcaseComponent } from './components/rxidb-key-value-pair-showcase/rxidb-key-value-pair-showcase.component';
+import { RxidbAutoIncrementComponent } from './components/rxidb-auto-increment/rxidb-auto-increment.component';
 
 @NgModule({
-  declarations: [CypressHelpersShowcaseComponent],
+  declarations: [RxidbKeyValuePairShowcaseComponent, RxidbAutoIncrementComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CypressHelpersShowcaseRoutingModule,
+    RxidbRoutingModule,
     MatInputModule,
     MatSnackBarModule,
     MatButtonModule,
   ],
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }],
 })
-export class CypressHelpersShowcaseModule {}
+export class RxidbShowcaseModule {}

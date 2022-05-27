@@ -30,18 +30,18 @@ const routes: Routes = [
     },
   },
   {
-    path: 'cypress-helpers',
+    path: 'rxidb',
     children: [
       {
         path: '',
         loadChildren: () =>
-          import('./modules/cypress-helpers-showcase/cypress-helpers-showcase.module').then(
-            (m) => m.CypressHelpersShowcaseModule
+          import('./modules/rxidb-showcase/rxidb-showcase.module').then(
+            (m) => m.RxidbShowcaseModule
           ),
       },
     ],
     data: {
-      title: 'Cypress Helpers',
+      title: '@this-dot/rxidb',
     },
   },
   {

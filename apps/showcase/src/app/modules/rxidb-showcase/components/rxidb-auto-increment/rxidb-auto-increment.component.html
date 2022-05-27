@@ -1,0 +1,70 @@
+<form (submit)="append($event)">
+  <mat-form-field color="accent">
+    <mat-label>Queue input</mat-label>
+    <input
+      matInput
+      data-test-id="add-to-queue-input"
+      [formControl]="inputControl"
+      placeholder="add to queue"
+    />
+  </mat-form-field>
+  <div class="hint-submit">
+    <mat-hint>Add a text to the indexedDb queue</mat-hint>
+    <button [disabled]="inputControl.disabled" color="accent" type="submit" mat-raised-button>
+      Submit
+    </button>
+  </div>
+</form>
+
+<hr />
+
+<section class="queue">
+  <table>
+    <thead>
+      <tr>
+        <td>Keys</td>
+        <td>Values</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let keyValuePair of keyValues$ | async"
+        [attr.data-test-id]="'row_' + keyValuePair.key"
+      >
+        <td>{{ keyValuePair.key }}</td>
+        <td>{{ keyValuePair.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<div class="buttons">
+  <button
+    [disabled]="(isLoading$ | async) || !(keyValues$ | async)?.length"
+    (click)="deleteFirst()"
+    data-test-id="delete-first-button"
+    mat-raised-button
+  >
+    Delete first
+  </button>
+  <button
+    [disabled]="(isLoading$ | async) || !(keyValues$ | async)?.length"
+    (click)="deleteLast()"
+    data-test-id="delete-last-button"
+    mat-raised-button
+  >
+    Delete last
+  </button>
+  <button
+    [disabled]="(isLoading$ | async) || !(keyValues$ | async)?.length"
+    (click)="clearAll()"
+    data-test-id="clear-all-button"
+    mat-raised-button
+  >
+    Clear All
+  </button>
+</div>
+
+<br />
+<button (click)="deleteDatabase()" data-test-id="delete-database-button" mat-raised-button>
+  DELETE DATABASE
+</button>

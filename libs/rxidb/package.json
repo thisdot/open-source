@@ -1,0 +1,24 @@
+{
+  "name": "@this-dot/rxidb",
+  "version": "0.0.1",
+  "description": "A helper library to handle IndexedDb operations using RxJS",
+  "license": "MIT",
+  "author": "This Dot Labs",
+  "homepage": "https://github.com/thisdot/open-source/tree/main/libs/rxidb#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisdot/open-source.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thisdot/open-source/issues"
+  },
+  "keywords": [
+    "rxjs",
+    "indexedDB",
+    "javascript",
+    "typescript"
+  ],
+  "peerDependencies": {
+    "rxjs": ">=7.0.0"
+  }
+}

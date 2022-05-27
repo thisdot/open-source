@@ -54,8 +54,8 @@
           routerLink="/ng-utils/secure-image"
           routerLinkActive="active"
           class="sub-link"
-          #ngUtilsLink="routerLinkActive"
-          [color]="ngUtilsLink.isActive ? 'accent' : 'primary'"
+          #ngUtilsSecureImageLink="routerLinkActive"
+          [color]="ngUtilsSecureImageLink.isActive ? 'accent' : 'primary'"
           >useHttpImgSrc</a
         >
         <a
@@ -63,9 +63,27 @@
           class="main-link"
           routerLink="/cypress-helpers"
           routerLinkActive="active"
-          #cypressHelpersLink="routerLinkActive"
-          [color]="cypressHelpersLink.isActive ? 'accent' : 'primary'"
-          >@this-dot/cypress-helpers</a
+          #rxidbLink="routerLinkActive"
+          [color]="rxidbLink.isActive ? 'accent' : 'primary'"
+          >@this-dot/rxidb</a
+        >
+        <a
+          mat-button
+          routerLink="/rxidb/key-value-pairs"
+          routerLinkActive="active"
+          class="sub-link"
+          #rxidbKeyValueLink="routerLinkActive"
+          [color]="rxidbKeyValueLink.isActive ? 'accent' : 'primary'"
+          >Key value pairs</a
+        >
+        <a
+          mat-button
+          routerLink="/rxidb/auto-increment"
+          routerLinkActive="active"
+          class="sub-link"
+          #rxidbAutoIncrementLink="routerLinkActive"
+          [color]="rxidbAutoIncrementLink.isActive ? 'accent' : 'primary'"
+          >Auto-increment</a
         >
       </div>
       <a
