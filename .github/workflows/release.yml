@@ -1,0 +1,53 @@
+name: Release NPM packages
+
+env:
+  NX_MAX_PARALLEL: 2
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_project:
+        type: 'choice'
+        description: 'The target project to release.'
+        required: true
+        options:
+          - utils
+          - ng-utils
+          - route-config
+          - cypress-indexeddb
+          - rxidb
+      release_as:
+        type: 'choice'
+        description: 'The release type. It can be one of: major, minor, patch, premajor, preminor, prepatch, or prerelease. Defaults to "patch"'
+        required: true
+        default: 'patch'
+        options:
+          - major
+          - minor
+          - patch
+          - premajor
+          - preminor
+          - prepatch
+          - prerelease
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Setup git user to "ThisDot Open-Source"
+        shell: bash
+        run: git config user.email "opensource@thisdot.co" && git config user.name "ThisDot Open-Source"
+
+      - if: ${{ inputs.target_project }} != 'affected'
+        name: Release a specific project
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --parallel=${{ env.NX_MAX_PARALLEL }} --skipProjectChangelog=true --noVerify=true

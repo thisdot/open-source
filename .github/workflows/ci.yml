@@ -1,7 +1,9 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: this-dot-open-source
+
+env:
+  NX_MAX_PARALLEL: 2
 
 on:
   push:
@@ -18,27 +20,14 @@ jobs:
         node-version: [16.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
         with:
-          fetch-depth: 0
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Cache Node.js modules
-        uses: actions/cache@v2
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install dependencies
-        run: npm ci
+          node_version: ${{ matrix.node_version }}
 
       - name: Lint files
-        run: npm run affected:lint
+        run: npx nx affected --target=lint --parallel=$NX_MAX_PARALLEL
 
   test:
     runs-on: ubuntu-latest
@@ -48,38 +37,25 @@ jobs:
         node-version: [14.x, 16.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
         with:
-          fetch-depth: 0
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Cache Node.js modules
-        uses: actions/cache@v2
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install dependencies
-        run: npm ci
+          node_version: ${{ matrix.node_version }}
 
       - name: Test Projects
-        run: npm run affected:test
+        run: npx nx affected --target=test --parallel=$NX_MAX_PARALLEL
 
   e2e:
     runs-on: ubuntu-latest
     container:
       image: cypress/browsers:node14.17.0-chrome91-ff89
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
         with:
-          fetch-depth: 0
-      - name: Install dependencies
-        run: npm ci
+          node_version: ${{ matrix.node_version }}
 
       - name: E2E tests
         run: npm run e2e

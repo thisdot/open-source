@@ -28,6 +28,27 @@
         "main": "libs/rxidb/src/index.ts",
         "assets": ["libs/rxidb/*.md"]
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional",
+        "tagPrefix": "${projectName}-v",
+        "postTargets": ["rxidb:publish", "rxidb:github"]
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      }
+    },
+    "publish": {
+      "executor": "ngx-deploy-npm:deploy",
+      "options": {
+        "access": "public"
+      }
     }
   },
   "tags": ["framework:none"]

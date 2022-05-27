@@ -1,0 +1,43 @@
+name: Setup
+
+description: Setup Node.js, cache and install dependencies
+
+inputs:
+  node_version:
+    description: Node.js version
+    required: false
+    default: '16'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+      # needed for nx affected command
+    - name: Derive appropriate SHAs for base and head for `nx affected` commands
+      uses: nrwl/nx-set-shas@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        # This doesn't just set the registry url, but also sets
+        # the right configuration in .npmrc that reads NPM token
+        # from NPM_AUTH_TOKEN environment variable.
+        # It actually creates a .npmrc in a temporary folder
+        # and sets the NPM_CONFIG_USERCONFIG environment variable.
+        registry-url: https://registry.npmjs.org
+
+    - name: Cache Node.js modules
+      uses: actions/cache@v2
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+          ${{ runner.OS }}-
+    - name: Install dependencies
+      shell: bash
+      run: npm ci

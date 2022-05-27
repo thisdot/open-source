@@ -35,6 +35,27 @@
         "lintFilePatterns": ["libs/ng-utils/src/**/*.ts", "libs/ng-utils/src/**/*.html"]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional",
+        "tagPrefix": "${projectName}-v",
+        "postTargets": ["ng-utils:publish", "ng-utils:github"]
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      }
+    },
+    "publish": {
+      "executor": "ngx-deploy-npm:deploy",
+      "options": {
+        "access": "public"
+      }
     }
   },
   "tags": ["framework:angular"]
