@@ -43,7 +43,7 @@ jobs:
 
       - name: Setup git user to "ThisDot Open-Source"
         shell: bash
-        run: git config user.email "opensource@thisdot.co" && git config user.name "ThisDot Open-Source"
+        run: git config user.email "balazs@thisdot.co" && git config user.name "Balázs Tápai"
 
       - if: ${{ inputs.target_project }} != 'affected'
         name: Release a specific project
