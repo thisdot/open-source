@@ -40,7 +40,7 @@
       "options": {
         "preset": "conventional",
         "tagPrefix": "${projectName}-v",
-        "postTargets": ["route-config:publish", "route-config:github"]
+        "postTargets": ["route-config:github", "route-config:publish"]
       }
     },
     "github": {

@@ -34,7 +34,7 @@
       "options": {
         "preset": "conventional",
         "tagPrefix": "${projectName}-v",
-        "postTargets": ["rxidb:publish", "rxidb:github"]
+        "postTargets": ["rxidb:github", "rxidb:publish"]
       }
     },
     "github": {

@@ -41,7 +41,7 @@
       "options": {
         "preset": "conventional",
         "tagPrefix": "${projectName}-v",
-        "postTargets": ["ng-utils:publish", "ng-utils:github"]
+        "postTargets": ["ng-utils:github", "ng-utils:publish"]
       }
     },
     "github": {

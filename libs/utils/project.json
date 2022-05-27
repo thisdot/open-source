@@ -41,7 +41,7 @@
       "options": {
         "preset": "conventional",
         "tagPrefix": "${projectName}-v",
-        "postTargets": ["utils:publish", "utils:github"]
+        "postTargets": ["utils:github", "utils:publish"]
       }
     },
     "github": {

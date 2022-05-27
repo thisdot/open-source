@@ -34,7 +34,7 @@
       "options": {
         "preset": "conventional",
         "tagPrefix": "${projectName}-v",
-        "postTargets": ["cypress-indexeddb:publish", "cypress-indexeddb:github"]
+        "postTargets": ["cypress-indexeddb:github", "cypress-indexeddb:publish"]
       }
     },
     "github": {
