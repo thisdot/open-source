@@ -40,8 +40,7 @@
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional",
-        "tagPrefix": "${projectName}-v",
-        "postTargets": ["ng-utils:github", "ng-utils:publish"]
+        "tagPrefix": "${projectName}-v"
       }
     },
     "github": {

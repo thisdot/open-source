@@ -33,8 +33,7 @@
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional",
-        "tagPrefix": "${projectName}-v",
-        "postTargets": ["cypress-indexeddb:github", "cypress-indexeddb:publish"]
+        "tagPrefix": "${projectName}-v"
       }
     },
     "github": {

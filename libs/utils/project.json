@@ -40,8 +40,7 @@
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional",
-        "tagPrefix": "${projectName}-v",
-        "postTargets": ["utils:github", "utils:publish"]
+        "tagPrefix": "${projectName}-v"
       }
     },
     "github": {

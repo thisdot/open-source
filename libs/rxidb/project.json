@@ -33,8 +33,7 @@
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional",
-        "tagPrefix": "${projectName}-v",
-        "postTargets": ["rxidb:github", "rxidb:publish"]
+        "tagPrefix": "${projectName}-v"
       }
     },
     "github": {
