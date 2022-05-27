@@ -50,4 +50,4 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --parallel=${{ env.NX_MAX_PARALLEL }} --skipProjectChangelog=true --noVerify=true
+        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --parallel=${{ env.NX_MAX_PARALLEL }} --skipProjectChangelog=true --noVerify=true --push=true
