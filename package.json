@@ -76,6 +76,7 @@
     "@nrwl/linter": "14.3.5",
     "@nrwl/node": "14.3.5",
     "@nrwl/nx-cloud": "14.1.1",
+    "@nrwl/web": "^14.3.5",
     "@nrwl/workspace": "14.3.5",
     "@types/jest": "27.4.1",
     "@types/node": "14.14.33",
