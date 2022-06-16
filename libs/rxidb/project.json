@@ -1,5 +1,5 @@
 {
-  "root": "libs/rxidb",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/rxidb/src",
   "projectType": "library",
   "targets": {
@@ -14,12 +14,12 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/rxidb"],
       "options": {
-        "jestConfig": "libs/rxidb/jest.config.js",
+        "jestConfig": "libs/rxidb/jest.config.ts",
         "passWithNoTests": true
       }
     },
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/rxidb",

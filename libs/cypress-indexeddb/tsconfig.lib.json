@@ -6,6 +6,6 @@
     "declaration": true,
     "types": ["cypress", "node"]
   },
-  "exclude": ["**/*.spec.ts"],
+  "exclude": ["**/*.spec.ts", "jest.config.ts"],
   "include": ["**/*.ts"]
 }

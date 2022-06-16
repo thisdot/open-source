@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroupDirective, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroupDirective, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { connectIndexedDb, deleteItem, getObjectStore, read, setItem } from '@this-dot/rxidb';
 import { isTruthy } from '@this-dot/utils';
@@ -34,7 +34,7 @@ export class RxidbKeyValuePairShowcaseComponent implements AfterViewInit, OnInit
   savedToIDB$ = new Subject<void>();
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private snackbar: MatSnackBar,
     @Inject('STORE') private store$: Observable<IDBObjectStore>
   ) {}

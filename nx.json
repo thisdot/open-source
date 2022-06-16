@@ -23,8 +23,7 @@
     }
   },
   "cli": {
-    "analytics": "dd09100e-b7fd-414b-9917-44fd79f74f98",
-    "defaultCollection": "@nrwl/angular"
+    "analytics": "dd09100e-b7fd-414b-9917-44fd79f74f98"
   },
   "defaultProject": "showcase",
   "generators": {
@@ -46,12 +45,12 @@
       "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
-      "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
       "style": "scss"
     }
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }

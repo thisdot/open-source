@@ -1,6 +1,6 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/route-config",
   "sourceRoot": "libs/route-config/src",
   "prefix": "td",
   "targets": {
@@ -31,7 +31,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/route-config"],
       "options": {
-        "jestConfig": "libs/route-config/jest.config.js",
+        "jestConfig": "libs/route-config/jest.config.ts",
         "passWithNoTests": true
       }
     },

@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'cypress-indexeddb',
   preset: '../../jest.preset.js',
   globals: {
