@@ -3,29 +3,13 @@
   "sourceRoot": "libs/rxidb/src",
   "projectType": "library",
   "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/rxidb/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/rxidb"],
-      "options": {
-        "jestConfig": "libs/rxidb/jest.config.ts",
-        "passWithNoTests": true
-      }
-    },
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/rxidb",
-        "tsConfig": "libs/rxidb/tsconfig.lib.json",
-        "packageJson": "libs/rxidb/package.json",
         "main": "libs/rxidb/src/index.ts",
+        "tsConfig": "libs/rxidb/tsconfig.lib.json",
         "assets": ["libs/rxidb/*.md"]
       }
     },
@@ -48,7 +32,22 @@
       "options": {
         "access": "public"
       }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/rxidb/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rxidb"],
+      "options": {
+        "jestConfig": "libs/rxidb/jest.config.ts",
+        "passWithNoTests": true
+      }
     }
   },
-  "tags": ["framework:none"]
+  "tags": []
 }
