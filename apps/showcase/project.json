@@ -1,6 +1,6 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "apps/showcase",
   "sourceRoot": "apps/showcase/src",
   "prefix": "this-dot",
   "targets": {
@@ -80,7 +80,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/showcase"],
       "options": {
-        "jestConfig": "apps/showcase/jest.config.js",
+        "jestConfig": "apps/showcase/jest.config.ts",
         "passWithNoTests": true
       }
     }

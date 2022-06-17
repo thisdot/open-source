@@ -1,5 +1,5 @@
 {
-  "root": "libs/cypress-indexeddb",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/cypress-indexeddb/src",
   "projectType": "library",
   "targets": {
@@ -14,12 +14,12 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/cypress-indexeddb"],
       "options": {
-        "jestConfig": "libs/cypress-indexeddb/jest.config.js",
+        "jestConfig": "libs/cypress-indexeddb/jest.config.ts",
         "passWithNoTests": true
       }
     },
     "build": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/cypress-indexeddb",
