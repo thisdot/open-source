@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   addItem,
@@ -46,7 +46,7 @@ export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
   readonly isLoading$ = this.isLoadingSubject.asObservable();
   readonly keyValues$ = this.store$.pipe(entries());
 
-  readonly inputControl = new UntypedFormControl('');
+  readonly inputControl = new FormControl('', { nonNullable: true });
 
   constructor(
     private snackbar: MatSnackBar,
