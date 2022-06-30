@@ -21,6 +21,12 @@ import {
   name: 'useHttpImgSrc',
   pure: false,
 })
+
+/**
+ * The base class for HttpImageSourcePipe.
+ *
+ * @public
+ */
 export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
   private subscription = new Subscription();
   private loadingImagePath!: string;
@@ -39,6 +45,27 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     this.setUpSubscription();
   }
 
+  /**
+   * Returns a valid url path (blob path, loadingImagePath or errorImagePath) or null based on image fetching state.
+   *
+   * @example
+   * // Inject UseHttpImageSourcePipe into module
+   * sourcePipe = module.inject(UseHttpImageSourcePipe);
+   *
+   * // subscribing to the observable will create the database
+   * sourcePipe.transform(
+   *  './your-image.png',
+   *  './your-custom-loading-image.png',
+   *  './your-custom-error-image.png',
+   * )
+   *
+   * @remarks This returns the passed loadingImagePath when fetching the image and a valid blob url if the image is fetched successfully, or the errorImagePath if it fails
+   *
+   * @param imagePath - This is used to specify the `imagePath`
+   * @param loadingImagePath - This is used to specify the `loadImagePath` For displaying a custom loading image while the requested image loads.
+   * @param errorImagePath - This is used to specify the `errorImagePath` For displaying a custom error image if the request fails.
+   * @returns ModuleWithProviders<UseHttpImageSourcePipeModule>.
+   */
   transform(
     imagePath: string,
     loadingImagePath?: string,
@@ -52,6 +79,12 @@ export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
     return this.latestValue || this.loadingImagePath;
   }
 
+  /**
+   * To perform cleanup before component is destroyed.
+   *
+   * @remarks Removes the transformSubscription
+   *
+   */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
