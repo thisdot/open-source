@@ -84,7 +84,7 @@ export class RxidbAutoIncrementComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  append(evt: any) {
+  append(evt: SubmitEvent) {
     evt.preventDefault();
     this.store$
       .pipe(
