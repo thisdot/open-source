@@ -1,5 +1,11 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, FormGroupDirective, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { connectIndexedDb, deleteItem, getObjectStore, read, setItem } from '@this-dot/rxidb';
 import { isTruthy } from '@this-dot/utils';
@@ -8,6 +14,15 @@ import { debounceTime, filter, switchMap, take, takeUntil, tap } from 'rxjs/oper
 
 const DATABASE_NAME = 'FORM_CACHE';
 const USER_FORM_KEY = 'user_form';
+
+interface UserForm {
+  firstName: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  country: FormControl<string | null>;
+  city: FormControl<string | null>;
+  address: FormControl<string | null>;
+  addressOptional: FormControl<string | null>;
+}
 
 @Component({
   selector: 'this-dot-rxidb-key-value-pair-showcase',
@@ -23,7 +38,7 @@ const USER_FORM_KEY = 'user_form';
 export class RxidbKeyValuePairShowcaseComponent implements AfterViewInit, OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  readonly formGroup = this.formBuilder.group({
+  readonly formGroup: FormGroup<UserForm> = this.formBuilder.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     country: ['', Validators.required],
@@ -34,7 +49,7 @@ export class RxidbKeyValuePairShowcaseComponent implements AfterViewInit, OnInit
   savedToIDB$ = new Subject<void>();
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     private snackbar: MatSnackBar,
     @Inject('STORE') private store$: Observable<IDBObjectStore>
   ) {}
