@@ -11,6 +11,17 @@ type ConsolePropObject = {
   error?: Error;
 };
 
+/**
+ * Read item for the provided store key
+ *
+ * @remarks The `readItem` method yields the value of the provided key, or undefined if it does not exist. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key
+ *
+ * @returns  Promise<T>
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
   const { log, consoleProps } = createCRUDLog('read', key);
   if (!isIDBObjectStore(store)) {
@@ -35,6 +46,17 @@ export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
     });
 }
 
+/**
+ * Delete item for the provided store key
+ *
+ * @remarks The `deleteItem` method deletes the value of the provided key, or undefined if it does not exist. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key
+ *
+ * @returns IDBObjectStore
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function deleteItem(store: IDBObjectStore, key: string): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog('delete', key);
   if (!isIDBObjectStore(store)) {
@@ -60,6 +82,18 @@ export function deleteItem(store: IDBObjectStore, key: string): Promise<IDBObjec
     });
 }
 
+/**
+ * Create item for the provided store key
+ *
+ * @remarks The `createItem` method creates the key and value. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key item key
+ * @param value item value
+ *
+ * @returns IDBObjectStore
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function createItem(
   store: IDBObjectStore,
   key: string,
@@ -68,6 +102,18 @@ export function createItem(
   return setItem('add', store, key, value);
 }
 
+/**
+ * Update item for the provided store key
+ *
+ * @remarks The `updateItem` method updates the value for the key provided. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key item key
+ * @param value item value
+ *
+ * @returns IDBObjectStore
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function updateItem(
   store: IDBObjectStore,
   key: string,
@@ -76,6 +122,17 @@ export function updateItem(
   return setItem('update', store, key, value);
 }
 
+/**
+ * Add item for provided store key
+ *
+ * @remarks The `addItem` method adds the value provided to the store. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param value item value
+ *
+ * @returns IDBObjectStore
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function addItem(store: IDBObjectStore, value: unknown): Promise<IDBObjectStore> {
   return setItem('add', store, null, value);
 }

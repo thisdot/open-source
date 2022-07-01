@@ -1,5 +1,15 @@
 import { setDatabaseInternal } from './alias-setup';
 
+/**
+ * Create a version update database connection
+ *
+ * @remarks The `createVersionUpdateDatabaseConnection` calls Cypress.log and opens a connection to the provided `openDatabase`.
+ *
+ * @param openDatabase `IDBDatabase` instance
+ *
+ * @returns IDBDatabase
+ * @throws {Error} If the connections fails to open.
+ */
 export function createVersionUpdateDatabaseConnection(
   openDatabase: IDBDatabase
 ): Promise<IDBDatabase> {

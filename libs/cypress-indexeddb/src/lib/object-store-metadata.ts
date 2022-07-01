@@ -8,6 +8,16 @@ type ConsolePropObject = {
   error?: Error;
 };
 
+/**
+ * List keys in store
+ *
+ * @remarks The `keys` method lists the keys available in the provided store.
+ *
+ * @param store `IDBObjectStore` instance
+ *
+ * @returns IDBValidKey[]
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
   const { log, consoleProps } = createMetadataLog('keys');
   if (!isIDBObjectStore(store)) {
@@ -32,6 +42,16 @@ export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
     });
 }
 
+/**
+ * List all entries in store
+ *
+ * @remarks The `entries` method lists all the entried available in the provided store.
+ *
+ * @param store `IDBObjectStore` instance
+ *
+ * @returns T[]
+ * @throws {Error} If the connections fails to open or the read operation fails.
+ */
 export function entries<T = unknown>(store: IDBObjectStore): Promise<T[]> {
   const { log, consoleProps } = createMetadataLog('entries');
   if (!isIDBObjectStore(store)) {

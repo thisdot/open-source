@@ -1,3 +1,14 @@
+/**
+ * Create a database connection
+ *
+ * @remarks The `createDatabaseConnection` opens a connection with the provided `databaseName` and `versionConfiguredByUser`.
+ *
+ * @param databaseName Database name
+ * @param versionConfiguredByUser Database version
+ *
+ * @returns IDBDatabase
+ * @throws {Error} If the connections fails to open.
+ */
 export function createDatabaseConnection(
   databaseName: string,
   versionConfiguredByUser?: number
@@ -20,7 +31,17 @@ export function createDatabaseConnection(
     };
   });
 }
-
+/**
+ * Open a database connection
+ *
+ * @remarks The `openIndexedDb` calls Cypress.log and opens a connection with the provided `databaseName` and `version`.
+ *
+ * @param databaseName Database name
+ * @param version Database version
+ *
+ * @returns IDBDatabase
+ * @throws {Error} If the connections fails to open.
+ */
 export function openIndexedDb(databaseName: string, version?: number): Promise<IDBDatabase> {
   let error: Error | undefined;
   let databaseVersion: number;

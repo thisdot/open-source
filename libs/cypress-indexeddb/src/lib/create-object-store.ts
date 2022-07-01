@@ -28,6 +28,26 @@ function createObjectStoreInternal(
   });
 }
 
+/**
+ * creates an object store.
+ * In order to create an object store, first, you need to initiate a database connection by calling the `cy.openIndexedDb('databaseName')` command and use the `as` chainer to store it with an alias.
+ *
+ * @example
+ * You can chain off the `createObjectStore('storeName')` method from methods that yield an `IDBDatabase` instance (`openIndexedDb` or `getIndexedDb`). You can use the `as` chainer to save the store using an alias.
+ * cy.getIndexedDb('@database').createObjectStore('example_store').as('exampleStore');
+ *
+ * You can also pass an optional options parameter to configure your object store. For example, you can create an object store with `autoIncrement` with the following command:
+ * cy.getIndexedDb('@database')
+ *  .createObjectStore('example_autoincrement_store', { autoIncrement: true })
+ *  .as('exampleAutoincrementStore')
+ *
+ * @remarks You can retrieve the saved object store using the `cy.getStore('@exampleStore')`
+ *
+ * @param existingDatabase - `IDBDatabase` instance
+ * @param storeName - Store name
+ * @param options - `IDBObjectStoreParameters` interface
+ * @returns Promise<IDBObjectStore>
+ */
 export function createObjectStore(
   existingDatabase: IDBDatabase,
   storeName: string,

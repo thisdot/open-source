@@ -23,13 +23,12 @@ import { UseHttpImageSourcePipe } from './use-http-image-source.pipe';
  */
 export class UseHttpImageSourcePipeModule {
   /**
-   * Creates an Observable<IDBDatabase> stream.
+   * Adds the ability to register the UseHttpImageSourcePipeModule with your custom configuration.
    *
    * @example
    * // Import `UseHttpImageSourcePipeModule` from the package
    * import { UseHttpImageSourcePipeModule } from '@this-dot/ng-utils';
    *
-   * // subscribing to the observable will create the database
    * *@NgModule({
    *    imports: [
    *      UseHttpImageSourcePipeModule.forRoot({

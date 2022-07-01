@@ -1,7 +1,19 @@
+/**
+ * Checks to ensure value is an `IDBObjectStore` instance
+ *
+ * @param subject value to test
+ * @returns boolean
+ */
 export function isIDBObjectStore(subject: unknown): subject is IDBObjectStore {
   return typeof subject === 'object' && subject?.constructor?.name === 'IDBObjectStore';
 }
 
+/**
+ * Checks to ensure value is an `isIDBDatabase` instance
+ *
+ * @param subject value to test
+ * @returns boolean
+ */
 export function isIDBDatabase(subject: unknown): subject is IDBDatabase {
   return typeof subject === 'object' && subject?.constructor?.name === 'IDBDatabase';
 }
