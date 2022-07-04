@@ -71,3 +71,7 @@ Consistency is important on a project, where many developers will work on this c
 ### Commit message guidelines
 
 This project uses [commitlint](https://github.com/conventional-changelog/commitlint) and [husky v6](https://github.com/typicode/husky/tree/master#install) to lint your commit messages. The project uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) guideline. See [@commitlint/config-conventional](https://www.npmjs.com/package/@commitlint/config-conventional) for further information on how to format your commits.
+
+## Further reads
+
+- [Our release process](./HOW_TO_RELEASE.md)

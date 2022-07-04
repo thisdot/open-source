@@ -34,6 +34,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
+    # This next line locks this workflow to the main branch, so it won't be started on branches other than main
     if: github.ref == 'refs/heads/main'
 
     steps:

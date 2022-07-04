@@ -1,6 +1,6 @@
 {
   "name": "@this-dot/rxidb",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A helper library to handle IndexedDb operations using RxJS",
   "license": "MIT",
   "author": "This Dot Labs",
