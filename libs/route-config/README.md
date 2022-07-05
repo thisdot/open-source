@@ -316,3 +316,27 @@ The injection token can also be provided / overridden in a component's declarati
    providers: [ /* the value provided here will be the default down in the DOM tree */]
 })
 ```
+
+## inRouteTags$ pipe
+
+The `inRouteTags$` pipe takes an array of route tags and returns an Observable<boolean>. This observable emits a true value if any of the values in the provided array is in the configured route tags of the activated route.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'custom-component',
+  templateUrl: './custom-component.html',
+})
+export class CustomComponent {
+  displayRouteTags = ['custom-component', 'another-tag', 'third-tag'];
+}
+```
+
+```angular2html
+<!-- custom-component.html -->
+<ng-container *ngIf="displayRouteTags | inRouteTags$ | async">
+  The contents of this ng-container are only displayed when the activated route's route config has
+  the above declared route tags.
+</ng-container>
+```

@@ -15,8 +15,7 @@ export type RouteData<
   RouteTags extends string = string
 > = {
   [key in ConfigParamsNames]: unknown;
-} &
-  RouteConfigParams<RouteTags>;
+} & RouteConfigParams<RouteTags>;
 
 export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<ConfigParamsNames>;
 
@@ -49,6 +48,22 @@ export class RouteConfigService<
     private _injectedDefaultValue?: Partial<RouteData<ConfigParamsNames, RouteTags>>
   ) {}
 
+  /**
+   * Returns an Observable which emits the route config set for the activated route.
+   *
+   * @example
+   * export class AppComponent {
+   *   data$ = this.routeConfigService.getActivatedRouteConfig();
+   *   dataWithDefaultValue$ = this.routeConfigService.getActivatedRouteConfig({
+   *     routeTags: ['defaultTag'],
+   *     title: 'Default Title',
+   *   });
+   * }
+   *
+   * @param defaultValue - the default value that should be returned, it allows overriding the injected default values.
+   *
+   * @returns Observable<Partial<C>>
+   */
   getActivatedRouteConfig<
     C extends RouteData<ConfigParamsNames, RouteTags> = RouteData<ConfigParamsNames, RouteTags>
   >(defaultValue: Partial<C> = {}): Observable<Partial<C>> {
@@ -65,6 +80,17 @@ export class RouteConfigService<
     );
   }
 
+  /**
+   * Returnsthe an Observable with current route's property value
+   *
+   * @example
+   * export class AppComponent {
+   *   tags$ = this.routeConfigService.getLeafConfig('routeTags', ['no tags']);
+   * }
+   *
+   * @param paramName - the parameter name from the route config to be returned
+   * @param defaultValue - the default value that should be returned, if the value is not present
+   */
   getLeafConfig(paramName: 'routeTags', defaultValue?: RouteTags[]): Observable<RouteTags[]>;
   getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue?: T): Observable<T>;
   getLeafConfig<T = unknown>(

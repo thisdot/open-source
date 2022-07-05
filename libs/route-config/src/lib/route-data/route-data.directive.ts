@@ -15,6 +15,32 @@ export interface RouteDataDirectiveContext<C> {
   $implicit: C;
 }
 
+/**
+ * This directive allows for access to the whole `data` property defined in the current [Route](https://angular.io/api/router/Route#data) from a Component's template.
+ *
+ * @example
+ * <!-- We can use it as following: -->
+ * <h1 *tdRouteData="let data">
+ *   Current title is: {{ data.title }}
+ * </h1>
+ *
+ * @example
+ * <!-- It is also possible to pass a default value so that if a property is not defined in the Route we will still receive some value: -->
+ * <h1 *tdRouteData="let data; defaultValue: { title: 'DefaultTitle', routeTags: ['defaultTag'] }">
+ *   Current title is: {{ data.title }}
+ * </h1>
+ *
+ * @example
+ * <!-- If you want to access multiple properties in one component's template it is **recommended** to wrap the whole template with only one `*tdRouteData` directive. This approach follows DRY principle and is efficient as it only creates one subscription per template. -->
+ * <ng-container *tdRouteData="let data; defaultValue: { title: 'DefaultTitle', routeTags: ['defaultTag'] }">
+ *   <h1>
+ *     Current title is: {{ data.title }}
+ *   </h1>
+ *   <p>
+ *     Current route contains the following tags: {{ data.routeTags | json }}
+ *   </p>
+ * </ng-container>
+ */
 @Directive({
   selector: '[tdRouteData]',
 })
