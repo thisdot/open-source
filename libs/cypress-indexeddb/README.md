@@ -49,10 +49,10 @@ It supports:
             options?: IDBObjectStoreParameters
           ): Chainable<IDBObjectStore>;
           getStore(storeName: string): Chainable<IDBObjectStore>;
-          createItem(key: string, value: unknown): Chainable<IDBObjectStore>;
+          createItem(key: IDBValidKey, value: unknown): Chainable<IDBObjectStore>;
           readItem<T = unknown>(key: IDBValidKey | IDBKeyRange): Chainable<T>;
-          updateItem(key: string, value: unknown): Chainable<IDBObjectStore>;
-          deleteItem(key: string): Chainable<IDBObjectStore>;
+          updateItem(key: IDBValidKey, value: unknown): Chainable<IDBObjectStore>;
+          deleteItem(key: IDBValidKey): Chainable<IDBObjectStore>;
           addItem<T = unknown>(value: T): Chainable<IDBObjectStore>;
           keys(): Chainable<IDBValidKey[]>;
           entries<T = unknown>(): Chainable<T[]>;

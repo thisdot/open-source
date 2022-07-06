@@ -1,3 +1,11 @@
+/**
+ * Deletes the database based on the provided string.
+ *
+ * @param databaseName - The database name you want to delete
+ *
+ * @returns An Promise<void>.
+ * @throws {Error} If the database does not exist or is blocked by open connections.
+ */
 export function deleteDatabase(databaseName: string): Promise<void> {
   let error: Event | undefined;
   let warning: Event | undefined;

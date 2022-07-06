@@ -3,6 +3,17 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RouteConfigService } from '../route-config.service';
 
+/**
+ * Pipes an array of route tags and returns an Observable<boolean> that emits a boolean.
+ *
+ * The boolean is true if any of the values in the provided array is in the configured route tags of the activated route.
+ *
+ * @example
+ * <!-- Use it chained with the async pipe -->
+ * <ng-container *ngIf="routesWhereTheElementIsDisplayed | inRouteTags$ | async">
+ *   The contents of this ng-container
+ * </ng-container>
+ */
 @Pipe({
   name: 'inRouteTags$',
 })

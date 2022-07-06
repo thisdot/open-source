@@ -31,7 +31,7 @@ It supports:
 
 ✅ &nbsp;Fetching images using the `HttpClient`, so the requests will hit all the `HttpInterceptor` implementations that are needed <br/>
 ✅ &nbsp;Displaying a custom loading image while the requested image loads <br/>
-✅ &nbsp;Displaing a custom error image if the request fails <br/>
+✅ &nbsp;Displaying a custom error image if the request fails <br/>
 
 ### Using in your Angular app
 

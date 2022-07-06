@@ -6,22 +6,16 @@ export function isIDBDatabase(subject: unknown): subject is IDBDatabase {
   return typeof subject === 'object' && subject?.constructor?.name === 'IDBDatabase';
 }
 
-/**
- * Gets the array of arguments for the certain indexedDb operations (get, put, delete, add);
- * The 'put' operation gets two arguments, and if there is no key provided the 'add' method receives the value
- * @param key - string or null. Null if it is an add operation
- * @param value - the value needs to be stored
- */
 export function getCommandArguments<T>(
-  key: string | null,
+  key: IDBValidKey | null,
   value: T | undefined
-): [T, string] | [string] | [T] {
+): [T, IDBValidKey] | [IDBValidKey] | [T] {
   return key ? getCommandArgumentsBasedOnValue(key, value) : [value as T];
 }
 
 function getCommandArgumentsBasedOnValue<T>(
-  key: string,
+  key: IDBValidKey,
   value: T | undefined
-): [T, string] | [string] {
+): [T, IDBValidKey] | [IDBValidKey] {
   return value ? [value, key] : [key];
 }

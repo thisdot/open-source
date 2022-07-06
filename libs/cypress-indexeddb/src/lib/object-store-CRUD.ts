@@ -6,12 +6,23 @@ type SetItemOperation = 'create' | 'update' | 'add';
 type ReadDeleteOperation = 'read' | 'delete';
 type StoreOperation = keyof Pick<IDBObjectStore, 'get' | 'put' | 'delete' | 'add'>;
 type ConsolePropObject = {
-  key: string;
+  key: IDBValidKey;
   value?: unknown;
   error?: Error;
 };
 
-export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
+/**
+ * Read item for the provided store key
+ *
+ * @remarks The `readItem` method yields the value of the provided key, or undefined if it does not exist. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key
+ *
+ * @returns  Promise<T>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
+export function readItem<T>(store: IDBObjectStore, key: IDBValidKey): Promise<T> {
   const { log, consoleProps } = createCRUDLog('read', key);
   if (!isIDBObjectStore(store)) {
     const error = new Error(
@@ -35,7 +46,18 @@ export function readItem<T>(store: IDBObjectStore, key: string): Promise<T> {
     });
 }
 
-export function deleteItem(store: IDBObjectStore, key: string): Promise<IDBObjectStore> {
+/**
+ * Delete item for the provided store key
+ *
+ * @remarks The `deleteItem` method deletes the value of the provided key, or undefined if it does not exist. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key
+ *
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
+export function deleteItem(store: IDBObjectStore, key: IDBValidKey): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog('delete', key);
   if (!isIDBObjectStore(store)) {
     const error = new Error(
@@ -60,22 +82,58 @@ export function deleteItem(store: IDBObjectStore, key: string): Promise<IDBObjec
     });
 }
 
+/**
+ * Create item for the provided store key
+ *
+ * @remarks The `createItem` method creates the key and value. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key item key
+ * @param value item value
+ *
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
 export function createItem(
   store: IDBObjectStore,
-  key: string,
+  key: IDBValidKey,
   value: unknown
 ): Promise<IDBObjectStore> {
   return setItem('add', store, key, value);
 }
 
+/**
+ * Update item for the provided store key
+ *
+ * @remarks The `updateItem` method updates the value for the key provided. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ *
+ * @param store `IDBObjectStore` instance
+ * @param key item key
+ * @param value item value
+ *
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
 export function updateItem(
   store: IDBObjectStore,
-  key: string,
+  key: IDBValidKey,
   value: unknown
 ): Promise<IDBObjectStore> {
   return setItem('update', store, key, value);
 }
 
+/**
+ * Add item
+ *
+ * @remarks The `addItem` method adds the value provided to the store. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ * @remarks This method is only useable if the `IDBObjectStore` it is called upon is created with autoIncrement: true
+ *
+ * @param store `IDBObjectStore` instance
+ * @param value item value
+ *
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
 export function addItem(store: IDBObjectStore, value: unknown): Promise<IDBObjectStore> {
   return setItem('add', store, null, value);
 }
@@ -83,7 +141,7 @@ export function addItem(store: IDBObjectStore, value: unknown): Promise<IDBObjec
 function setItem(
   operation: SetItemOperation,
   store: IDBObjectStore,
-  key: string | null,
+  key: IDBValidKey | null,
   value: unknown
 ): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog(operation, key);
@@ -122,7 +180,7 @@ function makeCreateUpdateDeleteRequest<T, O = undefined>(
   operation: StoreOperation,
   db: IDBDatabase,
   store: IDBObjectStore,
-  key: string | null,
+  key: IDBValidKey | null,
   value?: O
 ): Promise<T> {
   const commandArguments = getCommandArguments(key, value);
@@ -148,7 +206,7 @@ function makeCreateUpdateDeleteRequest<T, O = undefined>(
 
 function createCRUDLog(
   operation: SetItemOperation | ReadDeleteOperation,
-  key: string | null
+  key: IDBValidKey | null
 ): { log: Log; consoleProps: ConsolePropObject } {
   const consoleProps: ConsolePropObject = {
     key: key || 'no key provided',

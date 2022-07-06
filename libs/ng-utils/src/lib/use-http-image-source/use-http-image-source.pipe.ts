@@ -21,6 +21,30 @@ import {
   name: 'useHttpImgSrc',
   pure: false,
 })
+
+/**
+ * The base class for HttpImageSourcePipe.
+ *
+ * @example
+ * <!-- Use the `useHttpImgSrc` pipe to request the source image using the `HttpClient` -->
+ * <ng-container *ngFor="let image of images$ | async"
+ *  <img width="200px" [src]="image.src | useHttpImgSrc" />
+ * </ng-container>
+ *
+ * @example
+ * <!-- useHttpImgSrc pipe with custom config -->
+ * <!-- You can override the default loading and error images with the following syntax: -->
+ * <ng-container *ngFor="let image of images$ | async"
+ *  <img width="200px" [src]="image.src | useHttpImgSrc:'/assets/loading.png':'/assets/error.png'" />
+ * </ng-container>
+ *
+ * @remarks Returns a valid url path (blob path, loadingImagePath or errorImagePath) or null based on image fetching state
+ * @remarks This returns the passed loadingImagePath when fetching the image and a valid blob url if the image is fetched successfully, or the errorImagePath if it fails
+ *
+ * @param imagePath - This is used to specify the `imagePath`
+ * @param loadingImagePath - This is used to specify the `loadImagePath` For displaying a custom loading image while the requested image loads.
+ * @param errorImagePath - This is used to specify the `errorImagePath` For displaying a custom error image if the request fails.
+ */
 export class UseHttpImageSourcePipe implements PipeTransform, OnDestroy {
   private subscription = new Subscription();
   private loadingImagePath!: string;

@@ -12,6 +12,12 @@ import { RouteDataHasDirective } from './route-data-has/route-data-has.directive
   exports: [RouteTagDirective, InRouteTags$Pipe, RouteDataModule, RouteDataHasDirective],
 })
 export class RouteConfigModule {
+  /**
+   * Registers the RouteConfigModule and sets the providers globally.
+   * Make sure you call the forRoot method in your root module.
+   *
+   * @remarks You still need to import the module without calling the forRoot method in other modules so you can use the pipes and directives from this module.
+   */
   static forRoot(): ModuleWithProviders<RouteConfigModule> {
     return {
       ngModule: RouteConfigModule,

@@ -8,6 +8,16 @@ type ConsolePropObject = {
   error?: Error;
 };
 
+/**
+ * List keys in store
+ *
+ * @remarks The `keys` method lists the keys available in the provided store.
+ *
+ * @param store `IDBObjectStore` instance
+ *
+ * @returns Promise<IDBValidKey[]>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
 export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
   const { log, consoleProps } = createMetadataLog('keys');
   if (!isIDBObjectStore(store)) {
@@ -32,6 +42,16 @@ export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
     });
 }
 
+/**
+ * List all entries in store
+ *
+ * @remarks The `entries` method lists all the values saved in the store.
+ *
+ * @param store `IDBObjectStore` instance
+ *
+ * @returns Promise<T[]>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
+ */
 export function entries<T = unknown>(store: IDBObjectStore): Promise<T[]> {
   const { log, consoleProps } = createMetadataLog('entries');
   if (!isIDBObjectStore(store)) {

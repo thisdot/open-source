@@ -1,5 +1,14 @@
 import { setDatabaseInternal } from './alias-setup';
 
+/**
+ * Create a version update database connection
+ *
+ * @remarks This method should be used only internally. The method creates a database upgrade before creating a new object store.
+ *
+ * @param openDatabase `IDBDatabase` instance
+ *
+ * @returns IDBDatabase
+ */
 export function createVersionUpdateDatabaseConnection(
   openDatabase: IDBDatabase
 ): Promise<IDBDatabase> {
