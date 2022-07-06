@@ -8,7 +8,6 @@ import { setDatabaseInternal } from './alias-setup';
  * @param openDatabase `IDBDatabase` instance
  *
  * @returns IDBDatabase
- * @throws {Error} If the connections fails to open.
  */
 export function createVersionUpdateDatabaseConnection(
   openDatabase: IDBDatabase

@@ -20,7 +20,7 @@ type ConsolePropObject = {
  * @param key
  *
  * @returns  Promise<T>
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function readItem<T>(store: IDBObjectStore, key: IDBValidKey): Promise<T> {
   const { log, consoleProps } = createCRUDLog('read', key);
@@ -54,8 +54,8 @@ export function readItem<T>(store: IDBObjectStore, key: IDBValidKey): Promise<T>
  * @param store `IDBObjectStore` instance
  * @param key
  *
- * @returns IDBObjectStore
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function deleteItem(store: IDBObjectStore, key: IDBValidKey): Promise<IDBObjectStore> {
   const { log, consoleProps } = createCRUDLog('delete', key);
@@ -91,8 +91,8 @@ export function deleteItem(store: IDBObjectStore, key: IDBValidKey): Promise<IDB
  * @param key item key
  * @param value item value
  *
- * @returns IDBObjectStore
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function createItem(
   store: IDBObjectStore,
@@ -111,8 +111,8 @@ export function createItem(
  * @param key item key
  * @param value item value
  *
- * @returns IDBObjectStore
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function updateItem(
   store: IDBObjectStore,
@@ -123,15 +123,16 @@ export function updateItem(
 }
 
 /**
- * Add item for provided store key
+ * Add item
  *
  * @remarks The `addItem` method adds the value provided to the store. You can chain assertions from this method. If you use TypeScript, you can set the type of the returned value
+ * @remarks This method is only useable if the `IDBObjectStore` it is called upon is created with autoIncrement: true
  *
  * @param store `IDBObjectStore` instance
  * @param value item value
  *
- * @returns IDBObjectStore
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @returns Promise<IDBObjectStore>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function addItem(store: IDBObjectStore, value: unknown): Promise<IDBObjectStore> {
   return setItem('add', store, null, value);

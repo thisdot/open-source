@@ -26,15 +26,6 @@ import {
  * The base class for HttpImageSourcePipe.
  *
  * @example
- * // Inject UseHttpImageSourcePipe into module
- * sourcePipe = module.inject(UseHttpImageSourcePipe);
- *
- * sourcePipe.transform(
- *  './your-image.png',
- *  './your-custom-loading-image.png',
- *  './your-custom-error-image.png',
- * )
- *
  * Use the `useHttpImgSrc` pipe to request the source image using the `HttpClient`
  *
  * <ng-container *ngFor="let image of images$ | async"

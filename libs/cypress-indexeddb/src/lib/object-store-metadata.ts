@@ -15,8 +15,8 @@ type ConsolePropObject = {
  *
  * @param store `IDBObjectStore` instance
  *
- * @returns IDBValidKey[]
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @returns Promise<IDBValidKey[]>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
   const { log, consoleProps } = createMetadataLog('keys');
@@ -45,12 +45,12 @@ export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
 /**
  * List all entries in store
  *
- * @remarks The `entries` method lists all the entried available in the provided store.
+ * @remarks The `entries` method lists all the values saved in the store.
  *
  * @param store `IDBObjectStore` instance
  *
- * @returns T[]
- * @throws {Error} If the connections fails to open or the read operation fails.
+ * @returns Promise<T[]>
+ * @throws {Error} If it is chained off from a method that does not return an object store.
  */
 export function entries<T = unknown>(store: IDBObjectStore): Promise<T[]> {
   const { log, consoleProps } = createMetadataLog('entries');
