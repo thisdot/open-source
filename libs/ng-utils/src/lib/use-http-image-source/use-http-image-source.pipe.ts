@@ -26,14 +26,14 @@ import {
  * The base class for HttpImageSourcePipe.
  *
  * @example
- * Use the `useHttpImgSrc` pipe to request the source image using the `HttpClient`
- *
+ * <!-- Use the `useHttpImgSrc` pipe to request the source image using the `HttpClient` -->
  * <ng-container *ngFor="let image of images$ | async"
  *  <img width="200px" [src]="image.src | useHttpImgSrc" />
  * </ng-container>
  *
- * useHttpImgSrc pipe with custom config
- * You can override the default loading and error images with the following syntax:
+ * @example
+ * <!-- useHttpImgSrc pipe with custom config -->
+ * <!-- You can override the default loading and error images with the following syntax: -->
  * <ng-container *ngFor="let image of images$ | async"
  *  <img width="200px" [src]="image.src | useHttpImgSrc:'/assets/loading.png':'/assets/error.png'" />
  * </ng-container>

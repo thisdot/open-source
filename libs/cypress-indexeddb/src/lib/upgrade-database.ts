@@ -3,7 +3,7 @@ import { setDatabaseInternal } from './alias-setup';
 /**
  * Create a version update database connection
  *
- * @remarks The `createVersionUpdateDatabaseConnection` calls Cypress.log and opens a connection to the provided `openDatabase`.
+ * @remarks This method should be used only internally. The method creates a database upgrade before creating a new object store.
  *
  * @param openDatabase `IDBDatabase` instance
  *
