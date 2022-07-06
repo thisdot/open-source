@@ -7,7 +7,6 @@ Choose the right checklist for the change that you're making:
 ## Bug
 
 - [ ] Related issues linked using `fixes #number`
-- [ ] Affected package version numbers are updated in their respective `package.json` files accordingly (patch version)
 - [ ] The new feature, or the fix is tested with jest and if applicable with cypress
 - [ ] The code is properly formatted using the project's prettier and eslint settings
 - [ ] Make sure everything is properly typed in the code.
@@ -16,7 +15,6 @@ Choose the right checklist for the change that you're making:
 ## Feature
 
 - [ ] Implements an existing feature request or change request. Make sure the feature request has been accepted for implementation before opening a PR.
-- - [ ] Affected package version numbers are updated in their respective `package.json` files accordingly (minor version, or major if breaking change)
 - [ ] Related issues linked using `fixes #number`
 - [ ] The new feature, or the fix is tested with jest and if applicable with cypress
 - [ ] The code is properly formatted using the project's prettier and eslint settings

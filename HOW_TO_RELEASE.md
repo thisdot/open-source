@@ -75,7 +75,7 @@ on:
 
 Please make sure you follow the process of releasing new versions.
 
-1. Make sure the `package.json` of the to-be-released library contains the version you'd like to release on the `main` branch. This new version should have been part of the PR that got merged.
+1. Make sure the `package.json` of the to-be-released library contains the version from you would like to release a new version
 2. Open the repository in GitHub and go to the `Actions` tab.
 3. Select the `Release NPM packages` workflow
 4. This workflow can only be started manually. Click on `Run workflow`
@@ -88,3 +88,4 @@ Please make sure you follow the process of releasing new versions.
    4. please use the versions starting with `pre` only when you talked to a repository admin about the release plan
 8. run the workflow
 9. If the workflow succeeds, there should be a new package released in the @this-dot npm organisation.
+10. Make sure you update the `package.json` of the recently released library with the new version. Because of certain restrictions we cannot push commits to the main branch from CI
