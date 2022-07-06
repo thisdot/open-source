@@ -18,6 +18,7 @@
           "tsConfig": "libs/route-config/tsconfig.lib.json"
         }
       },
+      "dependsOn": [{ "projects": "dependencies", "target": "build" }],
       "defaultConfiguration": "production"
     },
     "lint": {

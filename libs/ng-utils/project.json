@@ -19,6 +19,7 @@
           "tsConfig": "libs/ng-utils/tsconfig.lib.json"
         }
       },
+      "dependsOn": [{ "projects": "dependencies", "target": "build" }],
       "defaultConfiguration": "production"
     },
     "test": {
