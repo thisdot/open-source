@@ -42,7 +42,8 @@
       "options": {
         "preset": "conventional",
         "tagPrefix": "${projectName}-v"
-      }
+      },
+      "dependsOn": ["build"]
     },
     "github": {
       "executor": "@jscutlery/semver:github",
