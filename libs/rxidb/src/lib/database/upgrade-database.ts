@@ -21,7 +21,14 @@ export function upgradeDatabase(existingDb: IDBDatabase): Observable<IDBDatabase
   }
   const dbSubject = new ReplaySubject<IDBDatabase>(1);
 
-  return from(window.indexedDB.databases()).pipe(
+  /**
+   * Firefox does not support the `indexedDB.databases()` method, so we default to the existingDb here
+   */
+  const databases: Promise<IDBDatabaseInfo[]> = window.indexedDB.databases
+    ? window.indexedDB.databases()
+    : Promise.resolve([{ name: existingDb.name, version: existingDb.version }]);
+
+  return from(databases).pipe(
     switchMap((dbInfo: IDBDatabaseInfo[]) => {
       existingDb.close();
       const currentDb = dbInfo.find((i) => i.name === existingDb.name);

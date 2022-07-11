@@ -41,8 +41,8 @@ export function connectIndexedDb(name: string, version?: number): Observable<IDB
     const db = (e.target as any).result as IDBDatabase;
     dbSubject.next(db);
     db.onversionchange = (e) => {
-      const db = e.target as any;
-      db.close();
+      const versionChangeDb = e.target as any;
+      versionChangeDb.close();
     };
     db.onclose = () => {
       dbSubject.complete();

@@ -1,3 +1,4 @@
+import { connectIndexedDb } from '../database';
 import { upgradeDatabase } from '../database/upgrade-database';
 import { filter, Observable, of, ReplaySubject, share, Subject, switchMap, takeUntil } from 'rxjs';
 import { DATABASE_DELETE_EVENTS } from '../rxidb-internal.events';
@@ -43,7 +44,10 @@ export function getObjectStore(
     s$.pipe(
       switchMap((existingDb: IDBDatabase) => {
         const isExistingObjectStore = existingDb.objectStoreNames.contains(name);
-        const upgrade = isExistingObjectStore ? of(existingDb) : upgradeDatabase(existingDb);
+        console.warn('isExistingObjectStore', isExistingObjectStore, name);
+        const upgrade = isExistingObjectStore
+          ? connectIndexedDb(existingDb.name)
+          : upgradeDatabase(existingDb);
         return upgrade.pipe(
           switchMap((db: IDBDatabase) => {
             const storeSubject = new Subject<IDBObjectStore>();

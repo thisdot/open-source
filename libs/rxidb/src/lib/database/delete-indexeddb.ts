@@ -31,7 +31,14 @@ export function deleteIndexedDb(name: string): Observable<void> {
     return EMPTY;
   }
   const deleteDbSubject = new Subject<void>();
-  window.indexedDB.databases().then((databases: IDBDatabaseInfo[]) => {
+  /**
+   * Firefox does not support the `indexedDB.databases()` method, so we default to the existingDb here
+   */
+  const databases: Promise<IDBDatabaseInfo[]> = window.indexedDB.databases
+    ? window.indexedDB.databases()
+    : Promise.resolve([{ name }]);
+
+  databases.then((databases: IDBDatabaseInfo[]) => {
     const db = databases.find((database: IDBDatabaseInfo) => database.name === name);
     if (db) {
       const request = window.indexedDB.deleteDatabase(name);
