@@ -1,3 +1,4 @@
+import { noop } from 'rxjs';
 import { setDatabaseInternal } from './alias-setup';
 
 /**
@@ -38,9 +39,7 @@ export function createVersionUpdateDatabaseConnection(
     request.onupgradeneeded = (e: Event) => {
       request.onerror = () => void 0;
       const db = (e.target as any).result as IDBDatabase;
-      db.onversionchange = (e) => {
-        console.warn('onversionchange', e);
-      };
+      db.onversionchange = noop;
       databaseVersion = db.version;
       setDatabaseInternal(databaseName, db);
       log.end();

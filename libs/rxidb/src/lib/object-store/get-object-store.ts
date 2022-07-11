@@ -44,7 +44,6 @@ export function getObjectStore(
     s$.pipe(
       switchMap((existingDb: IDBDatabase) => {
         const isExistingObjectStore = existingDb.objectStoreNames.contains(name);
-        console.warn('isExistingObjectStore', isExistingObjectStore, name);
         const upgrade = isExistingObjectStore
           ? connectIndexedDb(existingDb.name)
           : upgradeDatabase(existingDb);
