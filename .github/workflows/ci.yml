@@ -50,6 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -71,6 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -92,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
     steps:
       - uses: actions/checkout@v3
       - name: Setup
