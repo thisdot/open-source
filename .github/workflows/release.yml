@@ -47,7 +47,7 @@ jobs:
         run: git config user.email "opensource@thisdot.co" && git config user.name "ThisDot Open-Source"
 
       - name: Release a specific project
-        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --skipProjectChangelog=true --noVerify=true --preid=rc --push
+        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --skipProjectChangelog=true --noVerify=true --preid=rc
 
       - name: Publish to npm
         env:
