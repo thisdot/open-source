@@ -46,8 +46,16 @@ jobs:
         shell: bash
         run: git config user.email "opensource@thisdot.co" && git config user.name "ThisDot Open-Source"
 
+      - name: Create Release pull-request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: Release ${{ github.event.inputs.target_project }} as ${{ github.event.inputs.release_as }}
+          body: Release ${{ github.event.inputs.target_project }} as ${{ github.event.inputs.release_as }}
+          branch: release/${{ github.event.inputs.target_project }}
+          base: main
+
       - name: Release a specific project
-        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --skipProjectChangelog=true --noVerify=true --preid=rc
+        run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --skipProjectChangelog=true --noVerify=true --preid=rc --push
 
       - name: Publish to npm
         env:
