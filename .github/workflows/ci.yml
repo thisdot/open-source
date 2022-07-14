@@ -46,10 +46,11 @@ jobs:
       - name: Test Projects
         run: npx nx affected --target=test --parallel=$NX_MAX_PARALLEL
 
-  e2e:
+  e2e-chrome:
     runs-on: ubuntu-latest
     container:
-      image: cypress/browsers:node14.17.0-chrome91-ff89
+      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -57,13 +58,57 @@ jobs:
         with:
           node_version: ${{ matrix.node_version }}
 
-      - name: E2E tests
-        run: npm run e2e
+      - name: E2E tests in chrome
+        run: npm run e2e:chrome
 
       - name: Archive test results
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: cypress-test-results
+          name: cypress-test-results-chrome
+          path: dist/cypress
+          retention-days: 21
+  e2e-edge:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: E2E tests in edge
+        run: npm run e2e:edge
+
+      - name: Archive test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-test-results-edge
+          path: dist/cypress
+          retention-days: 21
+  e2e-firefox:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: E2E tests in firefox
+        run: npm run e2e:ff
+
+      - name: Archive test results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-test-results-firefox
           path: dist/cypress
           retention-days: 21
