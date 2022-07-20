@@ -3,6 +3,8 @@
     "angular.ng-template",
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
-    "firsttris.vscode-jest-runner"
+    "firsttris.vscode-jest-runner",
+    "johnsoncodehk.volar",
+    "samatech.postcss-vue"
   ]
 }

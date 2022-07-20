@@ -19,7 +19,8 @@
       "@this-dot/ng-utils": ["libs/ng-utils/src/index.ts"],
       "@this-dot/route-config": ["libs/route-config/src/index.ts"],
       "@this-dot/rxidb": ["libs/rxidb/src/index.ts"],
-      "@this-dot/utils": ["libs/utils/src/index.ts"]
+      "@this-dot/utils": ["libs/utils/src/index.ts"],
+      "@this-dot/vue-route-guard": ["libs/vue-route-guard/src/index.ts"]
     },
     "strict": true
   },

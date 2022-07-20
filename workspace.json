@@ -7,7 +7,8 @@
     "rxidb": "libs/rxidb",
     "showcase": "apps/showcase",
     "showcase-e2e": "apps/showcase-e2e",
-    "utils": "libs/utils"
+    "utils": "libs/utils",
+    "vue-route-guard": "libs/vue-route-guard"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
