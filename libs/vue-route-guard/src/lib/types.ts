@@ -8,8 +8,8 @@ export interface GuardConfigRedirect {
 
 export interface GuardConfigToken {
   name: string;
-  storage: StorageType;
-  options: GuardConfigTokenAttributes;
+  storage?: StorageType;
+  options?: GuardConfigTokenAttributes;
 }
 
 export interface GuardConfigOptions {

@@ -1,5 +1,5 @@
-import { isStorageAvailable } from '@lib/helpers';
-import { StorageType } from '@lib/types';
+import { isStorageAvailable } from '../helpers';
+import { StorageType } from '../types';
 
 export default class GuardStorage {
   private storage: Storage;

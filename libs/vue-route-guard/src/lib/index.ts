@@ -1,8 +1,8 @@
 import * as Vue from 'vue';
 
-import Guard from '@lib/guard';
-import { getVueVersion } from '@lib/helpers';
-import { GuardConfig } from '@lib/types';
+import Guard from './guard';
+import { getVueVersion } from './helpers';
+import { GuardConfig } from './types';
 
 const packageKey = 'guard';
 

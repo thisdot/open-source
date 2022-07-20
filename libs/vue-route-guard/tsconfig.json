@@ -3,21 +3,19 @@
   "compilerOptions": {
     "strict": true,
     "allowJs": true,
-    "jsx": "preserve",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@assets/*": ["./src/assets/*"],
-      "@lib/*": ["./src/lib/*"]
-    }
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
+  "files": [],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
     },
     {
-      "path": "./tsconfig.spec.json"
+      "path": "./tsconfig.lib.prod.json"
     },
     {
       "path": "./tsconfig.spec.json"

@@ -1,14 +1,14 @@
 import * as Vue from 'vue';
 import { Router } from 'vue-router';
-import { isArrayIntersecting } from '@lib/helpers';
+import { isArrayIntersecting } from './helpers';
 import {
   GuardConfig,
   GuardConfigOptions,
   GuardConfigRedirect,
   GuardConfigStore,
   GuardConfigToken,
-} from '@lib/types';
-import Storage from '@lib/storage';
+} from './types';
+import Storage from './storage';
 
 const defaultOptions = {
   permissionKey: 'permission',

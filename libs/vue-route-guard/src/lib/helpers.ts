@@ -1,5 +1,5 @@
 import * as Vue from 'vue';
-import { StorageType } from '@lib/types';
+import { StorageType } from './types';
 
 /**
  * Return true if any is found intersection between 2 arrays
