@@ -14,6 +14,7 @@ export interface GuardConfigToken {
 
 export interface GuardConfigOptions {
   fetchAuthentication?: () => Promise<{ [key: string]: unknown }>;
+  permissionKey?: string;
   [key: string]: unknown;
 }
 

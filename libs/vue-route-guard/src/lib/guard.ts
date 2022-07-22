@@ -33,7 +33,7 @@ export default class Guard {
     Guard.router = config.router;
     Guard.tokenConfig = config.token;
     Guard.redirect = config.redirect || {};
-    Guard.options = Object.assign(defaultOptions, config.options);
+    Guard.options = Object.assign({}, defaultOptions, config.options);
     Guard.storage = new Storage(config.token.storage);
     Guard.packageKey = packageKey;
 
@@ -79,11 +79,12 @@ export default class Guard {
   }
 
   public hasAuthenticationAccess(permission: string[] = []) {
-    const permissionKey = Guard.options.permissionKey as string;
+    const permissionKey = Guard.options.permissionKey;
     if (
       guardStore.state.isAuthenticated === true &&
       (permission.length === 0 ||
         (permission.length > 0 &&
+          permissionKey &&
           guardStore.state.authentication &&
           guardStore.state.authentication[permissionKey] &&
           isArrayIntersecting(
@@ -97,32 +98,26 @@ export default class Guard {
     return false;
   }
 
-  public clearAuthentication() {
-    return new Promise((resolve, _) => {
-      Guard.clearAuthenticationState();
-      Guard.clearToken();
+  public async clearAuthentication() {
+    Guard.clearAuthenticationState();
+    Guard.clearToken();
 
-      const redirectRoute = Guard.redirect.clearAuthentication || Guard.redirect.noAuthentication;
-      if (redirectRoute) {
-        Guard.router.push(redirectRoute);
-      }
-      return resolve(true);
-    });
+    const redirectRoute = Guard.redirect.clearAuthentication || Guard.redirect.noAuthentication;
+    if (redirectRoute) {
+      Guard.router.push(redirectRoute);
+    }
+    return true;
   }
 
-  public refreshAuthentication() {
-    return new Promise(async (resolve, _) => {
-      await Guard.initializeAuthentication();
-      return resolve(true);
-    });
+  public async refreshAuthentication() {
+    await Guard.initializeAuthentication();
+    return true;
   }
 
-  public setToken({ token }: { token: string }) {
-    return new Promise(async (resolve, _) => {
-      Guard.storage.set(Guard.tokenConfig.name, token);
-      await Guard.initializeAuthentication();
-      return resolve(true);
-    });
+  public async setToken({ token }: { token: string }) {
+    Guard.storage.set(Guard.tokenConfig.name, token);
+    await Guard.initializeAuthentication();
+    return true;
   }
 
   static isTokenAvailable() {
@@ -145,18 +140,13 @@ export default class Guard {
     guardStore.state.isAuthenticated = false;
   }
 
-  static initializeAuthentication() {
+  static async initializeAuthentication() {
     // check if token exists then set authentication
-    return new Promise((resolve, _) => {
-      if (Guard.isTokenAvailable() && typeof Guard.options.fetchAuthentication === 'function') {
-        guardStore.state.loading = true;
-        Guard.options.fetchAuthentication().then((response) => {
-          Guard.setAuthenticationState(response);
-          return resolve(true);
-        });
-      } else {
-        return resolve(true);
-      }
-    });
+    if (Guard.isTokenAvailable() && typeof Guard.options.fetchAuthentication === 'function') {
+      guardStore.state.loading = true;
+      const auntenticationData = await Guard.options.fetchAuthentication();
+      Guard.setAuthenticationState(auntenticationData);
+    }
+    return true;
   }
 }

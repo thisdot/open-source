@@ -2,7 +2,7 @@ import * as Vue from 'vue';
 import { StorageType } from './types';
 
 /**
- * Return true if any is found intersection between 2 arrays
+ * Return true if 2 arrays have any common value
  *
  * @param {string[]} arr1
  * @param {string[]} arr2
@@ -31,21 +31,24 @@ export function getVueVersion(app: typeof Vue): number {
 }
 
 /**
- * Return check for storage availability
- *
- * @remarks if storage is cookies; it is always returns true.
+ * Return if storage is available
  *
  * @returns {boolean}
  */
 export function isStorageAvailable(storage: StorageType): boolean {
-  try {
-    if (window[storage] === null) {
-      throw Error();
-    }
+  const storageValue = window[storage];
+  if (
+    !!storageValue ||
+    typeof storageValue !== 'object' ||
+    typeof (storageValue as Storage).setItem !== 'function' ||
+    typeof (storageValue as Storage).removeItem !== 'function'
+  ) {
+    return false;
+  }
 
+  try {
     window[storage].setItem('vue-route-guard', 'vue-route-guard');
     window[storage].removeItem('vue-route-guard');
-
     return true;
   } catch (e) {
     return false;
