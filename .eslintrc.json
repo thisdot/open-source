@@ -17,6 +17,14 @@
                 "onlyDependOnLibsWithTags": ["framework:angular", "framework:none"]
               },
               {
+                "sourceTag": "framework:vue",
+                "onlyDependOnLibsWithTags": ["framework:vue", "framework:none"]
+              },
+              {
+                "sourceTag": "framework:react",
+                "onlyDependOnLibsWithTags": ["framework:react", "framework:none"]
+              },
+              {
                 "sourceTag": "framework:none",
                 "onlyDependOnLibsWithTags": ["framework:none"]
               },
