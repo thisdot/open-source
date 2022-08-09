@@ -9,13 +9,11 @@ export interface GuardConfigRedirect {
 export interface GuardConfigToken {
   name: string;
   storage?: StorageType;
-  options?: GuardConfigTokenAttributes;
 }
 
 export interface GuardConfigOptions {
-  fetchAuthentication?: () => Promise<{ [key: string]: unknown }>;
+  fetchAuthentication: () => Promise<{ [key: string]: unknown }>;
   permissionKey?: string;
-  [key: string]: unknown;
 }
 
 export interface GuardConfig {
@@ -36,8 +34,6 @@ export interface GuardConfigStoreState {
   } | null;
   isAuthenticated: boolean;
 }
-
-export type GuardConfigTokenAttributes = CookieAttributes;
 
 export interface CookieAttributes {
   expires?: number | string;
