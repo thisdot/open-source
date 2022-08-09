@@ -14,6 +14,6 @@ export function setupGuard(options: GuardConfig) {
   return new Guard(options, packageKey);
 }
 
-export function useGuard() {
-  return Vue.inject(packageKey);
+export function useGuard(): Guard {
+  return Vue.inject(packageKey) as Guard;
 }

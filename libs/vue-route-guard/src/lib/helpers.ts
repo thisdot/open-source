@@ -38,7 +38,7 @@ export function getVueVersion(app: typeof Vue): number {
 export function isStorageAvailable(storage: StorageType): boolean {
   const storageValue = window[storage];
   if (
-    !!storageValue ||
+    !storageValue ||
     typeof storageValue !== 'object' ||
     typeof (storageValue as Storage).setItem !== 'function' ||
     typeof (storageValue as Storage).removeItem !== 'function'
