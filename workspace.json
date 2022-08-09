@@ -8,7 +8,8 @@
     "showcase": "apps/showcase",
     "showcase-e2e": "apps/showcase-e2e",
     "utils": "libs/utils",
-    "vue-route-guard": "libs/vue-route-guard"
+    "vue-route-guard": "libs/vue-route-guard",
+    "vue-showcase": "apps/vue-showcase"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
