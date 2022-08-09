@@ -8,7 +8,8 @@
       "@assets/*": ["./src/assets/*"],
       "@app/*": ["./src/app/*"],
       "@public/*": ["./src/public/*"]
-    }
+    },
+    "target": "es2020"
   },
   "files": [],
   "references": [
@@ -21,6 +22,5 @@
     {
       "path": "./tsconfig.editor.json"
     }
-  ],
-  "target": "es2020"
+  ]
 }
