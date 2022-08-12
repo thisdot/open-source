@@ -10,15 +10,15 @@
 
 <script setup lang="ts">
 import { useGuard } from '../../../../../libs/vue-route-guard/src/index';
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const auth = useGuard();
 
 const saveToken = () => {
-  auth.setToken({ token: "thisisatokenstring" }).then(() => {
-    router.replace('/route-guard')
+  auth.setToken({ token: 'thisisatokenstring' }).then(() => {
+    router.replace('/route-guard');
     console.log('Login successful');
   });
-}
+};
 </script>

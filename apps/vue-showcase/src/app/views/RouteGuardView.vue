@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useRoute } from 'vue-router';
 import { useGuard } from '../../../../../libs/vue-route-guard/src/index';
 const route = useRoute();
 const auth = useGuard();
@@ -39,7 +39,7 @@ const auth = useGuard();
 
   &__text {
     @mixin text 18px;
-    border: 1px solid $text-main;;
+    border: 1px solid $text-main;
     padding: 20px;
   }
 
@@ -56,7 +56,7 @@ const auth = useGuard();
       border-radius: 6px;
       margin-right: 10px;
       @mixin text 16px;
-      
+
       &.router-link-exact-active {
         color: #ec3835;
         background-color: #e0a7a7a4;

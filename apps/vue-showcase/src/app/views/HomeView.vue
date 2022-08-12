@@ -21,7 +21,7 @@
   .home-title {
     @mixin title 40px;
   }
-  
+
   .home-generated-by {
     margin-top: 20px;
   }

@@ -14,8 +14,8 @@
 import { useGuard } from '../../../../../libs/vue-route-guard/src/index';
 const auth = useGuard();
 const logout = () => {
-  auth.clearAuthentication().then(()=> {
+  auth.clearAuthentication().then(() => {
     console.log('Logout successful');
   });
-}
+};
 </script>
