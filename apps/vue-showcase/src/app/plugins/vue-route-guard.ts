@@ -1,4 +1,4 @@
-import { setupGuard } from '../../../../../libs/vue-route-guard/src/index';
+import { setupGuard } from '@this-dot/vue-route-guard';
 import * as vue from 'vue';
 import { Router } from 'vue-router';
 
