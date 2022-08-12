@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { useGuard } from '../../../../../libs/vue-route-guard/src/index';
+import { useGuard } from '@this-dot/vue-route-guard';
 const route = useRoute();
 const auth = useGuard();
 </script>

@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGuard } from '../../../../../libs/vue-route-guard/src/index';
+import { useGuard } from '@this-dot/vue-route-guard';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 

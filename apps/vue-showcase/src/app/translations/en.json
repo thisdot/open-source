@@ -8,5 +8,5 @@
   "home": "Home",
   "about": "About",
   "noPermission": "No Permission",
-  "documentationSummary": "Documentation: You can find the documentation of the @this-dot/vue-route-guard library at: https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard"
+  "documentationSummary": "Documentation: You can find the documentation of the {'@'}this-dot/vue-route-guard library at: https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard"
 }
