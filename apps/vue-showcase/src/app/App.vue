@@ -1,6 +1,12 @@
 <template>
-  <div class="app">
-    <router-view />
+  <div class="showcase__app">
+    <TopBar />
+    <div class="showcase__app__body">
+      <SideBar />
+      <div class="showcase__app__body__main">
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -21,25 +27,21 @@ body {
   }
 }
 
-.app {
+.showcase__app {
   height: 100%;
+
+  &__body {
+    display: flex;
+
+    &__main {
+      flex: auto;
+      padding: 30px;
+    }
+  }
 }
 
 a {
   text-decoration: none;
   color: unset;
-}
-
-#app,
-.app-content {
-  height: 100%;
-}
-
-.container {
-  max-width: 1200px;
-  box-sizing: border-box;
-  padding-left: 40px;
-  padding-right: 40px;
-  margin: 0 auto;
 }
 </style>

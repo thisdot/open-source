@@ -31,12 +31,52 @@ const router = createRouter({
       component: () => import('./views/HomeView.vue'),
       meta: { title: 'vue-showcase', requiresAuth: false },
     },
+    {
+      path: '/route-guard',
+      name: 'RouteGuard',
+      component: () => import('./views/RouteGuardView.vue'),
+      meta: { title: 'vue-route-guard-view', requiresAuth: false },
+      children: [
+        {
+          path: '/route-guard',
+          name: 'RouteGuardHome',
+          component: () => import('./views/RouteGuardHomeView.vue'),
+          meta: { title: 'vue-route-guard-home-view', requiresAuth: true },
+        },
+        {
+          path: '/route-guard/login',
+          name: 'RouteGuardLogin',
+          component: () => import('./views/RouteGuardLoginView.vue'),
+          meta: { title: 'vue-route-guard-login-view', requiresAuth: false },
+        },
+        {
+          path: '/route-guard/about',
+          name: 'RouteGuardAbout',
+          component: () => import('./views/RouteGuardAboutView.vue'),
+          meta: {
+            title: 'vue-route-guard-about-view',
+            requiresAuth: true,
+            access: ['admin'],
+          },
+        },
+        {
+          path: '/route-guard/no-permission',
+          name: 'RouteGuardNoPermission',
+          component: () => import('./views/RouteGuardNoPermissionView.vue'),
+          meta: {
+            title: 'vue-route-guard-no-permission-view',
+            requiresAuth: false,
+          },
+        },
+      ],
+    },
   ],
 });
 
 router.afterEach((to, _from) => {
   const parent = to.matched.find((record) => record.meta.title);
   const parentTitle = parent ? parent.meta.title : null;
+
   document.title = to.meta.title || parentTitle || 'vue-showcase';
 });
 

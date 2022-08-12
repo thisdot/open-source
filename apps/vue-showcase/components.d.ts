@@ -8,6 +8,8 @@ declare module '@vue/runtime-core' {
     AppLogo: typeof import('./src/app/components/widgets/AppLogo.vue')['default'];
     RouterLink: typeof import('vue-router')['RouterLink'];
     RouterView: typeof import('vue-router')['RouterView'];
+    SideBar: typeof import('./src/app/components/widgets/SideBar.vue')['default'];
+    TopBar: typeof import('./src/app/components/widgets/TopBar.vue')['default'];
   }
 }
 
