@@ -42,25 +42,25 @@ vue.use(setupGuard(guardConfig));
 
 We extended the default router meta to accept the following fields:
 
-| Field | Description | Required | Type |
-| :--- | :----: | ---: | |
-| requiresAuth | Describes if the page requires authentication | true | boolean |
-| access | Describes the access permissions needed for the route | false | string[] |
+| Field        | Description                                           | Required | Type     |
+| ------------ | ----------------------------------------------------- | -------- | -------- |
+| requiresAuth | Describes if the page requires authentication         | true     | boolean  |
+| access       | Describes the access permissions needed for the route | false    | string[] |
 
 ### Guard Config
 
 setupGuard requires to pass an object with the following fields:
 
-| Field | Description | Required | Type |
-| :--- | :----: | ---: | |
-| router | The router instance used in your vue app | true | Router |
-| token.name | The name used to store and retrieve the token | true | string |
-| token.storage | Storage type (This defaults to localstorage) | false | StorageType |
-| redirect.noAuthentication | page to redirect to if no token found or fetchAuthentication fails | false | RouteLocationRaw |
-| redirect.noPermission | page to redirect to if permission is not in route meta access (redirects to noAuthentication if it is not passed) | false | RouteLocationRaw |
-| redirect.clearAuthentication | page to redirect to after clearing authentication (redirects to noAuthentication if it is not passed) | false | RouteLocationRaw |
-| options.fetchAuthentication | This is expects function that returns an object with the authentication information | true | Promise<{}> |
-| options.permissionKey | Describes the field that holds the authentication permission in `fetchAuthentication` (default permission) | false | string |
+| Field                        | Description                                                                                                       | Required | Type             |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- | ---------------- |
+| router                       | The router instance used in your vue app                                                                          | true     | Router           |
+| token.name                   | The name used to store and retrieve the token                                                                     | true     | string           |
+| token.storage                | Storage type (This defaults to localstorage)                                                                      | false    | StorageType      |
+| redirect.noAuthentication    | page to redirect to if no token found or fetchAuthentication fails                                                | false    | RouteLocationRaw |
+| redirect.noPermission        | page to redirect to if permission is not in route meta access (redirects to noAuthentication if it is not passed) | false    | RouteLocationRaw |
+| redirect.clearAuthentication | page to redirect to after clearing authentication (redirects to noAuthentication if it is not passed)             | false    | RouteLocationRaw |
+| options.fetchAuthentication  | This is expects function that returns an object with the authentication information                               | true     | Promise<{}>      |
+| options.permissionKey        | Describes the field that holds the authentication permission in `fetchAuthentication` (default permission)        | false    | string           |
 
 #### Example
 
@@ -152,28 +152,6 @@ vue.use(setupGuard(guardConfig));
     auth.clearAuthentication().then(() => {
       console.log('cleared authentication');
     });
-  };
-</script>
-```
-
-### Refresh Authentication
-
-This calls fetch authentication and updates the state with the new authentication details
-
-```html
-<template>
-  <div>
-    <span>{{ auth.$store.state.authentication }}</span>
-    <button @click="updateAuthentiationInformation">Update</button>
-  </div>
-</template>
-<script setup lang="ts">
-  import { useGuard } from '@this-dot/vue-route-guard';
-
-  const auth = useGuard();
-
-  const updateAuthentiationInformation = () => {
-    auth.refreshAuthentication();
   };
 </script>
 ```
