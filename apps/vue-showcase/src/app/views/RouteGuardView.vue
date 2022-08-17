@@ -13,7 +13,9 @@
     </nav>
     <span class="route-guard-wrap__summary">
       {{ $t('documentationSummary') }}
-      <a href="https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard">{{ $t('repoLink') }}</a>
+      <a href="https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard">{{
+        $t('repoLink')
+      }}</a>
     </span>
 
     <div class="route-guard-wrap__body">

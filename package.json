@@ -14,6 +14,7 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve showcase",
+    "start:vue": "nx serve vue-showcase",
     "build": "nx build",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
