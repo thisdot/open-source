@@ -15,7 +15,7 @@ This repository currently contains the following packages:
 You can try out our showcase application by following the steps below
 
 1. [Import this repository on Stackblitz](https://stackblitz.com/github/thisdot/open-source?preset=node)
-1. [Import this repository on Stackblitz and start the Vue application](https://stackblitz.com/github/thisdot/open-source?terminal=start:vue)
+1. [Import this repository on Stackblitz and start the Vue application](https://stackblitz.com/github/thisdot/open-source?file=package.json&terminal=start:vue)
 1. Try out the showcase application.
 
 ## How to contribute
