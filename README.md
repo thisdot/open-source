@@ -8,13 +8,15 @@ This repository currently contains the following packages:
 - [@this-dot/ng-utils](./libs/ng-utils/README.md)
 - [@this-dot/cypress-indexeddb](./libs/cypress-indexeddb/README.md)
 - [@this-dot/rxidb](./libs/rxidb/README.md)
+- [@this-dot/vue-route-guard](./libs/vue-route-guard/README.md)
 
 ## Demo
 
 You can try out our showcase application by following the steps below
 
 1. [Import this repository on Stackblitz](https://stackblitz.com/github/thisdot/open-source?preset=node)
-2. Try out the showcase application.
+1. [Import this repository on Stackblitz and start the Vue application](https://stackblitz.com/github/thisdot/open-source?terminal=start:vue)
+1. Try out the showcase application.
 
 ## How to contribute
 
