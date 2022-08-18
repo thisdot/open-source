@@ -1,7 +1,7 @@
 <template>
   <div class="showcase__app__sidebar">
-    <template v-for="(items, i) in sidebarItems" :key="i">
-      <a :href="items.link">{{ items.title }}</a>
+    <template v-for="(item, i) in sidebarItems" :key="i">
+      <a :href="item.link">{{ item.title }}</a>
     </template>
   </div>
 </template>

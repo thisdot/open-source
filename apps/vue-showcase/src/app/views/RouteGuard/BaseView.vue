@@ -32,7 +32,7 @@ const auth = useGuard();
 </script>
 
 <style lang="postcss">
-@import '../../assets/css/global.css';
+@import '../../../assets/css/global.css';
 
 .route-guard-wrap {
   &__title {
