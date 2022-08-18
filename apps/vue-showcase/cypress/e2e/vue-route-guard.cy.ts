@@ -1,14 +1,16 @@
+const GUARD_TOKEN_NAME = 'VUEROUTEGUARD-TOKEN';
+
 describe(`@this-dot/vue-route-guard`, () => {
   describe(`No authentication set`, () => {
     before(() => {
       cy.window().then((win) => {
-        win.sessionStorage.removeItem('VUEROUTEGUARD-TOKEN');
+        win.sessionStorage.removeItem(GUARD_TOKEN_NAME);
       });
-      cy.clearLocalStorage('VUEROUTEGUARD-TOKEN');
-      cy.clearCookie('VUEROUTEGUARD-TOKEN');
+      cy.clearLocalStorage(GUARD_TOKEN_NAME);
+      cy.clearCookie(GUARD_TOKEN_NAME);
     });
 
-    it(`redirect to login`, () => {
+    it(`redirects to login`, () => {
       cy.visit('/route-guard');
 
       cy.url().should('contain', 'route-guard/login');
@@ -17,14 +19,14 @@ describe(`@this-dot/vue-route-guard`, () => {
     it(`does not redirect to home view when home navigation is clicked`, () => {
       cy.visit('/route-guard');
 
-      cy.get('#homeRoute').should('be.visible').click();
+      cy.get(`[data-test-id="home navigation button"]`).should('be.visible').click();
       cy.url().should('not.eq', Cypress.config().baseUrl + '/route-guard');
     });
 
     it(`about navigation is not displayed`, () => {
       cy.visit('/route-guard');
 
-      cy.get('#aboutRoute').should('not.exist');
+      cy.get(`[data-test-id="about navigation button"]`).should('not.exist');
     });
   });
 
@@ -32,25 +34,23 @@ describe(`@this-dot/vue-route-guard`, () => {
     before(() => {
       cy.visit('/route-guard');
 
-      cy.get('#loginButton').should('be.visible').click();
+      cy.get(`[data-test-id="login button"]`).should('be.visible').click();
     });
 
     it(`redirects to home`, () => {
-      console.log(Cypress.config().baseUrl);
-
       cy.url().should('eq', Cypress.config().baseUrl + '/route-guard');
     });
 
     it(`authentication data is set in session storage`, () => {
-      cy.window().its('sessionStorage').invoke('getItem', 'VUEROUTEGUARD-TOKEN').should('exist');
+      cy.window().its('sessionStorage').invoke('getItem', GUARD_TOKEN_NAME).should('exist');
     });
 
     it(`about navigation is visible`, () => {
-      cy.get('#aboutRoute').should('be.visible');
+      cy.get(`[data-test-id="about navigation button"]`).should('be.visible');
     });
 
     it(`redirects to 'no-permission' page when about navigation is clicked`, () => {
-      cy.get('#aboutRoute').click();
+      cy.get(`[data-test-id="about navigation button"]`).click();
 
       cy.url().should('contain', '/route-guard/no-permission');
     });
@@ -58,7 +58,7 @@ describe(`@this-dot/vue-route-guard`, () => {
     it(`redirects to login page when logout is clicked`, () => {
       cy.visit('/route-guard');
 
-      cy.get('#logoutButton').should('be.visible').click();
+      cy.get(`[data-test-id="logout button"]`).should('be.visible').click();
 
       cy.url().should('contain', '/route-guard/login');
     });

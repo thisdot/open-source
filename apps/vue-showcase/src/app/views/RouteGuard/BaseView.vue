@@ -4,12 +4,12 @@
       {{ route.meta.title?.split('-').join(' ') }}
     </div>
     <nav class="route-guard-wrap__nav">
-      <RouterLink id="homeRoute" to="/route-guard">
+      <RouterLink data-test-id="home navigation button" to="/route-guard">
         {{ $t('home') }}
       </RouterLink>
       <RouterLink
         v-if="auth?.hasAuthenticationAccess(['admin', 'user'])"
-        id="aboutRoute"
+        data-test-id="about navigation button"
         to="/route-guard/about"
       >
         {{ $t('about') }}

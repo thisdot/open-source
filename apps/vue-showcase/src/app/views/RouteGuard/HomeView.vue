@@ -4,7 +4,7 @@
       {{ auth.$store.state.authentication }}
     </div>
 
-    <button id="logoutButton" class="route-guard-wrap__button" @click="logout">
+    <button data-test-id="logout button" class="route-guard-wrap__button" @click="logout">
       {{ $t('logout') }}
     </button>
   </div>
