@@ -10,10 +10,16 @@ describe(`@this-dot/vue-route-guard`, () => {
       cy.clearCookie(GUARD_TOKEN_NAME);
     });
 
-    it(`redirects to login`, () => {
+    it(`redirects to login when user visits a guarded page`, () => {
       cy.visit('/route-guard');
 
       cy.url().should('contain', 'route-guard/login');
+    });
+
+    it(`does not redirect when user visits unguarded page`, () => {
+      cy.visit('/route-guard/no-permission');
+
+      cy.url().should('contain', '/route-guard/no-permission');
     });
 
     it(`does not redirect to home view when home navigation is clicked`, () => {
@@ -32,12 +38,13 @@ describe(`@this-dot/vue-route-guard`, () => {
 
   describe(`Authentication set`, () => {
     before(() => {
-      cy.visit('/route-guard');
+      cy.visit('/route-guard/login');
 
       cy.get(`[data-test-id="login button"]`).should('be.visible').click();
     });
 
-    it(`redirects to home`, () => {
+    it(`does not redirect when user visits guarded page`, () => {
+      cy.visit('/route-guard');
       cy.url().should('eq', Cypress.config().baseUrl + '/route-guard');
     });
 
