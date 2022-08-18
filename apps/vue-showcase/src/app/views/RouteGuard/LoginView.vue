@@ -1,7 +1,7 @@
 <template>
   <div class="route-guard-wrap">
     <div class="route-guard-wrap__title">
-      <button class="route-guard-wrap__button" @click="saveToken">
+      <button id="loginButton" class="route-guard-wrap__button" @click="saveToken">
         {{ $t('login') }}
       </button>
     </div>
