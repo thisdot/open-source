@@ -1,6 +1,13 @@
 {
   "name": "vue-showcase",
   "title": "vue-showcase",
-  "cookies": "Accept cookies",
-  "generated": "Project generated via <b>nx-vue3-vite</b>"
+  "generated": "Project generated via <b>nx-vue3-vite</b>",
+  "viewGithub": "View on Github",
+  "login": "Login",
+  "logout": "Logout",
+  "home": "Home",
+  "about": "About",
+  "noPermission": "No Permission",
+  "documentationSummary": "Documentation: You can find the documentation of the {'@'}this-dot/vue-route-guard library at:",
+  "repoLink": "https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard"
 }

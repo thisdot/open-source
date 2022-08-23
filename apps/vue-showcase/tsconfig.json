@@ -1,17 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
   "compilerOptions": {
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@assets/*": ["./src/assets/*"],
-      "@app/*": ["./src/app/*"],
-      "@public/*": ["./src/public/*"]
-    },
     "target": "es2020"
   },
-  "files": [],
   "references": [
     {
       "path": "./tsconfig.app.json"
