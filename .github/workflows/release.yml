@@ -47,6 +47,8 @@ jobs:
         run: git config user.email "opensource@thisdot.co" && git config user.name "This Dot Bot"
 
       - name: Release a specific project
+        env:
+          GITHUB_TOKEN: ${{ secrets.THIS_DOT_BOT_TOKEN }}
         run: npx nx version ${{ github.event.inputs.target_project }} --releaseAs=${{ github.event.inputs.release_as }} --skipProjectChangelog=true --noVerify=true --preid=rc --push
 
       - name: Publish to npm
