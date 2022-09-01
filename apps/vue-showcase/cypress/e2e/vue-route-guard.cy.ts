@@ -38,9 +38,9 @@ describe(`@this-dot/vue-route-guard`, () => {
 
   describe(`Authentication set`, () => {
     before(() => {
-      cy.visit('/route-guard/login');
-
-      cy.get(`[data-test-id="login button"]`).should('be.visible').click();
+      cy.window().then((win) => {
+        win.sessionStorage.setItem(GUARD_TOKEN_NAME, 'sample_token');
+      });
     });
 
     it(`does not redirect when user visits guarded page`, () => {
