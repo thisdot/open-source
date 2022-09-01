@@ -54,7 +54,6 @@ jobs:
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.THIS_DOT_BOT_TOKEN }}
         run: npx nx publish ${{ github.event.inputs.target_project }}
 
       - name: Push tags to github
