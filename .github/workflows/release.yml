@@ -44,7 +44,7 @@ jobs:
 
       - name: Setup git user to "ThisDot Open-Source"
         shell: bash
-        run: git config user.email "opensource@thisdot.co" && git config user.name "This Dot Bot"
+        run: git config user.email "devops@thisdot.co" && git config user.name "This Dot Bot"
 
       - name: Release a specific project
         env:
