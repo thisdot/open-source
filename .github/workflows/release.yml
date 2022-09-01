@@ -40,7 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.THIS_DOT_BOT_TOKEN }}
           persist-credentials: false
       - name: Setup
         uses: ./.github/actions/setup
