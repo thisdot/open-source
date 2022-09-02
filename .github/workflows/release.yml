@@ -16,6 +16,7 @@ on:
           - route-config
           - cypress-indexeddb
           - rxidb
+          - vue-route-guard
       release_as:
         type: 'choice'
         description: 'The release type. It can be one of: major, minor, patch, premajor, preminor, prepatch, or prerelease. Defaults to "patch"'
