@@ -7,7 +7,7 @@ import { GuardConfig } from './types';
 const packageKey = 'guard';
 
 export function setupGuard(options: GuardConfig) {
-  if (getVueVersion(Vue) < 2) {
+  if (getVueVersion(Vue) <= 2) {
     throw new Error('@thisdot/vue-route-guard: Vue 2 is not supported');
   }
 

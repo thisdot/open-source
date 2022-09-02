@@ -16,6 +16,9 @@
     },
     {
       "path": "./tsconfig.editor.json"
+    },
+    {
+      "path": "./tsconfig.e2e.json"
     }
   ]
 }
