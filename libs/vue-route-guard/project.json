@@ -23,6 +23,13 @@
         "passWithNoTests": true
       }
     },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "conventional",
+        "tagPrefix": "${projectName}-v"
+      }
+    },
     "github": {
       "executor": "@jscutlery/semver:github",
       "options": {
