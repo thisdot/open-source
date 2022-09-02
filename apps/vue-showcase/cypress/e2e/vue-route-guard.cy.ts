@@ -48,10 +48,6 @@ describe(`@this-dot/vue-route-guard`, () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/route-guard');
     });
 
-    it(`authentication data is set in session storage`, () => {
-      cy.window().its('sessionStorage').invoke('getItem', GUARD_TOKEN_NAME).should('exist');
-    });
-
     it(`about navigation is visible`, () => {
       cy.get(`[data-test-id="about navigation button"]`).should('be.visible');
     });
