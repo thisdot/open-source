@@ -36,6 +36,10 @@ export function getVueVersion(app: typeof Vue): number {
  * @returns {boolean}
  */
 export function isStorageAvailable(storage: StorageType): boolean {
+  if (storage === StorageType.cookieStorage) {
+    return true;
+  }
+
   const storageValue = window[storage];
   if (
     !storageValue ||

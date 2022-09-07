@@ -1,8 +1,9 @@
 import { isStorageAvailable } from '../helpers';
-import { StorageType } from '../types';
+import { CookieAttributes, StorageType } from '../types';
+import CookieStorage from './cookies';
 
 export default class GuardStorage {
-  private storage: Storage;
+  private storage: Storage | CookieStorage;
 
   constructor(storageType: StorageType = StorageType.sessionStorage) {
     if (!this.checkStorage(storageType)) {
@@ -12,13 +13,14 @@ export default class GuardStorage {
     const storageList = {
       [StorageType.sessionStorage]: window.sessionStorage,
       [StorageType.localStorage]: window.localStorage,
+      [StorageType.cookieStorage]: new CookieStorage(),
     };
 
     this.storage = storageList[storageType];
   }
 
-  public set(key: string, value: string): void {
-    this.storage.setItem(key, value);
+  public set(key: string, value: string, attributes?: CookieAttributes): void {
+    this.storage.setItem(key, value, attributes);
   }
 
   public get(key: string): string | null {

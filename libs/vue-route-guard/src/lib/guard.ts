@@ -7,6 +7,7 @@ import {
   GuardConfigRedirect,
   GuardConfigStore,
   GuardConfigToken,
+  CookieAttributes,
 } from './types';
 import Storage from './storage';
 
@@ -114,8 +115,12 @@ export default class Guard {
     return true;
   }
 
-  public async setToken({ token }: { token: string }) {
-    Guard.storage.set(Guard.tokenConfig.name, token);
+  public async setToken({ token, attributes }: { token: string; attributes?: CookieAttributes }) {
+    Guard.storage.set(
+      Guard.tokenConfig.name,
+      token,
+      Object.assign({}, Guard.tokenConfig.attributes, attributes)
+    );
     await Guard.initializeAuthentication();
     return true;
   }
