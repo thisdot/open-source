@@ -55,7 +55,7 @@ setupGuard requires to pass an object with the following fields:
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- | ---------------- |
 | router                       | The router instance used in your vue app                                                                          | true     | Router           |
 | token.name                   | The name used to store and retrieve the token                                                                     | true     | string           |
-| token.storage                | Storage type (This defaults to localstorage)                                                                      | false    | StorageType      |
+| token.storage                | Storage type (This defaults to session storage)                                                                   | false    | StorageType      |
 | redirect.noAuthentication    | page to redirect to if no token found or fetchAuthentication fails                                                | false    | RouteLocationRaw |
 | redirect.noPermission        | page to redirect to if permission is not in route meta access (redirects to noAuthentication if it is not passed) | false    | RouteLocationRaw |
 | redirect.clearAuthentication | page to redirect to after clearing authentication (redirects to noAuthentication if it is not passed)             | false    | RouteLocationRaw |
@@ -125,6 +125,41 @@ const guardConfig = {
   },
 };
 vue.use(setupGuard(guardConfig));
+```
+
+Create a guard config using token.
+`expires`: it can be a valid date string or a number to represent the days
+`path`: page path for cookie
+
+```ts
+const guardConfig = {
+  router: router,
+  token: {
+    name: 'XSRF-TOKEN',
+    storage: StorageType.cookieStorage,
+    attributes: {
+      path: '/',
+      expires: 2, // cookie to expire in 2 days
+    },
+  },
+  redirect: {
+    noAuthentication: '/login',
+    clearAuthentication: '/login',
+    noPermission: '/no-permission',
+  },
+  options: {
+    fetchAuthentication: () => {
+      return new Promise(function (resolve, reject) {
+        return resolve({
+          firstName: 'firstName',
+          lastName: 'lastName',
+          login: true,
+          permission: ['user'],
+        });
+      });
+    },
+  },
+};
 ```
 
 ### Access Authentication State
