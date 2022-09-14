@@ -7,7 +7,7 @@ export default class CookieStorage {
   }
 
   public getItem(name: string): string | null {
-    if (typeof document === 'undefined' || (arguments.length && !name)) {
+    if (typeof document === 'undefined' || !name) {
       return null;
     }
 
@@ -54,9 +54,9 @@ export default class CookieStorage {
       }
 
       if (attributeValue === true) {
-        cookie += ' ' + attributeName + ';';
+        cookie += ` ${attributeName};`;
       } else {
-        cookie += ' ' + attributeName + '=' + attributeValue + ';';
+        cookie += ` ${attributeName}=${attributeValue};`;
       }
     }
 
@@ -65,7 +65,8 @@ export default class CookieStorage {
 
   private getDate(val: number | string): string {
     if (typeof val === 'number') {
-      return new Date(Date.now() + val * 864e5).toUTCString();
+      const milisecondsDay = 864e5;
+      return new Date(Date.now() + val * milisecondsDay).toUTCString();
     }
 
     return val;

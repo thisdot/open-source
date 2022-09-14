@@ -116,11 +116,8 @@ export default class Guard {
   }
 
   public async setToken({ token, attributes }: { token: string; attributes?: CookieAttributes }) {
-    Guard.storage.set(
-      Guard.tokenConfig.name,
-      token,
-      Object.assign({}, Guard.tokenConfig.attributes, attributes)
-    );
+    const tokenAttributes = Object.assign({}, Guard.tokenConfig.attributes, attributes);
+    Guard.storage.set(Guard.tokenConfig.name, token, tokenAttributes);
     await Guard.initializeAuthentication();
     return true;
   }
