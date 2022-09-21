@@ -9,6 +9,7 @@ export interface GuardConfigRedirect {
 export interface GuardConfigToken {
   name: string;
   storage?: StorageType;
+  attributes?: CookieAttributes;
 }
 
 export interface GuardConfigOptions {
@@ -46,6 +47,7 @@ export interface CookieAttributes {
 export enum StorageType {
   localStorage = 'localStorage',
   sessionStorage = 'sessionStorage',
+  cookieStorage = 'cookieStorage',
 }
 
 declare module 'vue-router' {
