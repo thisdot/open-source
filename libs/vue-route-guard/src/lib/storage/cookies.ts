@@ -36,15 +36,11 @@ export default class CookieStorage {
     if (typeof document === 'undefined' || !name) {
       return;
     }
-
-    let cookie =
-      name +
-      '=' +
-      encodeURIComponent(value).replace(
-        /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
-        decodeURIComponent
-      ) +
-      ';';
+    const formattedValue = encodeURIComponent(value).replace(
+      /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
+      decodeURIComponent
+    );
+    let cookie = `${name}=${formattedValue};`;
 
     for (const attributeName in attributes) {
       const attributeValue = attributes[attributeName as keyof CookieAttributes];
