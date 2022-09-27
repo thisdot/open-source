@@ -7,6 +7,14 @@
   "files": [
     "src"
   ],
+  "main": "./dist/vue-route-guard.umd.js",
+  "module": "./dist/vue-route-guard.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-route-guard.es.js",
+      "require": "./dist/vue-route-guard.umd.js"
+    }
+  },
   "keywords": [
     "vue",
     "vuejs",

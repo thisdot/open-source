@@ -116,6 +116,7 @@
     "eslint-plugin-jsdoc": "^39.3.2",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-vue": "^9.2.0",
+    "fs-extra": "^10.1.0",
     "husky": "^6.0.0",
     "jest": "27.5.1",
     "jest-preset-angular": "11.1.2",

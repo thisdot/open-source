@@ -4,6 +4,20 @@
   "sourceRoot": "libs/vue-route-guard/src",
   "targets": {
     "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          {
+            "command": "nx build-app 'vue-route-guard'"
+          },
+          {
+            "command": "node ./libs/vue-route-guard/buildPackage.ts"
+          }
+        ]
+      }
+    },
+    "build-app": {
       "executor": "nx-vue3-vite:build-app",
       "options": {
         "dist": "dist/libs/vue-route-guard"
