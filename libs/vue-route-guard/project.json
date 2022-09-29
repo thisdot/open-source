@@ -12,7 +12,7 @@
             "command": "nx build-app 'vue-route-guard'"
           },
           {
-            "command": "node ./libs/vue-route-guard/buildPackage.ts"
+            "command": "cp 'libs/vue-route-guard/package.json' 'dist/libs/vue-route-guard/package.json'"
           }
         ]
       }
