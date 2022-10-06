@@ -9,19 +9,18 @@
         "parallel": false,
         "commands": [
           {
-            "command": "nx build-app 'vue-route-guard'"
+            "command": "nx build-app vue-route-guard --dist={args.dist}/dist"
           },
           {
-            "command": "cp 'libs/vue-route-guard/package.json' 'dist/libs/vue-route-guard/package.json'"
+            "command": "cp 'libs/vue-route-guard/package.json' '{args.dist}/package.json'",
+            "forwardAllArgs": false
           }
-        ]
+        ],
+        "dist": "dist/libs/vue-route-guard"
       }
     },
     "build-app": {
-      "executor": "nx-vue3-vite:build-app",
-      "options": {
-        "dist": "dist/libs/vue-route-guard/dist"
-      }
+      "executor": "nx-vue3-vite:build-app"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
