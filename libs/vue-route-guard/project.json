@@ -5,8 +5,8 @@
   "targets": {
     "build": {
       "executor": "@nrwl/workspace:run-commands",
-      "outputs": ["dist/libs/vue-route-guard"],
       "options": {
+        "outputPath": "dist/libs/vue-route-guard",
         "parallel": false,
         "commands": [
           {
