@@ -1,6 +1,6 @@
 {
   "name": "@this-dot/vue-route-guard",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Vuejs helper library for adding guards to route",
   "license": "MIT",
   "author": "This Dot Labs",
