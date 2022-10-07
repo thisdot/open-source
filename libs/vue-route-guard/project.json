@@ -15,6 +15,10 @@
           {
             "command": "cp 'libs/vue-route-guard/package.json' '{args.dist}/package.json'",
             "forwardAllArgs": false
+          },
+          {
+            "command": "cp 'libs/vue-route-guard/README.md' '{args.dist}/README.md'",
+            "forwardAllArgs": false
           }
         ],
         "dist": "dist/libs/vue-route-guard"
