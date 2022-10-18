@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
+import { ActivatedRoute, ActivationEnd, ParamMap, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ROUTE_DATA_DEFAULT_VALUE } from './route-data-default-value-token';
 
 export type RouteConfigParams<RouteTags extends string = string> = {
@@ -18,6 +18,8 @@ export type RouteData<
 } & RouteConfigParams<RouteTags>;
 
 export type RouteDataParam<ConfigParamsNames extends string> = keyof RouteData<ConfigParamsNames>;
+
+export type RouteUrlSegment = Record<string, string | null>;
 
 const gatherRoutes = (activatedRoute: ActivatedRoute): ActivatedRoute[] => {
   const routes: ActivatedRoute[] = activatedRoute.pathFromRoot;
@@ -49,6 +51,31 @@ export class RouteConfigService<
   ) {}
 
   /**
+   * Returns an Observable which emits the url path of the activated route.
+   * Works with routes with the `matcher` property set.
+   * Will return null if no param name exists for the searched param name.
+   *
+   * @example
+   * export class AppComponent {
+   *   urlSegment$ = this.routeConfigService.getActivatedRouteMatcherConfig('username');
+   * }
+   *
+   * @param mapKey - the parameter name from the matched path to be returned
+   *
+   * @returns Observable<RouteUrlParam | null>
+   */
+  getActivatedRouteMatcherConfig(mapKey?: string): Observable<RouteUrlSegment | null> {
+    return this.activatedRoute.paramMap.pipe(
+      map((params: ParamMap) => {
+        if (!mapKey) {
+          return null;
+        }
+        return { [mapKey]: params.get(mapKey) };
+      })
+    );
+  }
+
+  /**
    * Returns an Observable which emits the route config set for the activated route.
    *
    * @example
@@ -58,6 +85,7 @@ export class RouteConfigService<
    *     routeTags: ['defaultTag'],
    *     title: 'Default Title',
    *   });
+   *   dataWithParam$ = this.routeConfigService.getActivatedRouteConfig('username');
    * }
    *
    * @param defaultValue - the default value that should be returned, it allows overriding the injected default values.
@@ -66,7 +94,7 @@ export class RouteConfigService<
    */
   getActivatedRouteConfig<
     C extends RouteData<ConfigParamsNames, RouteTags> = RouteData<ConfigParamsNames, RouteTags>
-  >(defaultValue: Partial<C> = {}): Observable<Partial<C>> {
+  >(paramName?: string, defaultValue: Partial<C> = {}): Observable<Partial<C>> {
     return this.router.events.pipe(
       filter((event) => event instanceof ActivationEnd),
       map(() => this.activatedRoute),
@@ -74,14 +102,17 @@ export class RouteConfigService<
       map(gatherRoutes),
       switchMap((routes) =>
         combineLatest(routes.map(({ data }) => data)).pipe(
-          map((dataArr) => Object.assign({}, this.injectedDefaultValue, defaultValue, ...dataArr))
+          withLatestFrom(this.getActivatedRouteMatcherConfig(paramName)),
+          map(([dataArr, param]) =>
+            Object.assign({}, this.injectedDefaultValue, defaultValue, param, ...dataArr)
+          )
         )
       )
     );
   }
 
   /**
-   * Returnsthe an Observable with current route's property value
+   * Returns the an Observable with current route's property value
    *
    * @example
    * export class AppComponent {
@@ -89,15 +120,26 @@ export class RouteConfigService<
    * }
    *
    * @param paramName - the parameter name from the route config to be returned
+   * @param matchName - the path name from the route matched url segment to be returned
    * @param defaultValue - the default value that should be returned, if the value is not present
    */
-  getLeafConfig(paramName: 'routeTags', defaultValue?: RouteTags[]): Observable<RouteTags[]>;
-  getLeafConfig<T>(paramName: ConfigParamsNames, defaultValue?: T): Observable<T>;
+  getLeafConfig(
+    paramName: 'routeTags',
+    matchName: string,
+    defaultValue?: RouteTags[]
+  ): Observable<RouteTags[]>;
+  getLeafConfig<T>(
+    paramName: ConfigParamsNames,
+    matchName: string,
+    defaultValue?: T
+  ): Observable<T>;
   getLeafConfig<T = unknown>(
     paramName: RouteDataParam<ConfigParamsNames>,
+    matchName: string,
     defaultValue?: T
   ): Observable<T> {
     return this.getActivatedRouteConfig(
+      matchName,
       defaultValue
         ? ({
             [paramName]: defaultValue,
