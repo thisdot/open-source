@@ -4,15 +4,6 @@
   "description": "Vuejs helper library for adding guards to route",
   "license": "MIT",
   "author": "This Dot Labs",
-  "main": "./dist/vue-route-guard.umd.js",
-  "module": "./dist/vue-route-guard.es.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/vue-route-guard.es.js",
-      "require": "./dist/vue-route-guard.umd.js"
-    }
-  }
   "homepage": "https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard#readme",
   "repository": {
     "type": "git",
