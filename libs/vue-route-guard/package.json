@@ -9,6 +9,7 @@
   ],
   "main": "./dist/vue-route-guard.umd.js",
   "module": "./dist/vue-route-guard.es.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/vue-route-guard.es.js",
