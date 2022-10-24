@@ -4,7 +4,7 @@
   "sourceRoot": "libs/vue-route-guard/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "outputPath": "dist/libs/vue-route-guard",
         "parallel": false,
@@ -35,7 +35,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/vue-route-guard"],
+      "outputs": ["{workspaceRoot}/coverage/libs/vue-route-guard"],
       "options": {
         "jestConfig": "libs/vue-route-guard/jest.config.ts",
         "passWithNoTests": true

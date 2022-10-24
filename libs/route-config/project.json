@@ -18,7 +18,12 @@
           "tsConfig": "libs/route-config/tsconfig.lib.json"
         }
       },
-      "dependsOn": [{ "projects": "dependencies", "target": "build" }],
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ],
       "defaultConfiguration": "production"
     },
     "lint": {
@@ -30,7 +35,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/route-config"],
+      "outputs": ["{workspaceRoot}/coverage/libs/route-config"],
       "options": {
         "jestConfig": "libs/route-config/jest.config.ts",
         "passWithNoTests": true

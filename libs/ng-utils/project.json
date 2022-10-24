@@ -6,7 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",
-      "outputs": ["dist/libs/ng-utils"],
+      "outputs": ["{workspaceRoot}/dist/libs/ng-utils"],
       "options": {
         "project": "libs/ng-utils/ng-package.json",
         "buildableProjectDepsInPackageJsonType": "dependencies"
@@ -19,12 +19,17 @@
           "tsConfig": "libs/ng-utils/tsconfig.lib.json"
         }
       },
-      "dependsOn": [{ "projects": "dependencies", "target": "build" }],
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ],
       "defaultConfiguration": "production"
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ng-utils"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ng-utils"],
       "options": {
         "jestConfig": "libs/ng-utils/jest.config.ts",
         "passWithNoTests": true
