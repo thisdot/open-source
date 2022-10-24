@@ -20,7 +20,7 @@ NodeJS packages should be generated with the node NX generator
 
 **2. Set up the new project.json file in your generated library folder**
 
-We need to add some command configurations to our `project.json` file, to make them publishable by our release script. Add the `targets`, `github` and `publish` targets to the `targets` configuration object. You can check the existing project.json files for reference, do not change the existing config.
+We need to add some command configurations to our `project.json` file, to make them publishable by our release script. Add the `version`, `github` and `publish` targets to the `targets` configuration object. You can check the existing project.json files for reference, do not change the existing config.
 
 ```json
 {
