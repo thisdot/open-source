@@ -1,0 +1,25 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/showcase-playwright/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx-extend/e2e-runner:run",
+      "options": {
+        "runner": "playwright",
+        "targets": [
+          {
+            "target": "showcase:serve",
+            "checkUrl": "http://localhost:4200/",
+            "checkMaxTries": 50
+          }
+        ]
+      }
+    },
+    "codegen": {
+      "executor": "@nx-extend/playwright:codegen",
+      "options": {}
+    }
+  },
+  "tags": []
+}
