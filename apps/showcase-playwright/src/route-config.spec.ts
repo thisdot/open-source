@@ -2,36 +2,54 @@ import { expect, test } from '@playwright/test';
 import { selectors } from 'playwright';
 
 import type { Page } from 'playwright';
+import { Idbhelper } from './idbhelper';
 
-test.describe.serial('@this-dot/route-config', () => {
+test.describe('@this-dot/route-config', () => {
   let page: Page;
+  let playwrightIdb: Idbhelper;
 
   test.beforeAll(async ({ browser }) => {
     selectors.setTestIdAttribute('data-test-id');
     page = await browser.newPage();
   });
 
-  test.describe.serial('documentation section', () => {
-    test('the documentation of the library is always visible', async () => {
+  test.beforeEach(async () => {
+    playwrightIdb = new Idbhelper(page);
+
+    await page.goto('/');
+
+    await playwrightIdb.init('PLAYWRIGHT_DATABASE');
+    await playwrightIdb.createObjectStore('PLAYWRIGHT_STORE');
+  });
+
+  test.describe('documentation section', () => {
+    test.only('the documentation of the library is always visible', async () => {
       await page.goto('/');
+
+      await playwrightIdb
+        .store('PLAYWRIGHT_STORE')
+        .createItem(`${Math.floor(Math.random() * 1000)}`, 'test');
 
       await expect(page).toHaveURL('/route-tags/first');
       const isFirstPageDocumentationSectionVisible = await page
         .getByTestId('documentation section')
         .isVisible();
-      await expect(isFirstPageDocumentationSectionVisible).toBe(true);
+
+      expect(isFirstPageDocumentationSectionVisible).toBe(true);
 
       await page.goto('/route-tags/second');
       await expect(page).toHaveURL('/route-tags/second');
       const isSecondPageDocumentationSectionVisible = await page
         .getByTestId('documentation section')
         .isVisible();
-      await expect(isSecondPageDocumentationSectionVisible).toBe(true);
+      expect(isSecondPageDocumentationSectionVisible).toBe(true);
     });
   });
 
   test.describe.serial('title section', () => {
-    test('Displays the default title, when the title parameter is not set in the route config object', async () => {
+    test('Displays the default title, when the title parameter is not set in the route config object', async ({
+      page,
+    }) => {
       await page.goto('/route-tags');
 
       await expect(page).toHaveURL('/route-tags/first');
@@ -42,7 +60,9 @@ test.describe.serial('@this-dot/route-config', () => {
       await expect(headingInnerText).toMatch('Default Title');
     });
 
-    test('Displays the custom title, when the title parameter is set in the route config object', async () => {
+    test('Displays the custom title, when the title parameter is set in the route config object', async ({
+      page,
+    }) => {
       await page.goto('/route-tags/second');
 
       await expect(page).toHaveURL('/route-tags/second');
@@ -55,7 +75,9 @@ test.describe.serial('@this-dot/route-config', () => {
   });
 
   test.describe.serial('tdRouteTag section', () => {
-    test('Displays elements, when the appropriate route-tag (show) is set in the route config', async () => {
+    test('Displays elements, when the appropriate route-tag (show) is set in the route config', async ({
+      page,
+    }) => {
       await page.goto('/route-tags');
 
       await expect(page).toHaveURL('/route-tags/first');
@@ -70,7 +92,9 @@ test.describe.serial('@this-dot/route-config', () => {
       );
     });
 
-    test(`Does not render elements, when the appropriate route-tag (show) is NOT set in the route config`, async () => {
+    test(`Does not render elements, when the appropriate route-tag (show) is NOT set in the route config`, async ({
+      page,
+    }) => {
       await page.goto('/route-tags/second');
 
       await expect(page).toHaveURL('/route-tags/second');
