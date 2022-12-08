@@ -46,6 +46,23 @@ jobs:
       - name: Test Projects
         run: npx nx affected --target=test --parallel=$NX_MAX_PARALLEL
 
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: Build Projects
+        run: npx nx affected --target=build --parallel=$NX_MAX_PARALLEL
+
   e2e-chrome:
     runs-on: ubuntu-latest
     container:

@@ -1,19 +1,16 @@
 {
   "name": "@this-dot/vue-route-guard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Vuejs helper library for adding guards to route",
   "license": "MIT",
   "author": "This Dot Labs",
-  "files": [
-    "src"
-  ],
-  "main": "./dist/vue-route-guard.umd.js",
-  "module": "./dist/vue-route-guard.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/vue-route-guard.es.js",
-      "require": "./dist/vue-route-guard.umd.js"
-    }
+  "homepage": "https://github.com/thisdot/open-source/tree/main/libs/vue-route-guard#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisdot/open-source.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thisdot/open-source/issues"
   },
   "keywords": [
     "vue",
@@ -24,5 +21,17 @@
   "peerDependencies": {
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"
+  },
+  "module": "./dist/vue-route-guard.es.js",
+  "main": "./dist/vue-route-guard.umd.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "import": "./dist/vue-route-guard.es.js",
+      "require": "./dist/vue-route-guard.umd.js"
+    }
   }
 }

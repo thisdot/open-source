@@ -6,6 +6,7 @@
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
+        "outputPath": "dist/libs/vue-route-guard",
         "parallel": false,
         "commands": [
           {
@@ -13,6 +14,10 @@
           },
           {
             "command": "cp 'libs/vue-route-guard/package.json' '{args.dist}/package.json'",
+            "forwardAllArgs": false
+          },
+          {
+            "command": "cp 'libs/vue-route-guard/README.md' '{args.dist}/README.md'",
             "forwardAllArgs": false
           }
         ],
