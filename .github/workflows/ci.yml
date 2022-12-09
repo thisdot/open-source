@@ -76,7 +76,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: E2E tests in chrome
-        run: npx nx affected --target=run e2e:chrome && npx nx affected --target=run e2e:vue-showcase:chrome
+        run: npm run affected:e2e -- --browser=chrome --headless
 
       - name: Archive test results
         if: ${{ always() }}
@@ -98,7 +98,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: E2E tests in edge
-        run: npx nx affected --target=run e2e:edge && npx nx affected --target=run e2e:vue-showcase:edge
+        run: npm run affected:e2e -- --browser=edge --headless
 
       - name: Archive test results
         if: ${{ always() }}
@@ -120,7 +120,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: E2E tests in firefox
-        run: npx nx affected --target=run e2e:ff && npx nx affected --target=run e2e:vue-showcase:ff
+        run: npm run affected:e2e -- --browser=ff --headless
 
       - name: Archive test results
         if: ${{ always() }}
