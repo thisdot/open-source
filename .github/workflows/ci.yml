@@ -120,7 +120,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
 
       - name: E2E tests in firefox
-        run: npm run affected:e2e -- --browser=ff --headless
+        run: npm run affected:e2e -- --browser=firefox --headless
 
       - name: Archive test results
         if: ${{ always() }}
