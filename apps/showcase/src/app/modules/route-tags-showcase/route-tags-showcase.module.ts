@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { RouteConfigModule } from '@this-dot/route-config';
 import { FirstRouteComponent } from './components/first-route/first-route.component';
 import { RouteTagsShowcaseComponent } from './components/route-tags-showcase/route-tags-showcase.component';
