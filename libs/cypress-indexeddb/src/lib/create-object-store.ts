@@ -52,8 +52,8 @@ export function createObjectStore(
   existingDatabase: IDBDatabase,
   storeName: string,
   options?: IDBObjectStoreParameters
-): Promise<IDBObjectStore> {
-  let error: any;
+): Cypress.Chainable<IDBObjectStore> {
+  let error: Error | undefined;
   const isExistingStore = existingDatabase.objectStoreNames.contains(storeName);
   const log = Cypress.log({
     name: `create`,
@@ -79,17 +79,24 @@ export function createObjectStore(
   const objectStoreDb = isExistingStore
     ? Promise.resolve(existingDatabase)
     : createVersionUpdateDatabaseConnection(existingDatabase);
-  return objectStoreDb
-    .then((versionUpdateDatabase: IDBDatabase) =>
-      createObjectStoreInternal(versionUpdateDatabase, storeName, options || null, isExistingStore)
-    )
-    .then((store) => {
-      log.end();
-      return store;
-    })
-    .catch((e) => {
-      error = e;
-      log.error(e).end();
-      throw e;
-    });
+  return cy.wrap(
+    objectStoreDb
+      .then((versionUpdateDatabase: IDBDatabase) =>
+        createObjectStoreInternal(
+          versionUpdateDatabase,
+          storeName,
+          options || null,
+          isExistingStore
+        )
+      )
+      .then((store) => {
+        log.end();
+        return store;
+      })
+      .catch((e) => {
+        error = e;
+        log.error(e).end();
+        throw e;
+      })
+  );
 }

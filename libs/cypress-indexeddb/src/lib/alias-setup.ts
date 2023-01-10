@@ -33,13 +33,18 @@ export function overrideAs(
     return originalAs(subject, alias);
   }
 }
+
 export const getDatabase = getIDBItem('database');
 export const getStore = getIDBItem('store');
 
-function getIDBItem(type: IDBItemType): (alias: string) => Promise<IDBDatabase | IDBObjectStore> {
+function getIDBItem(type: 'store'): (alias: string) => Cypress.Chainable<IDBObjectStore>;
+function getIDBItem(type: 'database'): (alias: string) => Cypress.Chainable<IDBDatabase>;
+function getIDBItem(
+  type: IDBItemType
+): (alias: string) => Cypress.Chainable<IDBObjectStore> | Cypress.Chainable<IDBDatabase> {
   const map = type === 'store' ? STORES : DATABASE_ALIASES;
   return (alias: string) => {
-    let error: any;
+    let error: Error | undefined;
     const log = Cypress.log({
       autoEnd: false,
       type: 'parent',
@@ -50,14 +55,14 @@ function getIDBItem(type: IDBItemType): (alias: string) => Promise<IDBDatabase |
       }),
     });
 
-    const withoutAtSign = alias.substr(1);
+    const withoutAtSign = alias.substring(1);
     if (map.has(withoutAtSign)) {
       log.end();
-      let result: string | IDBObjectStore | IDBDatabase | undefined = map.get(withoutAtSign);
+      const result = map.get(withoutAtSign)!;
       if (typeof result === 'string') {
-        result = DATABASES.get(result);
+        return cy.wrap(DATABASES.get(result)!);
       }
-      return Promise.resolve(result as IDBObjectStore);
+      return cy.wrap(result);
     } else {
       error = new Error(`could not find ${type} with alias ${alias}`);
       log.error(error).end();

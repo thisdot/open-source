@@ -18,7 +18,7 @@ type ConsolePropObject = {
  * @returns Promise<IDBValidKey[]>
  * @throws {Error} If it is chained off from a method that does not return an object store.
  */
-export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
+export function keys(store: IDBObjectStore): Cypress.Chainable<IDBValidKey[]> {
   const { log, consoleProps } = createMetadataLog('keys');
   if (!isIDBObjectStore(store)) {
     const error = new Error(
@@ -28,18 +28,20 @@ export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
     log.error(error).end();
     throw error;
   }
-  return createDatabaseConnection(store.transaction.db.name)
-    .then((openDb: IDBDatabase) => getMetadata<IDBValidKey>(openDb, store, 'getAllKeys'))
-    .then((result: IDBValidKey[]) => {
-      consoleProps.result = result;
-      log.end();
-      return result;
-    })
-    .catch((e) => {
-      consoleProps.error = e;
-      log.error(e).end();
-      throw e;
-    });
+  return cy.wrap(
+    createDatabaseConnection(store.transaction.db.name)
+      .then((openDb: IDBDatabase) => getMetadata<IDBValidKey>(openDb, store, 'getAllKeys'))
+      .then((result: IDBValidKey[]) => {
+        consoleProps.result = result;
+        log.end();
+        return result;
+      })
+      .catch((e) => {
+        consoleProps.error = e;
+        log.error(e).end();
+        throw e;
+      })
+  );
 }
 
 /**
@@ -52,7 +54,7 @@ export function keys(store: IDBObjectStore): Promise<IDBValidKey[]> {
  * @returns Promise<T[]>
  * @throws {Error} If it is chained off from a method that does not return an object store.
  */
-export function entries<T = unknown>(store: IDBObjectStore): Promise<T[]> {
+export function entries<T = unknown>(store: IDBObjectStore): Cypress.Chainable<T[]> {
   const { log, consoleProps } = createMetadataLog('entries');
   if (!isIDBObjectStore(store)) {
     const error = new Error(
@@ -62,18 +64,20 @@ export function entries<T = unknown>(store: IDBObjectStore): Promise<T[]> {
     log.error(error).end();
     throw error;
   }
-  return createDatabaseConnection(store.transaction.db.name)
-    .then((openDb: IDBDatabase) => getMetadata<T>(openDb, store, 'getAll'))
-    .then((result: T[]) => {
-      consoleProps.result = result;
-      log.end();
-      return result;
-    })
-    .catch((e) => {
-      consoleProps.error = e;
-      log.error(e).end();
-      throw e;
-    });
+  return cy.wrap(
+    createDatabaseConnection(store.transaction.db.name)
+      .then((openDb: IDBDatabase) => getMetadata<T>(openDb, store, 'getAll'))
+      .then((result: T[]) => {
+        consoleProps.result = result;
+        log.end();
+        return result;
+      })
+      .catch((e) => {
+        consoleProps.error = e;
+        log.error(e).end();
+        throw e;
+      })
+  );
 }
 
 function getMetadata<T>(

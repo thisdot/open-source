@@ -43,7 +43,10 @@ export function createDatabaseConnection(
  * @returns Promise<IDBDatabase>
  * @throws {Error} If the connections fails to open.
  */
-export function openIndexedDb(databaseName: string, version?: number): Promise<IDBDatabase> {
+export function openIndexedDb(
+  databaseName: string,
+  version?: number
+): Cypress.Chainable<IDBDatabase> {
   let error: Error | undefined;
   let databaseVersion: number;
   const log = Cypress.log({
@@ -57,15 +60,17 @@ export function openIndexedDb(databaseName: string, version?: number): Promise<I
     }),
     autoEnd: false,
   });
-  return createDatabaseConnection(databaseName, version)
-    .then((db) => {
-      databaseVersion = db.version;
-      log.end();
-      return db;
-    })
-    .catch((e) => {
-      error = e;
-      log.error(e).end();
-      throw e;
-    });
+  return cy.wrap(
+    createDatabaseConnection(databaseName, version)
+      .then((db) => {
+        databaseVersion = db.version;
+        log.end();
+        return db;
+      })
+      .catch((e) => {
+        error = e;
+        log.error(e).end();
+        throw e;
+      })
+  );
 }
