@@ -7,15 +7,15 @@ export function isIDBDatabase(subject: unknown): subject is IDBDatabase {
 }
 
 export function getCommandArguments<T>(
-  key: IDBValidKey | null,
+  key: IDBValidKey | IDBKeyRange | null,
   value: T | undefined
-): [T, IDBValidKey] | [IDBValidKey] | [T] {
+): [T, IDBValidKey | IDBKeyRange] | [IDBValidKey | IDBKeyRange] | [T] {
   return key ? getCommandArgumentsBasedOnValue(key, value) : [value as T];
 }
 
 function getCommandArgumentsBasedOnValue<T>(
-  key: IDBValidKey,
+  key: IDBValidKey | IDBKeyRange,
   value: T | undefined
-): [T, IDBValidKey] | [IDBValidKey] {
+): [T, IDBValidKey | IDBKeyRange] | [IDBValidKey | IDBKeyRange] {
   return value ? [value, key] : [key];
 }
