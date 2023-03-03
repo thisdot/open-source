@@ -6,7 +6,7 @@ import { entries, keys } from './object-store-metadata';
 import { openIndexedDb } from './open-database';
 
 function setupIDBHelpers(): void {
-  Cypress.Commands.overwrite('as', overrideAs);
+  Cypress.Commands.overwriteQuery('as', overrideAs);
   Cypress.Commands.add(`clearIndexedDb`, deleteDatabase);
   Cypress.Commands.add(`openIndexedDb`, openIndexedDb);
   Cypress.Commands.add(`getIndexedDb`, getDatabase);
