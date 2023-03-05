@@ -18,20 +18,26 @@ export function setDatabaseInternal(databaseName: string, database: IDBDatabase)
 type IDBItemType = 'store' | 'database';
 
 export function overrideAs(
-  originalAs: (subject: unknown, alias: string) => any,
-  subject: unknown,
-  alias: string
+  originalAs: Cypress.QueryFn<'as'>,
+  alias: string,
+  options?: Partial<Cypress.AsOptions>
 ) {
-  if (isIDBObjectStore(subject)) {
-    STORES.set(alias, subject);
-    return subject;
-  } else if (isIDBDatabase(subject)) {
-    DATABASE_ALIASES.set(alias, subject.name);
-    DATABASES.set(subject.name, subject);
-    return subject;
-  } else {
-    return originalAs(subject, alias);
-  }
+  const asArgs: [string, Partial<Cypress.AsOptions> | undefined] = [alias, options];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const innerFn = originalAs.apply(this, asArgs);
+  return (subject: unknown) => {
+    if (isIDBObjectStore(subject)) {
+      STORES.set(alias, subject);
+      return subject;
+    } else if (isIDBDatabase(subject)) {
+      DATABASE_ALIASES.set(alias, subject.name);
+      DATABASES.set(subject.name, subject);
+      return subject;
+    } else {
+      return innerFn(subject);
+    }
+  };
 }
 
 export const getDatabase = getIDBItem('database');
