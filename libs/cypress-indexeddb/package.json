@@ -1,6 +1,6 @@
 {
   "name": "@this-dot/cypress-indexeddb",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Cypress.io helper library for reading and manipulating data inside IndexedDB",
   "license": "MIT",
   "author": "This Dot Labs",
