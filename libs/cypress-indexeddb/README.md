@@ -26,10 +26,10 @@ It supports:
 
 **With Cypress versions _below_ 12.0.0:**
 
-1. Install the 1.4.0 version of the package:  
-   `npm install @this-dot/cypress-indexeddb@1.4.0`  
+1. Install the 1.2.1 version of the package:  
+   `npm install @this-dot/cypress-indexeddb@1.2.1`  
    or  
-   `yarn add @this-dot/cypress-indexeddb@1.4.0`
+   `yarn add @this-dot/cypress-indexeddb@1.2.1`
 
 2. Import the plugin in your `cypress/support/commands.js` or `cypress/support/commands.ts` file:
 
