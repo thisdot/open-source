@@ -24,41 +24,18 @@ It supports:
 
 ### Installation
 
-1. Install the package:  
-   `npm install @this-dot/cypress-indexeddb`  
+**With Cypress versions _below_ 12.0.0:**
+
+1. Install the 1.4.0 version of the package:  
+   `npm install @this-dot/cypress-indexeddb@1.4.0`  
    or  
-   `yarn add @this-dot/cypress-indexeddb`
+   `yarn add @this-dot/cypress-indexeddb@1.4.0`
 
 2. Import the plugin in your `cypress/support/commands.js` or `cypress/support/commands.ts` file:
 
    ```typescript
    import '@this-dot/cypress-indexeddb';
    ```
-
-3. If you use typescript, set up typings in the same `support` folder
-   1. Create a `cypress-indexeddb-namespace.ts` file
-   2. Copy the following typings into the newly created file:
-      ```typescript
-      declare namespace Cypress {
-        interface Chainable<Subject> {
-          clearIndexedDb(databaseName: string): void;
-          openIndexedDb(databaseName: string, version?: number): Chainable<IDBDatabase>;
-          getIndexedDb(databaseName: string): Chainable<IDBDatabase>;
-          createObjectStore(
-            storeName: string,
-            options?: IDBObjectStoreParameters
-          ): Chainable<IDBObjectStore>;
-          getStore(storeName: string): Chainable<IDBObjectStore>;
-          createItem(key: IDBValidKey, value: unknown): Chainable<IDBObjectStore>;
-          readItem<T = unknown>(key: IDBValidKey | IDBKeyRange): Chainable<T>;
-          updateItem(key: IDBValidKey, value: unknown): Chainable<IDBObjectStore>;
-          deleteItem(key: IDBValidKey): Chainable<IDBObjectStore>;
-          addItem<T = unknown>(value: T): Chainable<IDBObjectStore>;
-          keys(): Chainable<IDBValidKey[]>;
-          entries<T = unknown>(): Chainable<T[]>;
-        }
-      }
-      ```
 
 ### Using the commands in your Cypress tests
 
