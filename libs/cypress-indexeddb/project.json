@@ -1,4 +1,5 @@
 {
+  "name": "cypress-indexeddb",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/cypress-indexeddb/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/cypress-indexeddb"],
+      "outputs": ["{workspaceRoot}/coverage/libs/cypress-indexeddb"],
       "options": {
         "jestConfig": "libs/cypress-indexeddb/jest.config.ts",
         "passWithNoTests": true

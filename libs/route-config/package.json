@@ -21,9 +21,9 @@
     "route-config"
   ],
   "peerDependencies": {
-    "@angular/common": ">= 12.0.0 < 15",
-    "@angular/core": ">= 12.0.0 < 15",
-    "@angular/router": ">= 12.0.0 < 15",
+    "@angular/common": ">= 12.0.0 < 16",
+    "@angular/core": ">= 12.0.0 < 16",
+    "@angular/router": ">= 12.0.0 < 16",
     "rxjs": ">=7.0.0"
   },
   "dependencies": {

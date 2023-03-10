@@ -24,6 +24,21 @@ It supports:
 
 ### Installation
 
+**With Cypress versions _above_ 12.6.0:**
+
+1. Install the package:  
+   `npm install @this-dot/cypress-indexeddb`  
+   or  
+   `yarn add @this-dot/cypress-indexeddb`
+
+2. Import the plugin in your `cypress/support/commands.js` or `cypress/support/commands.ts` file:
+
+   ```typescript
+   import '@this-dot/cypress-indexeddb';
+   ```
+
+Please note, that cypress introduced the `Cypress.Commands.overwriteQuery` command in [12.6.0](https://docs.cypress.io/guides/references/changelog#12-6-0), therefore, cypress versions 12.0.0 to 12.5.x are not supported by this library.
+
 **With Cypress versions _below_ 12.0.0:**
 
 1. Install the 1.2.1 version of the package:  

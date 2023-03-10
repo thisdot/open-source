@@ -6,7 +6,7 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { connectIndexedDb, deleteItem, getObjectStore, read, setItem } from '@this-dot/rxidb';
 import { isTruthy } from '@this-dot/utils';
 import { merge, Observable, Subject, timer } from 'rxjs';

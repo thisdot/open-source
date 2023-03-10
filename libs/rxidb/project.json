@@ -1,4 +1,5 @@
 {
+  "name": "rxidb",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/rxidb/src",
   "projectType": "library",
@@ -42,7 +43,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/rxidb"],
+      "outputs": ["{workspaceRoot}/coverage/libs/rxidb"],
       "options": {
         "jestConfig": "libs/rxidb/jest.config.ts",
         "passWithNoTests": true

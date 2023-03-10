@@ -20,6 +20,6 @@
     "typescript"
   ],
   "peerDependencies": {
-    "cypress": "< 12.0.0"
+    "cypress": "< 12.6.0"
   }
 }
