@@ -142,7 +142,7 @@
     "tsconfig": "^7.0.0",
     "tslib": "^2.4.0",
     "typescript": "4.9.5",
-    "unplugin-vue-components": "^0.19.6",
+    "unplugin-vue-components": "^0.25.0",
     "vite": "^4.1.4",
     "vue-eslint-parser": "^9.0.2"
   }
