@@ -118,13 +118,11 @@ describe(`@this-dot/cypress-indexeddb`, () => {
       cy.get(`[data-test-id="row_2"]`).should('be.visible').should('contain', 'test2');
       cy.get(`[data-test-id="row_3"]`).should('be.visible').should('contain', '1337');
 
-      cy.get(`[data-test-id="add-to-queue-input"]`)
-        .should('be.visible')
-        .and('not.be.disabled')
-        .type(`something{enter}`)
-        .type(`anything{enter}`)
-        .type(`whatever{enter}`)
-        .type(`seriously{enter}`);
+      cy.get(`[data-test-id="add-to-queue-input"]`).should('be.visible').and('not.be.disabled');
+      cy.get(`[data-test-id="add-to-queue-input"]`).type(`something{enter}`);
+      cy.get(`[data-test-id="add-to-queue-input"]`).type(`anything{enter}`);
+      cy.get(`[data-test-id="add-to-queue-input"]`).type(`whatever{enter}`);
+      cy.get(`[data-test-id="add-to-queue-input"]`).type(`seriously{enter}`);
 
       cy.getStore('@test_add_item')
         .entries()

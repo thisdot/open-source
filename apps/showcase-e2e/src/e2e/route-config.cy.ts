@@ -74,8 +74,8 @@ describe(`@thisdot/route-config`, () => {
       cy.visit('/route-tags/second');
       cy.url().should('contain', 'route-tags/second');
 
+      cy.get('[data-test-id="custom prop selector"]').click();
       cy.get('[data-test-id="custom prop selector"]')
-        .click()
         .get('mat-option')
         .contains('routeTags')
         .click();
@@ -90,8 +90,8 @@ describe(`@thisdot/route-config`, () => {
       cy.visit('/route-tags/first');
       cy.url().should('contain', 'route-tags/first');
 
+      cy.get('[data-test-id="custom prop selector"]').click();
       cy.get('[data-test-id="custom prop selector"]')
-        .click()
         .get('mat-option')
         .contains('routeTags')
         .click();
