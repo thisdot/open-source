@@ -17,7 +17,7 @@
       "executor": "nx-vue3-vite:cypress",
       "options": {
         "cypressConfig": "apps/vue-showcase/cypress.config.ts",
-        "tsConfig": "apps/vue-showcase/tsconfig.e2e.json",
+        "tsConfig": "apps/vue-showcase/tsconfig.json",
         "devServerTarget": "vue-showcase:serve",
         "testingType": "e2e"
       },

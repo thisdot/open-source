@@ -8,7 +8,7 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/showcase-e2e/cypress.config.ts",
-        "tsConfig": "apps/showcase-e2e/tsconfig.e2e.json",
+        "tsConfig": "apps/showcase-e2e/tsconfig.json",
         "devServerTarget": "showcase:serve",
         "testingType": "e2e"
       },
