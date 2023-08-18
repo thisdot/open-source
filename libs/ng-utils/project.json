@@ -6,7 +6,7 @@
   "prefix": "this-dot",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/libs/ng-utils"],
       "options": {
         "project": "libs/ng-utils/ng-package.json",
@@ -29,7 +29,7 @@
       "defaultConfiguration": "production"
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ng-utils"],
       "options": {
         "jestConfig": "libs/ng-utils/jest.config.ts",
@@ -37,7 +37,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/ng-utils/src/**/*.ts", "libs/ng-utils/src/**/*.html"]
       },
