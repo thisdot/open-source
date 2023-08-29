@@ -4,12 +4,9 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": [
-        "plugin:@nrwl/nx/angular",
-        "plugin:@angular-eslint/template/process-inline-templates"
-      ],
+      "extends": ["plugin:@nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
-        "@nrwl/nx/enforce-module-boundaries": [0],
+        "@nx/enforce-module-boundaries": [0],
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -30,7 +27,7 @@
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@nrwl/nx/angular-template"],
+      "extends": ["plugin:@nx/angular-template"],
       "rules": {}
     }
   ]

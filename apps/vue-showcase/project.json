@@ -28,13 +28,13 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/vue-showcase/**/*.{js,jsx,ts,tsx,vue}"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/vue-showcase"],
       "options": {
         "jestConfig": "apps/vue-showcase/jest.config.ts",

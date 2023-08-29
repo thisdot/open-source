@@ -29,13 +29,13 @@
       "executor": "nx-vue3-vite:build-app"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/vue-route-guard/**/*.{js,jsx,ts,tsx,vue}"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/vue-route-guard"],
       "options": {
         "jestConfig": "libs/vue-route-guard/jest.config.ts",

@@ -6,7 +6,7 @@
   "prefix": "td",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "options": {
         "project": "libs/route-config/ng-package.json",
         "buildableProjectDepsInPackageJsonType": "dependencies"
@@ -28,14 +28,14 @@
       "defaultConfiguration": "production"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/route-config/src/**/*.ts", "libs/route-config/src/**/*.html"]
       },
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/route-config"],
       "options": {
         "jestConfig": "libs/route-config/jest.config.ts",
